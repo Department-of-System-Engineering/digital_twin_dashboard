@@ -1,5 +1,7 @@
+import Graph from "./Components/Graph";
+
 function App() {
-    return <p>Main page</p>;
+  return <Graph />;
 }
 
 export default App;
