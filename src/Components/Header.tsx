@@ -17,9 +17,9 @@ const PROCESS_TYPES: OptionItem[] = [
 
 const USER_TYPES: OptionItem[] = [
   { id: 1, name: "Műszakvezető" },
-  { id: 1, name: "Operátor" },
-  { id: 1, name: "Karbantartó" },
-  { id: 1, name: "Minőségellenőr" },
+  { id: 2, name: "Operátor" },
+  { id: 3, name: "Karbantartó" },
+  { id: 4, name: "Minőségellenőr" },
 ];
 
 const Header = () => {

@@ -64,7 +64,7 @@ const Dropdown = ({
         >
           {options.map((opt) => (
             <li
-              key={value.id}
+              key={opt.id}
               className={`
                 px-4 py-2 cursor-pointer font-semibold text-gray-700 ${
                   !hoveredOnce && opt === value
