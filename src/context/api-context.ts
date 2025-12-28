@@ -1,5 +1,12 @@
 import { createContext } from "react";
+import type { OptionItem } from "../types";
 
-const Api = createContext({});
+type ApiContext = {
+    getUserTypes: () => Promise<OptionItem[] | undefined>;
+};
+
+const Api = createContext<ApiContext>({
+    getUserTypes: async () => undefined,
+});
 
 export default Api;
