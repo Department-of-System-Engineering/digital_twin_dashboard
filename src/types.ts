@@ -20,3 +20,11 @@ export type Graph = {
     nodes: GraphNode[];
     edges: GraphEdge[];
 };
+export type Asset = {
+    id: number;
+    name: string;
+    unit: string;
+    value: number;
+    type: NumberType;
+    min?: number;
+};

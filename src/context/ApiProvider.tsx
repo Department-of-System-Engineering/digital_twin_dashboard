@@ -1,4 +1,4 @@
-import type { Graph, GraphEdge, GraphNode, OptionItem } from '../types';
+import type { Graph, GraphEdge, GraphNode, OptionItem, Asset } from '../types';
 import Api from './api-context';
 
 type ApiProviderProps = {
@@ -92,9 +92,32 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getProcess = async (processID: string) => {
+        const DUMMY_PROCESS: Asset[] = [
+            { id: 1, name: 'Conveyor Speed', unit: '%', value: 70, type: 'percent' },
+            {
+                id: 2,
+                name: 'Temperature',
+                unit: '°C',
+                value: 125.5,
+                type: 'float',
+                min: -120,
+            },
+            { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
+            { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
+            { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+        ];
+        const response = new Promise<Asset[]>((resolve) => {
+            resolve(DUMMY_PROCESS);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
+        getProcess: getProcess,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
