@@ -1,4 +1,4 @@
-import type { GraphNode } from '../types';
+import type { GraphNode, ProcessNodeData } from '../types';
 import { useContext, useEffect, useState } from 'react';
 import { ReactFlow, type Edge, type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -7,7 +7,7 @@ import ProcessModal from './ProcessModal';
 import Api from '../context/api-context';
 
 const Graph = () => {
-    const [nodes, setNodes] = useState<Node[]>([]);
+    const [nodes, setNodes] = useState<Node<ProcessNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedProcessID, setSelectedProcessID] = useState<string | null>(null);
     const { getGraph } = useContext(Api);
@@ -19,7 +19,7 @@ const Graph = () => {
 
         let sourceToCheck = [start];
         let hasTargets = true;
-        const nodes: Node[] = [];
+        const nodes: Node<ProcessNodeData>[] = [];
         const levels = [];
 
         levels.push([start]);
@@ -63,6 +63,11 @@ const Graph = () => {
         );
     };
 
+    const getProcessNameById = (id: string) => {
+        const process = nodes.find((item) => item.id === id);
+        return process!.data.label;
+    };
+
     useEffect(() => {
         getGraph().then((data) => {
             if (data) {
@@ -93,6 +98,7 @@ const Graph = () => {
             {selectedProcessID && (
                 <ProcessModal
                     processID={selectedProcessID}
+                    name={getProcessNameById(selectedProcessID)}
                     onClose={() => {
                         resetNodeSelection();
                         setSelectedProcessID(null);

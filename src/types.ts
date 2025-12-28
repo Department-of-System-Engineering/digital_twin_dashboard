@@ -28,3 +28,7 @@ export type Asset = {
     type: NumberType;
     min?: number;
 };
+
+export type ProcessNodeData = {
+    label: string;
+};
