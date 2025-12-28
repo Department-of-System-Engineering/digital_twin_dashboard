@@ -55,7 +55,7 @@ const Dropdown = ({
 
       {isOpen && (
         <ul
-          className="absolute z-10 w-full mt-1 bg-white border rounded shadow-md max-h-60 overflow-auto"
+          className="absolute z-10 w-full mt-1 bg-white rounded shadow-md max-h-60 overflow-auto"
           onMouseEnter={() => {
             if (isOpen && !hoveredOnce) {
               setHoveredOnce(true);
@@ -68,8 +68,8 @@ const Dropdown = ({
               className={`
                 px-4 py-2 cursor-pointer font-semibold text-gray-700 ${
                   !hoveredOnce && opt === value
-                    ? "bg-amber-300"
-                    : "hover:bg-amber-300"
+                    ? "bg-amber-300 shadow-md"
+                    : "hover:bg-amber-300 hover:shadow:md"
                 }`}
               onClick={() => {
                 onChange(opt);
