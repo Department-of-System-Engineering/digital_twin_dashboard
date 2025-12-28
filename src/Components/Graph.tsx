@@ -134,7 +134,7 @@ const Graph = () => {
 
     return (
         <>
-            <div style={{ width: "100vw", height: "100vh" }}>
+            <div className="flex-1 w-full">
                 <ReactFlow
                     nodes={nodes}
                     edges={edges.map((e) => ({ ...e, selectable: false }))}
