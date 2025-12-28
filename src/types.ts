@@ -1,6 +1,6 @@
 export type OptionItem = {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 };
 
-export type NumberType = "int" | "float" | "percent";
+export type NumberType = 'int' | 'float' | 'percent';
