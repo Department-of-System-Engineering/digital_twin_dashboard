@@ -13,6 +13,9 @@ type GlobalContext = {
     setSelectedProcessType: (option: OptionItem) => void;
     globalTemperature: number | undefined;
     globalHumidity: number | undefined;
+    login: (username: string, password: string) => Promise<boolean | undefined>;
+    isUserLoggedIn: boolean | undefined;
+    logout: () => void;
 };
 
 const Global = createContext<GlobalContext>({
@@ -27,6 +30,9 @@ const Global = createContext<GlobalContext>({
     setSelectedProcessType: () => undefined,
     globalTemperature: undefined,
     globalHumidity: undefined,
+    login: async () => undefined,
+    isUserLoggedIn: undefined,
+    logout: () => undefined,
 });
 
 export default Global;

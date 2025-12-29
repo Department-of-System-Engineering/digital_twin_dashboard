@@ -1,6 +1,4 @@
-import type { OptionItem } from '../types';
-
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import ToggleSwitch from '../UI/ToggleSwitch';
 import Dropdown from '../UI/Dropdown';
 import { IoLogOut, IoThermometerOutline, IoWaterSharp } from 'react-icons/io5';
@@ -19,6 +17,7 @@ const Header = () => {
         setSelectedUserType,
         globalTemperature,
         globalHumidity,
+        logout,
     } = useContext(Global);
 
     return (
@@ -66,7 +65,7 @@ const Header = () => {
                 <IoLogOut
                     size={28}
                     className="text-amber-300 hover:cursor-pointer"
-                    onClick={() => console.log('LOGOUT')}
+                    onClick={logout}
                 />
             </div>
         </header>
