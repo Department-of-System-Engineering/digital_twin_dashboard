@@ -92,7 +92,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getProcess = async (processID: string) => {
+    const getProcess = async (_processID: string) => {
         const DUMMY_PROCESS: Asset[] = [
             { id: 1, name: 'Conveyor Speed', unit: '%', value: 70, type: 'percent' },
             {
@@ -114,10 +114,19 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const login = (_username: string, _password: string) => {
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
         getProcess: getProcess,
+        login: login,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
