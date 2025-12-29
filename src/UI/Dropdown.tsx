@@ -58,7 +58,7 @@ const Dropdown = ({ options, value, onChange, disabled = false }: DropdownProps)
                         <li
                             key={opt.id}
                             className={`
-                px-4 py-2 cursor-pointer font-semibold text-gray-700 ${
+                px-3 py-2 cursor-pointer font-semibold text-gray-700 ${
                     !hoveredOnce && opt === value
                         ? 'bg-amber-300 shadow-md'
                         : 'hover:bg-amber-300 hover:shadow:md'
