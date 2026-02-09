@@ -8,7 +8,7 @@ type GlobalProviderProps = {
 };
 
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
-    const { getUserTypes } = useContext(Api);
+    const { getUserTypes, login: apiLogin } = useContext(Api);
 
     const processModes: OptionItem[] = [
         { id: 1, name: 'Real' },
@@ -25,6 +25,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     const [selectedUserType, setSelectedUserType] = useState<OptionItem>();
     const [globalTemperature, setGlobalTemperature] = useState<number>();
     const [globalHumidty, setGlobalHumidty] = useState<number>();
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
     const getUserTypesFromApi = async () => {
         try {
@@ -45,6 +46,16 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         setGlobalHumidty(45);
     };
 
+    const login = async (username: string, password: string) => {
+        const result = await apiLogin(username, password);
+        if (result) setIsUserLoggedIn(result);
+        return result;
+    };
+
+    const logout = async () => {
+        setIsUserLoggedIn(false);
+    };
+
     useEffect(() => {
         getUserTypesFromApi();
         getGlobalTempAndHumidity();
@@ -63,6 +74,9 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         setSelectedProcessType: setSelectedProcessType,
         globalTemperature: globalTemperature,
         globalHumidity: globalHumidty,
+        login: login,
+        isUserLoggedIn: isUserLoggedIn,
+        logout: logout,
     };
 
     return <Global.Provider value={globalContext}>{children}</Global.Provider>;

@@ -26,7 +26,7 @@ const Dropdown = ({ options, value, onChange, disabled = false }: DropdownProps)
     }, [isOpen]);
 
     return (
-        <div className="relative w-50 h-10" ref={dropdownRef}>
+        <div className="relative w-60 h-10" ref={dropdownRef}>
             <button
                 type="button"
                 onClick={() => {

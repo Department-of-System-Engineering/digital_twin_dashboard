@@ -8,10 +8,10 @@ type ApiProviderProps = {
 const ApiProvider = ({ children }: ApiProviderProps) => {
     const getUserTypes = async () => {
         const USER_TYPES: OptionItem[] = [
-            { id: 1, name: 'Műszakvezető' },
-            { id: 2, name: 'Operátor' },
-            { id: 3, name: 'Karbantartó' },
-            { id: 4, name: 'Minőségellenőr' },
+            { id: 1, name: 'Shift Supervisor' },
+            { id: 2, name: 'Operator' },
+            { id: 3, name: 'Maintenance Technician' },
+            { id: 4, name: 'Quality Inspector' },
         ];
 
         const response = new Promise<OptionItem[]>((resolve) => {
@@ -92,7 +92,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getProcess = async (processID: string) => {
+    const getProcess = async (_processID: string) => {
         const DUMMY_PROCESS: Asset[] = [
             { id: 1, name: 'Conveyor Speed', unit: '%', value: 70, type: 'percent' },
             {
@@ -114,10 +114,19 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const login = (_username: string, _password: string) => {
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
         getProcess: getProcess,
+        login: login,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
