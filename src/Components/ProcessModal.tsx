@@ -24,11 +24,21 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onDataValueChange = (id: number, value: number) => {
-        // setData(
-        //     (prev) =>
-        //         prev && prev.map((item) => (item.id === id ? { ...item, value: value } : item)),
-        // );
+    const onDataValueChange = (assetID: number, sensorID: number, value: number) => {
+        setData(
+            (prev) =>
+                prev &&
+                prev.map((item) =>
+                    item.assetID === assetID
+                        ? {
+                              ...item,
+                              sensors: item.sensors.map((sensor) =>
+                                  sensor.id === sensorID ? { ...sensor, value: value } : sensor,
+                              ),
+                          }
+                        : item,
+                ),
+        );
     };
 
     const handleChartToggle = (item: { id: number; name: string }) => {
@@ -84,6 +94,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                                 min={sensor.min}
                                                                 onValueChange={(value) =>
                                                                     onDataValueChange(
+                                                                        item.assetID,
                                                                         sensor.id,
                                                                         value,
                                                                     )
