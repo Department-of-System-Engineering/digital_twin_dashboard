@@ -1,4 +1,4 @@
-import type { Graph, GraphEdge, GraphNode, OptionItem, Asset } from '../types';
+import type { Graph, GraphEdge, GraphNode, OptionItem, Asset, Chart } from '../types';
 import Api from './api-context';
 
 type ApiProviderProps = {
@@ -121,12 +121,53 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
 
         return response;
     };
+    const getDataForProcessAssetChart = (
+        _processID: string,
+        _assetID: number,
+    ): Promise<Chart[]> => {
+        const DUMMY_CHART_DATA: Chart[] = [
+            {
+                name: '15:00',
+                value: 200,
+            },
+            {
+                name: '15:05',
+                value: 210,
+            },
+            {
+                name: '15:10',
+                value: 220,
+            },
+            {
+                name: '15:15',
+                value: 200,
+            },
+            {
+                name: '15:20',
+                value: 190,
+            },
+            {
+                name: '15:25',
+                value: 200,
+            },
+            {
+                name: '15:30',
+                value: 210,
+            },
+        ];
+        const response = new Promise<Chart[]>((resolve) => {
+            resolve(DUMMY_CHART_DATA);
+        });
+
+        return response;
+    };
 
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
         getProcess: getProcess,
         login: login,
+        getDataForProcessAssetChart: getDataForProcessAssetChart,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
