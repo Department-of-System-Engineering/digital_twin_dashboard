@@ -2,10 +2,11 @@ import type { Asset, NumberType } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { IoCloseOutline } from 'react-icons/io5';
+import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
 import NumberInput from './inputs/NumberInput';
 import Api from '../context/api-context';
+import Chart from '../UI/Chart';
 
 type ProcessModalProps = {
     processID: string;
@@ -15,6 +16,7 @@ type ProcessModalProps = {
 
 const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [data, setData] = useState<Asset[]>();
+    const [selectedAsset, setSelectedAsset] = useState<{ id: number; name: string }>();
     const { getProcess } = useContext(Api);
 
     useEffect(() => {
@@ -27,6 +29,17 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
             (prev) =>
                 prev && prev.map((item) => (item.id === id ? { ...item, value: value } : item)),
         );
+    };
+
+    const handleChartToggle = (item: { id: number; name: string }) => {
+        if (selectedAsset && selectedAsset.id === item.id) {
+            setSelectedAsset(undefined);
+        } else {
+            setSelectedAsset({
+                id: item.id,
+                name: item.name,
+            });
+        }
     };
 
     return (
@@ -56,7 +69,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                         {data &&
                                             data.map((item) => (
                                                 <div
-                                                    className="grid grid-cols-3 items-center gap-2"
+                                                    className="grid grid-cols-4 items-center  gap-2"
                                                     key={item.id}
                                                 >
                                                     <p className="text-gray-700 font-semibold text-lg">
@@ -70,13 +83,35 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                             onDataValueChange(item.id, value)
                                                         }
                                                     />
-                                                    <p className="text-gray-700 font-semibold text-lg">
+                                                    <p className="text-gray-700 font-semibold w-fit text-lg">
                                                         {item.unit}
                                                     </p>
+                                                    {item.id === selectedAsset?.id ? (
+                                                        <IoEyeOutline
+                                                            size={25}
+                                                            className="hover:cursor-pointer"
+                                                            onClick={() => handleChartToggle(item)}
+                                                        />
+                                                    ) : (
+                                                        <IoEyeOffOutline
+                                                            size={25}
+                                                            className="hover:cursor-pointer"
+                                                            onClick={() => handleChartToggle(item)}
+                                                        />
+                                                    )}
                                                 </div>
                                             ))}
                                     </div>
                                 </div>
+                                {selectedAsset && (
+                                    <div className="mt-10">
+                                        <Chart
+                                            assetID={selectedAsset.id}
+                                            name={selectedAsset.name}
+                                            processID={processID}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
