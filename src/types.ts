@@ -20,13 +20,21 @@ export type Graph = {
     nodes: GraphNode[];
     edges: GraphEdge[];
 };
-export type Asset = {
+
+export type Sensor = {
     id: number;
     name: string;
     unit: string;
     value: number;
     type: NumberType;
     min?: number;
+    disabled?: boolean;
+};
+
+export type Asset = {
+    assetID: number;
+    assetName: string;
+    sensors: Sensor[];
 };
 
 export type ProcessNodeData = {
