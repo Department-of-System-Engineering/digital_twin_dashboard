@@ -6,6 +6,7 @@ type NumberInputProps = {
     min?: number;
     type: NumberType;
     value?: number;
+    step?: number;
 };
 
 const NumberInput = ({
@@ -13,6 +14,7 @@ const NumberInput = ({
     disabled = false,
     type = 'int',
     min = 0,
+    step,
     onValueChange,
 }: NumberInputProps) => {
     return (
@@ -20,9 +22,9 @@ const NumberInput = ({
             type="number"
             disabled={disabled}
             min={min}
-            value={value ? value : ''}
+            value={value !== undefined ? value : ''}
             onChange={(event) => onValueChange(parseFloat(event.target.value))}
-            step={type === 'float' ? 0.1 : 1}
+            step={step ? step : type === 'float' ? 0.1 : 1}
             max={type === 'percent' ? 100 : undefined}
             className="bg-neutral-100 shadow-sm rounded-md h-10 p-2 focus:outline-none focus:ring-2 focus:ring-amber-300"
         />

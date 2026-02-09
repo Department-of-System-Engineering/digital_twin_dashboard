@@ -44,6 +44,14 @@ const ChartFilter = ({ onFilterChange }: ChartFilterProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleFrequencyChange = (value: number | undefined) => {
+        if (value === 1.1) {
+            setSamplingFrequency(2);
+        } else {
+            setSamplingFrequency(value);
+        }
+    };
+
     return (
         <div className="mb-6 p-2 w-[90%] flex flex-row gap-3 items-center justify-between">
             <DateTimePicker
@@ -58,10 +66,11 @@ const ChartFilter = ({ onFilterChange }: ChartFilterProps) => {
                 <label className="text-md font-bold">Sampling frequency:</label>
                 <div className="flex flex-row items-center gap-2">
                     <NumberInput
-                        onValueChange={(value) => setSamplingFrequency(value)}
-                        type="int"
+                        onValueChange={handleFrequencyChange}
+                        type="float"
                         value={samplingFrequency}
-                        min={1}
+                        min={0}
+                        step={samplingFrequency && samplingFrequency > 1 ? 1 : 0.1}
                     />
                     <p className="text-gray-700 font-semibold w-fit text-lg">sec</p>
                 </div>
