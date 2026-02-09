@@ -17,6 +17,7 @@ type ProcessModalProps = {
 const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [data, setData] = useState<Asset[]>();
     const [selectedSensorID, setSelectedSensorID] = useState<number>();
+    const [samplingFrequency, setSamplingFrequency] = useState<number>(500);
     const { getProcess } = useContext(Api);
 
     useEffect(() => {
@@ -45,6 +46,9 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
         if (selectedSensorID && selectedSensorID === sensorID) {
             setSelectedSensorID(undefined);
         } else {
+            if (!samplingFrequency) {
+                setSamplingFrequency(500);
+            }
             setSelectedSensorID(sensorID);
         }
     };
@@ -124,7 +128,21 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                     </div>
                                 </div>
                                 {selectedSensorID && (
-                                    <div className="mt-10 w-full bg-white p-5 rounded-xl shadow-lg pt-8">
+                                    <div className="flex flex-col items-center mt-10 w-full bg-white p-5 rounded-xl shadow-lg pt-8">
+                                        <div className="mb-6 flex flex-row p-2 gap-3 items-center">
+                                            <label>Sampling frequency</label>
+                                            <NumberInput
+                                                onValueChange={(value) =>
+                                                    setSamplingFrequency(value)
+                                                }
+                                                type="int"
+                                                value={samplingFrequency}
+                                                min={1}
+                                            />
+                                            <p className="text-gray-700 font-semibold w-fit text-lg">
+                                                ms
+                                            </p>
+                                        </div>
                                         <Chart sensorID={selectedSensorID} />
                                     </div>
                                 )}
