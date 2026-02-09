@@ -25,7 +25,7 @@ export type Sensor = {
     id: number;
     name: string;
     unit: string;
-    value: number;
+    value?: number;
     type: NumberType;
     min?: number;
     disabled?: boolean;

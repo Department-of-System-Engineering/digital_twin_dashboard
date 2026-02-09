@@ -16,7 +16,7 @@ type ProcessModalProps = {
 
 const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [data, setData] = useState<Asset[]>();
-    const [selectedSensor, setSelectedSensor] = useState<{ id: number; name: string }>();
+    const [selectedSensorID, setSelectedSensorID] = useState<number>();
     const { getProcess } = useContext(Api);
 
     useEffect(() => {
@@ -41,14 +41,11 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
         );
     };
 
-    const handleChartToggle = (item: { id: number; name: string }) => {
-        if (selectedSensor && selectedSensor.id === item.id) {
-            setSelectedSensor(undefined);
+    const handleChartToggle = (sensorID: number) => {
+        if (selectedSensorID && selectedSensorID === sensorID) {
+            setSelectedSensorID(undefined);
         } else {
-            setSelectedSensor({
-                id: item.id,
-                name: item.name,
-            });
+            setSelectedSensorID(sensorID);
         }
     };
 
@@ -103,12 +100,12 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                             <p className="text-gray-700 font-semibold w-fit text-lg">
                                                                 {sensor.unit}
                                                             </p>
-                                                            {sensor.id === selectedSensor?.id ? (
+                                                            {sensor.id === selectedSensorID ? (
                                                                 <IoEyeOutline
                                                                     size={25}
                                                                     className="hover:cursor-pointer"
                                                                     onClick={() =>
-                                                                        handleChartToggle(sensor)
+                                                                        handleChartToggle(sensor.id)
                                                                     }
                                                                 />
                                                             ) : (
@@ -116,7 +113,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                                     size={25}
                                                                     className="hover:cursor-pointer"
                                                                     onClick={() =>
-                                                                        handleChartToggle(sensor)
+                                                                        handleChartToggle(sensor.id)
                                                                     }
                                                                 />
                                                             )}
@@ -126,13 +123,9 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                             ))}
                                     </div>
                                 </div>
-                                {selectedSensor && (
+                                {selectedSensorID && (
                                     <div className="mt-10 w-full bg-white p-5 rounded-xl shadow-lg pt-8">
-                                        <Chart
-                                            assetID={selectedSensor.id}
-                                            name={selectedSensor.name}
-                                            processID={processID}
-                                        />
+                                        <Chart sensorID={selectedSensorID} />
                                     </div>
                                 )}
                             </div>
