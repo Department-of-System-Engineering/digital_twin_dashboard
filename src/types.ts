@@ -32,3 +32,8 @@ export type Asset = {
 export type ProcessNodeData = {
     label: string;
 };
+
+export type Chart = {
+    name: string;
+    value: number;
+};
