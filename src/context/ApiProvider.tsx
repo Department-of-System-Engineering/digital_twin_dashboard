@@ -1,4 +1,4 @@
-import type { Graph, GraphEdge, GraphNode, OptionItem, Asset, Chart } from '../types';
+import type { Graph, GraphEdge, GraphNode, OptionItem, Asset, Chart, Sensor } from '../types';
 import Api from './api-context';
 
 type ApiProviderProps = {
@@ -149,10 +149,8 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
 
         return response;
     };
-    const getDataForProcessAssetChart = (
-        _processID: string,
-        _assetID: number,
-    ): Promise<Chart[]> => {
+
+    const getChart = (_sensorID: number): Promise<Chart[]> => {
         const DUMMY_CHART_DATA: Chart[] = [
             {
                 name: '15:00',
@@ -183,8 +181,24 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 value: 210,
             },
         ];
+
         const response = new Promise<Chart[]>((resolve) => {
             resolve(DUMMY_CHART_DATA);
+        });
+
+        return response;
+    };
+
+    const getSensorDetails = (_sensorID: number): Promise<Sensor> => {
+        const DUMMY_SENSOR_DATA: Sensor = {
+            id: 3,
+            name: 'Pressure',
+            unit: 'bar',
+            type: 'int',
+        };
+
+        const response = new Promise<Sensor>((resolve) => {
+            resolve(DUMMY_SENSOR_DATA);
         });
 
         return response;
@@ -195,7 +209,8 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getGraph: getGraph,
         getProcess: getProcess,
         login: login,
-        getDataForProcessAssetChart: getDataForProcessAssetChart,
+        getChart: getChart,
+        getSensorDetails: getSensorDetails,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

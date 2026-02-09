@@ -5,7 +5,7 @@ type NumberInputProps = {
     onValueChange: (value: number) => void;
     min?: number;
     type: NumberType;
-    value: number;
+    value?: number;
 };
 
 const NumberInput = ({
