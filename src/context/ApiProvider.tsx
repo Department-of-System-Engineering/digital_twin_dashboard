@@ -1,4 +1,13 @@
-import type { Graph, GraphEdge, GraphNode, OptionItem, Asset, Chart, Sensor } from '../types';
+import type {
+    Graph,
+    GraphEdge,
+    GraphNode,
+    OptionItem,
+    Asset,
+    Chart,
+    Sensor,
+    ChartFilter,
+} from '../types';
 import Api from './api-context';
 
 type ApiProviderProps = {
@@ -150,12 +159,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getChart = (
-        _sensorID: number,
-        _dateFrom: string,
-        _dateTo: string,
-        _samplngFrequency: number,
-    ): Promise<Chart[]> => {
+    const getChart = (_sensorID: number, _filter: ChartFilter): Promise<Chart[]> => {
         const DUMMY_CHART_DATA: Chart[] = [
             {
                 name: '15:00',
