@@ -150,7 +150,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getChart = (_sensorID: number): Promise<Chart[]> => {
+    const getChart = (
+        _sensorID: number,
+        _dateFrom: string,
+        _dateTo: string,
+        _samplngFrequency: number,
+    ): Promise<Chart[]> => {
         const DUMMY_CHART_DATA: Chart[] = [
             {
                 name: '15:00',
