@@ -45,3 +45,9 @@ export type Chart = {
     name: string;
     value: number;
 };
+
+export type ChartFilter = {
+    samplingFrequency: number;
+    fromDate: string;
+    toDate: string;
+};
