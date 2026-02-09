@@ -2,7 +2,7 @@ import type { NumberType } from '../../types';
 
 type NumberInputProps = {
     disabled?: boolean;
-    onValueChange: (value: number) => void;
+    onValueChange: (value: number | undefined) => void;
     min?: number;
     type: NumberType;
     value?: number;
@@ -20,7 +20,7 @@ const NumberInput = ({
             type="number"
             disabled={disabled}
             min={min}
-            value={value}
+            value={value ? value : ''}
             onChange={(event) => onValueChange(parseFloat(event.target.value))}
             step={type === 'float' ? 0.1 : 1}
             max={type === 'percent' ? 100 : undefined}

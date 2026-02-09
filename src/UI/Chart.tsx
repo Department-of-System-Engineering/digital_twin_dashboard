@@ -1,4 +1,4 @@
-import type { Chart as ChartType, Sensor } from '../types';
+import type { ChartFilter, Chart as ChartType, Sensor } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
@@ -7,19 +7,24 @@ import Api from '../context/api-context';
 
 type ChartProps = {
     sensorID: number;
+    filter: ChartFilter;
 };
 
-const Chart = ({ sensorID }: ChartProps) => {
+const Chart = ({ sensorID, filter }: ChartProps) => {
     const [data, setData] = useState<ChartType[]>();
     const [sensor, setSensor] = useState<Sensor>();
     const [domain, setDomain] = useState<[number, number]>();
     const { getChart, getSensorDetails } = useContext(Api);
 
     useEffect(() => {
-        getChart(sensorID).then((data) => setData(data));
         getSensorDetails(sensorID).then((data) => setSensor(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sensorID]);
+
+    useEffect(() => {
+        getChart(sensorID, filter).then((data) => setData(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filter, sensorID]);
 
     useEffect(() => {
         if (data) {

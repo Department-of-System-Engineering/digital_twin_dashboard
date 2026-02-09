@@ -1,9 +1,10 @@
-import type { Asset, NumberType } from '../types';
+import type { Asset, NumberType, ChartFilter as ChartFilterType } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
+import ChartFilter from '../UI/ProcessModal/ChartFilter';
 import NumberInput from './inputs/NumberInput';
 import Api from '../context/api-context';
 import Chart from '../UI/Chart';
@@ -16,8 +17,8 @@ type ProcessModalProps = {
 
 const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [data, setData] = useState<Asset[]>();
+    const [filter, setFilter] = useState<ChartFilterType>();
     const [selectedSensorID, setSelectedSensorID] = useState<number>();
-    const [samplingFrequency, setSamplingFrequency] = useState<number>(500);
     const { getProcess } = useContext(Api);
 
     useEffect(() => {
@@ -25,7 +26,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onDataValueChange = (assetID: number, sensorID: number, value: number) => {
+    const onDataValueChange = (assetID: number, sensorID: number, value: number | undefined) => {
         setData(
             (prev) =>
                 prev &&
@@ -46,9 +47,6 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
         if (selectedSensorID && selectedSensorID === sensorID) {
             setSelectedSensorID(undefined);
         } else {
-            if (!samplingFrequency) {
-                setSamplingFrequency(500);
-            }
             setSelectedSensorID(sensorID);
         }
     };
@@ -87,7 +85,10 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                         {item.assetName}
                                                     </p>
                                                     {item.sensors.map((sensor) => (
-                                                        <div className="grid grid-cols-[30%_30%_20%_20%] gap-2 ml-[7%] items-center">
+                                                        <div
+                                                            className="grid grid-cols-[30%_30%_20%_20%] gap-2 ml-[7%] items-center"
+                                                            key={`${item.assetID}-${sensor.id}`}
+                                                        >
                                                             <p>{sensor.name}</p>
                                                             <NumberInput
                                                                 type={sensor.type as NumberType}
@@ -127,23 +128,13 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                             ))}
                                     </div>
                                 </div>
+
                                 {selectedSensorID && (
                                     <div className="flex flex-col items-center mt-10 w-full bg-white p-5 rounded-xl shadow-lg pt-8">
-                                        <div className="mb-6 flex flex-row p-2 gap-3 items-center">
-                                            <label>Sampling frequency</label>
-                                            <NumberInput
-                                                onValueChange={(value) =>
-                                                    setSamplingFrequency(value)
-                                                }
-                                                type="int"
-                                                value={samplingFrequency}
-                                                min={1}
-                                            />
-                                            <p className="text-gray-700 font-semibold w-fit text-lg">
-                                                ms
-                                            </p>
-                                        </div>
-                                        <Chart sensorID={selectedSensorID} />
+                                        <ChartFilter onFilterChange={setFilter} />
+                                        {filter && (
+                                            <Chart sensorID={selectedSensorID} filter={filter} />
+                                        )}
                                     </div>
                                 )}
                             </div>
