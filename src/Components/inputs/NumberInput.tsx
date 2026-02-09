@@ -24,7 +24,7 @@ const NumberInput = ({
             onChange={(event) => onValueChange(parseFloat(event.target.value))}
             step={type === 'float' ? 0.1 : 1}
             max={type === 'percent' ? 100 : undefined}
-            className="bg-neutral-50 rounded-md h-10 p-2 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            className="bg-neutral-100 shadow-sm rounded-md h-10 p-2 focus:outline-none focus:ring-2 focus:ring-amber-300"
         />
     );
 };

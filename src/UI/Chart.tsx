@@ -36,9 +36,8 @@ const Chart = ({ assetID, processID, name }: ChartProps) => {
         <LineChart
             style={{
                 width: '100%',
-                maxWidth: '700px',
-                maxHeight: '70vh',
-                aspectRatio: 1.618,
+                maxHeight: '400px',
+                aspectRatio: 1.318,
             }}
             responsive
             data={data}
@@ -60,6 +59,7 @@ const Chart = ({ assetID, processID, name }: ChartProps) => {
                 name={name}
                 stroke="#8884d8"
                 isAnimationActive={true}
+                strokeWidth={2}
             />
         </LineChart>
     );
