@@ -94,18 +94,46 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
 
     const getProcess = async (_processID: string) => {
         const DUMMY_PROCESS: Asset[] = [
-            { id: 1, name: 'Conveyor Speed', unit: '%', value: 70, type: 'percent' },
             {
-                id: 2,
-                name: 'Temperature',
-                unit: '°C',
-                value: 125.5,
-                type: 'float',
-                min: -120,
+                assetID: 1,
+                assetName: 'Conveyor Speed',
+                sensors: [
+                    { id: 1, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+                    {
+                        id: 2,
+                        name: 'Temperature',
+                        unit: '°C',
+                        value: 125.5,
+                        type: 'float',
+                        min: -120,
+                    },
+                ],
             },
-            { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
-            { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
-            { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+            {
+                assetID: 2,
+                assetName: 'Inspection machine',
+                sensors: [
+                    { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
+                    { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
+                    { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+                ],
+            },
+            {
+                assetID: 3,
+                assetName: 'Robot arm',
+                sensors: [
+                    { id: 6, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+                    {
+                        id: 7,
+                        name: 'Temperature',
+                        unit: '°C',
+                        value: 125.5,
+                        type: 'float',
+                        min: -120,
+                    },
+                    { id: 8, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+                ],
+            },
         ];
         const response = new Promise<Asset[]>((resolve) => {
             resolve(DUMMY_PROCESS);
