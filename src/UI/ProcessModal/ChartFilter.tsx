@@ -67,7 +67,7 @@ const ChartFilter = ({ onFilterChange }: ChartFilterProps) => {
                 </div>
             </div>
             <div
-                className={`bg-amber-300 p-3 rounded-lg shadow-sm mt-5 ${!disableFilter && 'hover:cursor-pointer hover:scale-105 transition-all ease-in-out'}`}
+                className={`bg-amber-300 p-3 rounded-lg shadow-sm mt-5 hover:cursor-not-allowed ${!disableFilter && 'hover:cursor-pointer hover:scale-105 transition-all ease-in-out'}`}
             >
                 <FaFilter size={20} onClick={() => !disableFilter && onFilterChangeHandler()} />
             </div>
