@@ -1,4 +1,4 @@
-import type { Graph, OptionItem, Asset, Chart } from '../types';
+import type { Graph, OptionItem, Asset, Chart, Sensor } from '../types';
 import { createContext } from 'react';
 
 type ApiContext = {
@@ -6,10 +6,8 @@ type ApiContext = {
     getGraph: () => Promise<Graph | undefined>;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
     login: (username: string, password: string) => Promise<boolean | undefined>;
-    getDataForProcessAssetChart: (
-        processID: string,
-        assetID: number,
-    ) => Promise<Chart[] | undefined>;
+    getChart: (sensorID: number) => Promise<Chart[] | undefined>;
+    getSensorDetails: (sensorID: number) => Promise<Sensor | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -17,7 +15,8 @@ const Api = createContext<ApiContext>({
     getGraph: async () => undefined,
     getProcess: async (_processID: string) => undefined,
     login: async (_username: string, _password: string) => undefined,
-    getDataForProcessAssetChart: async (_processID: string, _assetID: number) => undefined,
+    getChart: async (_sensorID: number) => undefined,
+    getSensorDetails: async (_sensorID: number) => undefined,
 });
 
 export default Api;
