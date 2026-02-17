@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: Dashboard API
-    version: 1.0.0
+    version: 1.1.0
 
 paths:
     /auth/login:
@@ -29,7 +29,7 @@ paths:
                                 type: boolean
                                 example: false
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
@@ -49,7 +49,7 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/OptionItem'
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
@@ -67,7 +67,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Graph'
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
@@ -93,28 +93,31 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/Asset'
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-    /sensors/{sensorId}/chart:
+    /charts:
         post:
-            summary: Get sensor chart data
-            description: Returns chart data for a sensor using a filter
-            parameters:
-                - name: sensorId
-                  in: path
-                  required: true
-                  schema:
-                      type: integer
+            summary: Get chart data
+            description: Returns chart data for one or more sensors
             requestBody:
-                required: false
+                required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/ChartFilter'
+                            type: object
+                            required:
+                                - sensorIds
+                            properties:
+                                sensorIds:
+                                    type: array
+                                    items:
+                                        type: integer
+                                filter:
+                                    $ref: '#/components/schemas/ChartFilter'
             responses:
                 '200':
                     description: Chart data
@@ -125,31 +128,36 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/Chart'
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-    /sensors/{sensorId}:
+    /sensors:
         get:
             summary: Get sensor details
-            description: Returns metadata for a sensor
+            description: Returns metadata for multiple sensors
             parameters:
-                - name: sensorId
-                  in: path
+                - in: path
+                  name: sensorIDs
                   required: true
+                  description: Comma-separated list of sensor IDs to retrieve
                   schema:
-                      type: integer
+                      type: array
+                      items:
+                          type: integer
             responses:
                 '200':
                     description: Sensor details
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Sensor'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Sensor'
                 '400':
-                    description: Returns error message for frontend.
+                    description: Returns error message for frontend
                     content:
                         application/json:
                             schema:
@@ -227,11 +235,12 @@ components:
                     type: string
                 unit:
                     type: string
-                value:
-                    type: number
                 type:
                     type: string
                     enum: [int, float, percent]
+                value:
+                    type: number
+                    nullable: true
                 min:
                     type: number
                     nullable: true
@@ -241,17 +250,15 @@ components:
 
         Chart:
             type: object
+            description: Time series chart entry
+            required:
+                - xAxis
             properties:
-                name:
+                xAxis:
                     type: string
-                value:
-                    type: number
-
-        Error:
-            type: object
-            properties:
-                msg:
-                    type: string
+            additionalProperties:
+                type: number
+                description: Sensor value indexed by sensor ID
 
         ChartFilter:
             type: object
@@ -261,5 +268,13 @@ components:
                     type: number
                 fromDate:
                     type: string
+                    format: date-time
                 toDate:
+                    type: string
+                    format: date-time
+
+        Error:
+            type: object
+            properties:
+                msg:
                     type: string
