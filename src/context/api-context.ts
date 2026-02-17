@@ -6,8 +6,8 @@ type ApiContext = {
     getGraph: () => Promise<Graph | undefined>;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
     login: (username: string, password: string) => Promise<boolean | undefined>;
-    getChart: (sensorID: number, filter: ChartFilter) => Promise<Chart[] | undefined>;
-    getSensorDetails: (sensorID: number) => Promise<Sensor | undefined>;
+    getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<Chart[] | undefined>;
+    getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -15,8 +15,8 @@ const Api = createContext<ApiContext>({
     getGraph: async () => undefined,
     getProcess: async (_processID: string) => undefined,
     login: async (_username: string, _password: string) => undefined,
-    getChart: async (_sensorID: number, _filter: ChartFilter) => undefined,
-    getSensorDetails: async (_sensorID: number) => undefined,
+    getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
+    getSensorsDetails: async (_sensorIDs: number[]) => undefined,
 });
 
 export default Api;

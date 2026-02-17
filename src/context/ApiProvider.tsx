@@ -159,35 +159,35 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getChart = (_sensorID: number, _filter: ChartFilter): Promise<Chart[]> => {
+    const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<Chart[]> => {
         const DUMMY_CHART_DATA: Chart[] = [
             {
-                name: '15:00',
-                value: 200,
+                xAxis: '15:00',
+                1: 200,
             },
             {
-                name: '15:05',
-                value: 210,
+                xAxis: '15:05',
+                1: 210,
             },
             {
-                name: '15:10',
-                value: 220,
+                xAxis: '15:10',
+                1: 220,
             },
             {
-                name: '15:15',
-                value: 200,
+                xAxis: '15:15',
+                1: 200,
             },
             {
-                name: '15:20',
-                value: 190,
+                xAxis: '15:20',
+                1: 190,
             },
             {
-                name: '15:25',
-                value: 200,
+                xAxis: '15:25',
+                1: 200,
             },
             {
-                name: '15:30',
-                value: 210,
+                xAxis: '15:30',
+                1: 210,
             },
         ];
 
@@ -198,15 +198,17 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getSensorDetails = (_sensorID: number): Promise<Sensor> => {
-        const DUMMY_SENSOR_DATA: Sensor = {
-            id: 3,
-            name: 'Pressure',
-            unit: 'bar',
-            type: 'int',
-        };
+    const getSensorsDetails = (_sensorIDs: number[]): Promise<Sensor[]> => {
+        const DUMMY_SENSOR_DATA: Sensor[] = [
+            {
+                id: 3,
+                name: 'Pressure',
+                unit: 'bar',
+                type: 'int',
+            },
+        ];
 
-        const response = new Promise<Sensor>((resolve) => {
+        const response = new Promise<Sensor[]>((resolve) => {
             resolve(DUMMY_SENSOR_DATA);
         });
 
@@ -218,8 +220,8 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getGraph: getGraph,
         getProcess: getProcess,
         login: login,
-        getChart: getChart,
-        getSensorDetails: getSensorDetails,
+        getCharts: getCharts,
+        getSensorsDetails: getSensorsDetails,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

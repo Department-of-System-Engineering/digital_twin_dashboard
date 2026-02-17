@@ -42,8 +42,8 @@ export type ProcessNodeData = {
 };
 
 export type Chart = {
-    name: string;
-    value: number;
+    xAxis: string;
+    [sensorId: number]: number;
 };
 
 export type ChartFilter = {
