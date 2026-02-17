@@ -6,49 +6,53 @@ import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'r
 import Api from '../context/api-context';
 
 type ChartProps = {
-    sensorID: number;
+    sensorIDs: number[];
     filter: ChartFilter;
 };
 
-const Chart = ({ sensorID, filter }: ChartProps) => {
-    const [data, setData] = useState<ChartType[]>();
-    const [sensor, setSensor] = useState<Sensor>();
+const Chart = ({ sensorIDs, filter }: ChartProps) => {
+    const [data, setData] = useState<{ sensorID: number; values: ChartType[] }>();
+    const [sensors, setSensors] = useState<Sensor[]>();
     const [domain, setDomain] = useState<[number, number]>();
-    const { getChart, getSensorDetails } = useContext(Api);
+    const { getCharts, getSensorsDetails } = useContext(Api);
 
     useEffect(() => {
-        getSensorDetails(sensorID).then((data) => setSensor(data));
+        getSensorsDetails(sensorIDs).then((data) => setSensors(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sensorID]);
+    }, [sensorIDs]);
 
     useEffect(() => {
-        getChart(sensorID, filter).then((data) => setData(data));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter, sensorID]);
+        console.log(sensors);
+    }, [sensors]);
 
-    useEffect(() => {
-        if (data) {
-            const values = data.map((item) => item.value);
-            setDomain(getDomain(values));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, sensor]);
+    // useEffect(() => {
+    //     getCharts(sensorIDs, filter).then((data) => setData(data));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [filter, sensorIDs]);
 
-    const getDomain = (values: number[]): [number, number] => {
-        if (sensor?.type === 'float') {
-            const domainMin = Math.round(Math.min(...values) * 0.95 * 100) / 100;
-            const domainMax = Math.round(Math.max(...values) * 1.05 * 100) / 100;
-            return [domainMin, domainMax];
-        } else {
-            const domainMin = Math.round(Math.min(...values) * 0.95);
-            const domainMax = Math.round(Math.max(...values) * 1.05);
-            return [domainMin, domainMax];
-        }
-    };
+    // useEffect(() => {
+    //     if (data) {
+    //         const values = data.map((item) => item.value);
+    //         setDomain(getDomain(values));
+    //     }
+    // }, [data, sensors]);
+
+    // const getDomain = (values: number[]): [number, number] => {
+    //     if (sensor?.type === 'float') {
+    //         const domainMin = Math.round(Math.min(...values) * 0.95 * 100) / 100;
+    //         const domainMax = Math.round(Math.max(...values) * 1.05 * 100) / 100;
+    //         return [domainMin, domainMax];
+    //     } else {
+    //         const domainMin = Math.round(Math.min(...values) * 0.95);
+    //         const domainMax = Math.round(Math.max(...values) * 1.05);
+    //         return [domainMin, domainMax];
+    //     }
+    // };
 
     return (
         <>
-            {sensor && (
+            <div>Chart will be here</div>
+            {/* {sensors && (
                 <LineChart
                     style={{
                         width: '100%',
@@ -78,7 +82,7 @@ const Chart = ({ sensorID, filter }: ChartProps) => {
                         strokeWidth={2}
                     />
                 </LineChart>
-            )}
+            )} */}
         </>
     );
 };

@@ -18,7 +18,7 @@ type ProcessModalProps = {
 const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [data, setData] = useState<Asset[]>();
     const [filter, setFilter] = useState<ChartFilterType>();
-    const [selectedSensorID, setSelectedSensorID] = useState<number>();
+    const [selectedSensorIDs, setSelectedSensorIDs] = useState<number[]>();
     const { getProcess } = useContext(Api);
 
     useEffect(() => {
@@ -44,10 +44,13 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     };
 
     const handleChartToggle = (sensorID: number) => {
-        if (selectedSensorID && selectedSensorID === sensorID) {
-            setSelectedSensorID(undefined);
+        if (selectedSensorIDs && selectedSensorIDs.includes(sensorID)) {
+            setSelectedSensorIDs((prev) =>
+                prev ? [...prev.filter((item) => item !== sensorID)] : undefined,
+            );
+            setSelectedSensorIDs(undefined);
         } else {
-            setSelectedSensorID(sensorID);
+            setSelectedSensorIDs((prev) => (prev ? [...prev, sensorID] : [sensorID]));
         }
     };
 
@@ -105,7 +108,9 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                             <p className="text-gray-700 font-semibold w-fit text-lg">
                                                                 {sensor.unit}
                                                             </p>
-                                                            {sensor.id === selectedSensorID ? (
+                                                            {selectedSensorIDs?.includes(
+                                                                sensor.id,
+                                                            ) ? (
                                                                 <IoEyeOutline
                                                                     size={25}
                                                                     className="hover:cursor-pointer"
@@ -129,11 +134,11 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                     </div>
                                 </div>
 
-                                {selectedSensorID && (
+                                {selectedSensorIDs && (
                                     <div className="flex flex-col items-center mt-10 w-full bg-white p-5 rounded-xl shadow-lg pt-8">
                                         <ChartFilter onFilterChange={setFilter} />
                                         {filter && (
-                                            <Chart sensorID={selectedSensorID} filter={filter} />
+                                            <Chart sensorIDs={selectedSensorIDs} filter={filter} />
                                         )}
                                     </div>
                                 )}
