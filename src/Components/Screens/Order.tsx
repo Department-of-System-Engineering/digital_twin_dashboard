@@ -1,4 +1,10 @@
+import OrderForm from '../Order/OrderForm';
+
 const Order = () => {
-    return <div></div>;
+    return (
+        <div>
+            <OrderForm />
+        </div>
+    );
 };
 export default Order;
