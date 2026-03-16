@@ -51,3 +51,10 @@ export type ChartFilter = {
     fromDate: string;
     toDate: string;
 };
+
+export type Product = {
+    id: string;
+    imageUrl?: string;
+    maxQuantity?: number;
+    quantity?: number;
+};

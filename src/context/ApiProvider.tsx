@@ -7,8 +7,10 @@ import type {
     Chart,
     Sensor,
     ChartFilter,
+    Product,
 } from '../types';
 import Api from './api-context';
+import { images } from '../assets/dummy_images';
 
 type ApiProviderProps = {
     children: React.ReactElement[] | React.ReactElement;
@@ -215,6 +217,42 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getAvailableProducts = (): Promise<Product[]> => {
+        const DUMMY_PRODUCT_DATA: Product[] = [
+            {
+                id: 'A',
+                imageUrl: images.A,
+                maxQuantity: 20,
+            },
+            {
+                id: 'B',
+                imageUrl: images.B,
+                maxQuantity: 30,
+            },
+            {
+                id: 'C',
+                imageUrl: images.C,
+                maxQuantity: 10,
+            },
+            {
+                id: 'D',
+                imageUrl: images.D,
+                maxQuantity: 50,
+            },
+            {
+                id: 'Special',
+                imageUrl: images.special,
+                maxQuantity: 5,
+            },
+        ];
+
+        const response = new Promise<Product[]>((resolve) => {
+            resolve(DUMMY_PRODUCT_DATA);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -222,6 +260,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         login: login,
         getCharts: getCharts,
         getSensorsDetails: getSensorsDetails,
+        getAvailableProducts: getAvailableProducts,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
