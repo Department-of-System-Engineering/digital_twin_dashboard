@@ -6,6 +6,7 @@ import Login from './Components/Screens/Login';
 import Home from './Components/Screens/Home';
 import { Routes } from 'react-router';
 import ProtectedRoute from './ProtectedRoute';
+import Order from './Components/Screens/Order';
 
 function App() {
     return (
@@ -22,6 +23,14 @@ function App() {
                                 </ProtectedRoute>
                             }
                             path="/"
+                        />
+                        <Route
+                            element={
+                                <ProtectedRoute>
+                                    <Order />
+                                </ProtectedRoute>
+                            }
+                            path="/order"
                         />
                     </Routes>
                 </BrowserRouter>

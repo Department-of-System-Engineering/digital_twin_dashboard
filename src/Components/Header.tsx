@@ -3,6 +3,7 @@ import ToggleSwitch from '../UI/ToggleSwitch';
 import Dropdown from '../UI/Dropdown';
 import { IoLogOut, IoThermometerOutline, IoWaterSharp } from 'react-icons/io5';
 import Global from '../context/global-context';
+import Navigator from '../UI/Header/Navigator';
 
 const Header = () => {
     const {
@@ -21,7 +22,8 @@ const Header = () => {
     } = useContext(Global);
 
     return (
-        <header className="w-full bg-violet-800 text-white px-5 py-2 h-15 flex items-center">
+        <header className="w-full bg-violet-800 text-white px-5 py-2 h-15 grid grid-cols-3 items-center">
+            <Navigator />
             <div className="flex gap-2">
                 {processModes && selectedProcessMode && (
                     <ToggleSwitch
