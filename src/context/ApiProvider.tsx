@@ -253,6 +253,14 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const orderProducts = (_products: Product[]): Promise<boolean> => {
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -261,6 +269,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getCharts: getCharts,
         getSensorsDetails: getSensorsDetails,
         getAvailableProducts: getAvailableProducts,
+        orderProducts: orderProducts,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

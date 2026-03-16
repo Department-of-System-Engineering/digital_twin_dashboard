@@ -9,6 +9,7 @@ type ApiContext = {
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<Chart[] | undefined>;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
     getAvailableProducts: () => Promise<Product[] | undefined>;
+    orderProducts: (products: Product[]) => Promise<boolean | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -19,6 +20,7 @@ const Api = createContext<ApiContext>({
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
+    orderProducts: async () => undefined,
 });
 
 export default Api;
