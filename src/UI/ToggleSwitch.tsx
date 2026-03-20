@@ -10,7 +10,7 @@ type ToggleSwitchProps = {
 const ToggleSwitch = ({ options, value, onChange, disabled = false }: ToggleSwitchProps) => {
     const isFirst = value.id === options[0].id;
     return (
-        <div className="relative flex h-10 w-60 bg-white rounded-full p-1">
+        <div className="relative min-w-[200px] flex h-10 w-60 bg-white rounded-full p-1">
             <div
                 className={`
           absolute top-1 left-1 h-8 w-1/2 bg-amber-300 rounded-full shadow-md

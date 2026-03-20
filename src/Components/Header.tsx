@@ -1,75 +1,13 @@
-import { useContext } from 'react';
-import ToggleSwitch from '../UI/ToggleSwitch';
-import Dropdown from '../UI/Dropdown';
-import { IoLogOut, IoThermometerOutline, IoWaterSharp } from 'react-icons/io5';
-import Global from '../context/global-context';
 import Navigator from '../UI/Header/Navigator';
+import Settings from '../UI/Header/Settings';
+import OverView from '../UI/Header/OverView';
 
 const Header = () => {
-    const {
-        processModes,
-        selectedProcessMode,
-        setSelectedProcessMode,
-        processTypes,
-        selectedProcessType,
-        setSelectedProcessType,
-        userTypes,
-        selectedUserType,
-        setSelectedUserType,
-        globalTemperature,
-        globalHumidity,
-        logout,
-    } = useContext(Global);
-
     return (
-        <header className="w-full bg-violet-800 text-white px-5 py-2 h-15 grid grid-cols-3 items-center">
+        <header className="w-full bg-violet-800 text-white px-5 py-2 h-15 grid grid-cols-[20%_60%_20%] items-center">
             <Navigator />
-            <div className="flex gap-2">
-                {processModes && selectedProcessMode && (
-                    <ToggleSwitch
-                        options={processModes}
-                        value={selectedProcessMode}
-                        onChange={setSelectedProcessMode}
-                    />
-                )}
-                {processTypes && selectedProcessType && (
-                    <ToggleSwitch
-                        options={processTypes}
-                        value={selectedProcessType}
-                        onChange={setSelectedProcessType}
-                    />
-                )}
-                {userTypes && selectedUserType && (
-                    <Dropdown
-                        options={userTypes}
-                        value={selectedUserType}
-                        onChange={setSelectedUserType}
-                    />
-                )}
-            </div>
-            <div className="ml-auto flex gap-10">
-                <div className="flex gap-4">
-                    <div className="flex">
-                        <IoThermometerOutline size={28} className="text-amber-300" />
-                        <span className="font-semibold text-lg">
-                            {globalTemperature ? `${globalTemperature} °C` : 'N/A'}
-                        </span>
-                    </div>
-                    <div className="flex">
-                        <IoWaterSharp size={28} className="text-amber-300" />
-                        <span className="font-semibold text-lg">
-                            {' '}
-                            {globalHumidity ? `${globalHumidity} %` : 'N/A'}
-                        </span>
-                    </div>
-                </div>
-
-                <IoLogOut
-                    size={28}
-                    className="text-amber-300 hover:cursor-pointer"
-                    onClick={logout}
-                />
-            </div>
+            <Settings />
+            <OverView />
         </header>
     );
 };
