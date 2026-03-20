@@ -58,3 +58,9 @@ export type Product = {
     maxQuantity?: number;
     quantity?: number;
 };
+
+export type OrderDetailsType = {
+    customerName: string | undefined;
+    fulfillmentDate: string | undefined;
+    priority: boolean;
+};
