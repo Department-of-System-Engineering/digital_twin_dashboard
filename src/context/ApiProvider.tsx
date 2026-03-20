@@ -8,6 +8,7 @@ import type {
     Sensor,
     ChartFilter,
     Product,
+    OrderDetailsType,
 } from '../types';
 import Api from './api-context';
 import { images } from '../assets/dummy_images';
@@ -253,7 +254,9 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const orderProducts = (_products: Product[]): Promise<boolean> => {
+    const orderProducts = (_products: Product[], _details?: OrderDetailsType): Promise<boolean> => {
+        console.log(_products);
+        console.log(_details);
         const response = new Promise<boolean>((resolve) => {
             resolve(true);
         });

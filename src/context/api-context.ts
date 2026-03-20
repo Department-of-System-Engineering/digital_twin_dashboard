@@ -1,4 +1,13 @@
-import type { Graph, OptionItem, Asset, Chart, Sensor, ChartFilter, Product } from '../types';
+import type {
+    Graph,
+    OptionItem,
+    Asset,
+    Chart,
+    Sensor,
+    ChartFilter,
+    Product,
+    OrderDetailsType,
+} from '../types';
 import { createContext } from 'react';
 
 type ApiContext = {
@@ -9,7 +18,10 @@ type ApiContext = {
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<Chart[] | undefined>;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
     getAvailableProducts: () => Promise<Product[] | undefined>;
-    orderProducts: (products: Product[]) => Promise<boolean | undefined>;
+    orderProducts: (
+        products: Product[],
+        details?: OrderDetailsType,
+    ) => Promise<boolean | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -20,7 +32,7 @@ const Api = createContext<ApiContext>({
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
-    orderProducts: async () => undefined,
+    orderProducts: async (_products: Product[], _details?: OrderDetailsType) => undefined,
 });
 
 export default Api;
