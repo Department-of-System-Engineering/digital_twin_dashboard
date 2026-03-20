@@ -1,10 +1,12 @@
-import NumberInput from '../inputs/NumberInput';
+import NumberInput from '../../UI/inputs/NumberInput';
+
 type OrderItemType = {
     imageUrl?: string;
     quantity?: number;
     maxQuantity?: number;
-    onQuantityChange: (quantitiy: number) => void;
+    onQuantityChange: (quantity: number) => void;
 };
+
 const OrderItem = ({
     imageUrl = '',
     quantity = 0,
@@ -12,7 +14,7 @@ const OrderItem = ({
     onQuantityChange,
 }: OrderItemType) => {
     return (
-        <div className="drop-shadow-lg bg-white rounded-lg p-2">
+        <div className="drop-shadow-sm bg-violet-50 rounded-lg p-2">
             <img
                 src={imageUrl}
                 alt="Product image"

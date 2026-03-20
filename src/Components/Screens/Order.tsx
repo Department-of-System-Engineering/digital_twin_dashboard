@@ -2,7 +2,7 @@ import OrderForm from '../Order/OrderForm';
 
 const Order = () => {
     return (
-        <div>
+        <div className="h-full p-5">
             <OrderForm />
         </div>
     );

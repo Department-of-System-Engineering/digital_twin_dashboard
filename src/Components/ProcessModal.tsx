@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
 import ChartFilter from '../UI/ProcessModal/ChartFilter';
-import NumberInput from './inputs/NumberInput';
+import NumberInput from '../UI/inputs/NumberInput';
 import Api from '../context/api-context';
 import Chart from '../UI/Chart';
 
