@@ -7,6 +7,7 @@ import type {
     ChartFilter,
     Product,
     OrderDetailsType,
+    OrderListItemType,
 } from '../types';
 import { createContext } from 'react';
 
@@ -22,6 +23,7 @@ type ApiContext = {
         products: Product[],
         details?: OrderDetailsType,
     ) => Promise<boolean | undefined>;
+    getOrders: () => Promise<OrderListItemType[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -33,6 +35,7 @@ const Api = createContext<ApiContext>({
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
     orderProducts: async (_products: Product[], _details?: OrderDetailsType) => undefined,
+    getOrders: async () => undefined,
 });
 
 export default Api;

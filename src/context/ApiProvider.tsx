@@ -9,6 +9,7 @@ import type {
     ChartFilter,
     Product,
     OrderDetailsType,
+    OrderListItemType,
 } from '../types';
 import Api from './api-context';
 import { images } from '../assets/dummy_images';
@@ -264,6 +265,51 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getOrders = (): Promise<OrderListItemType[]> => {
+        const DUMMY_DATA: OrderListItemType[] = [
+            {
+                orderID: '1',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '2',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '3',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '4',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '5',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+        ];
+        const response = new Promise<OrderListItemType[]>((resolve) => {
+            resolve(DUMMY_DATA);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -273,6 +319,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getSensorsDetails: getSensorsDetails,
         getAvailableProducts: getAvailableProducts,
         orderProducts: orderProducts,
+        getOrders: getOrders,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

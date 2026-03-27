@@ -64,3 +64,11 @@ export type OrderDetailsType = {
     fulfillmentDate: string | undefined;
     priority: boolean;
 };
+
+export type OrderListItemType = {
+    orderID: string;
+    customerName: string;
+    orderDate: string;
+    fulfillmentDate: string;
+    priority: boolean;
+};
