@@ -1,8 +1,8 @@
-import type { OrderDetailsType, Product } from '../../types';
+import type { OrderDetailsType, Product } from '../../../types';
 import { useContext, useEffect, useReducer, useState } from 'react';
 
 import OrderItem from './OrderItem';
-import Api from '../../context/api-context';
+import Api from '../../../context/api-context';
 import OrderDetails from './OrderDetails';
 
 type Action =
@@ -75,8 +75,8 @@ const OrderForm = () => {
     };
 
     return (
-        <div className="p-2 h-full">
-            <div className="bg-amber-50 drop-shadow-xl rounded-2xl p-4 w-[40%] h-full flex flex-col justify-between">
+        <div className="h-full">
+            <div className="bg-amber-50 drop-shadow-xl rounded-2xl p-4 w-full h-full flex-col justify-between">
                 <div className="grid grid-cols-2 gap-4">
                     {products &&
                         products.map((product) => (

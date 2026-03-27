@@ -1,8 +1,8 @@
-import type { OrderDetailsType } from '../../types';
+import type { OrderDetailsType } from '../../../types';
 
-import DateTimePicker from '../../UI/DateTimePicker';
-import ToggleSwitch from '../../UI/ToggleSwitch';
-import TextInput from '../../UI/inputs/TextInput';
+import DateTimePicker from '../../../UI/DateTimePicker';
+import ToggleSwitch from '../../../UI/ToggleSwitch';
+import TextInput from '../../../UI/inputs/TextInput';
 
 type OrderDetailsProps = {
     state: OrderDetailsType;

@@ -1,4 +1,4 @@
-import NumberInput from '../../UI/inputs/NumberInput';
+import NumberInput from '../../../UI/inputs/NumberInput';
 
 type OrderItemType = {
     imageUrl?: string;
@@ -18,7 +18,7 @@ const OrderItem = ({
             <img
                 src={imageUrl}
                 alt="Product image"
-                className="rounded-md shadow-lg w-[30%] mx-auto mb-3"
+                className="rounded-md shadow-lg w-[30%] mx-auto mb-3 max-w-[150px]"
             />
             <div className="rounded-md">
                 <p className="text-sm italic">Quantity</p>
