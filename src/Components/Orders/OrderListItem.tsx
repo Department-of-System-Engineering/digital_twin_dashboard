@@ -21,19 +21,21 @@ const OrderListItem = ({
             onClick={onModalOpen}
         >
             <div className="min-w-0">
-                <label className="font-bold block truncate">Order ID</label>
+                <label className="font-bold block truncate cursor-pointer">Order ID</label>
                 <div className="bg-white p-2 rounded-md shadow-sm truncate">{orderID}</div>
             </div>
             <div className="min-w-0">
-                <label className="font-bold block truncate">Customer name:</label>
+                <label className="font-bold block truncate cursor-pointer">Customer name:</label>
                 <div className="bg-white p-2 rounded-md shadow-sm truncate">{customerName}</div>
             </div>
             <div className="min-w-0">
-                <label className=" font-bold block truncate">Order date:</label>
+                <label className=" font-bold block truncate cursor-pointer">Order date:</label>
                 <div className="bg-white p-2 rounded-md shadow-sm truncate">{orderDate}</div>
             </div>
             <div className="min-w-0">
-                <label className=" font-bold block truncate">Fulfillment date:</label>
+                <label className=" font-bold block truncate cursor-pointer">
+                    Fulfillment date:
+                </label>
                 <div className="bg-white p-2 rounded-md shadow-sm truncate ">{fulfillmentDate}</div>
             </div>
         </div>
