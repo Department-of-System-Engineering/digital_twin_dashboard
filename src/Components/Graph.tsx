@@ -1,10 +1,17 @@
 import type { GraphNode, ProcessNodeData } from '../types';
 import { useContext, useEffect, useState } from 'react';
-import { ReactFlow, type Edge, type Node } from '@xyflow/react';
+import { MarkerType, ReactFlow, type Edge, type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
 import ProcessModal from './ProcessModal';
+import CustomNode from '../UI/ProcessGraph/CustomNode';
 import Api from '../context/api-context';
+
+const DUMMY_DATA = ['3:D', '4:A', '2:C'];
+
+const nodeTypes = {
+    processStep: CustomNode,
+};
 
 const Graph = () => {
     const [nodes, setNodes] = useState<Node<ProcessNodeData>[]>([]);
@@ -46,7 +53,10 @@ const Graph = () => {
                     },
                     data: {
                         label: initialNodes.find((item) => item.id === node)?.name || 'N/A',
+                        type: DUMMY_DATA,
+                        state: 'ACTIVE',
                     },
+                    type: 'processStep',
                 });
             });
         });
@@ -83,7 +93,16 @@ const Graph = () => {
             <div className="flex-1 w-full">
                 <ReactFlow
                     nodes={nodes}
-                    edges={edges.map((e) => ({ ...e, selectable: false }))}
+                    nodeTypes={nodeTypes}
+                    edges={edges.map((e) => ({
+                        ...e,
+                        selectable: false,
+                        markerEnd: {
+                            type: MarkerType.ArrowClosed,
+                        },
+                        // animated: true,
+                        // label: 'product',
+                    }))}
                     nodesDraggable={false}
                     nodesConnectable={false}
                     elementsSelectable={true}
