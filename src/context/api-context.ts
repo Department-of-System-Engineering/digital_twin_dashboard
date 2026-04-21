@@ -8,6 +8,7 @@ import type {
     Product,
     OrderDetailsType,
     OrderListItemType,
+    Order,
 } from '../types';
 import { createContext } from 'react';
 
@@ -24,6 +25,9 @@ type ApiContext = {
         details?: OrderDetailsType,
     ) => Promise<boolean | undefined>;
     getOrders: () => Promise<OrderListItemType[] | undefined>;
+    getOrder: (orderID: string) => Promise<Order | undefined>;
+    completeOrder: (orderID: string) => Promise<boolean | undefined>;
+    deleteOrder: (orderID: string) => Promise<boolean | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -36,6 +40,9 @@ const Api = createContext<ApiContext>({
     getAvailableProducts: async () => undefined,
     orderProducts: async (_products: Product[], _details?: OrderDetailsType) => undefined,
     getOrders: async () => undefined,
+    getOrder: async (_orderID: string) => undefined,
+    completeOrder: async (_orderID: string) => undefined,
+    deleteOrder: async (_orderID: string) => undefined,
 });
 
 export default Api;

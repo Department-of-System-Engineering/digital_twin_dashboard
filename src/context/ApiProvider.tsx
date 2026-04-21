@@ -10,6 +10,7 @@ import type {
     Product,
     OrderDetailsType,
     OrderListItemType,
+    Order,
 } from '../types';
 import Api from './api-context';
 import { images } from '../assets/dummy_images';
@@ -310,6 +311,47 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getOrder = (orderID: string): Promise<Order> => {
+        const DUMMY_ORDER: Order = {
+            details: {
+                orderID: orderID,
+                customerName: 'Teszt Name',
+                fulfillmentDate: '2026.01.01',
+                orderDate: '2026.01.01',
+                priority: false,
+            },
+            products: [
+                { id: 'A', imageUrl: images.A, quantity: 2 },
+                { id: 'B', imageUrl: images.B, quantity: 0 },
+                { id: 'C', imageUrl: images.C, quantity: 3 },
+                { id: 'D', imageUrl: images.D, quantity: 1 },
+                { id: 'Special', imageUrl: images.special, quantity: 2 },
+            ],
+        };
+        const response = new Promise<Order>((resolve) => {
+            resolve(DUMMY_ORDER);
+        });
+
+        return response;
+    };
+
+    const completeOrder = (orderID: string): Promise<boolean> => {
+        console.log(`Order complete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+    const deleteOrder = (orderID: string): Promise<boolean> => {
+        console.log(`Order delete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -320,6 +362,9 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getAvailableProducts: getAvailableProducts,
         orderProducts: orderProducts,
         getOrders: getOrders,
+        getOrder: getOrder,
+        completeOrder: completeOrder,
+        deleteOrder: deleteOrder,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
