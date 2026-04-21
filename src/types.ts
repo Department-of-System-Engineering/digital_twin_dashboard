@@ -39,6 +39,8 @@ export type Asset = {
 
 export type ProcessNodeData = {
     label: string;
+    type: string[];
+    state: 'ACTIVE' | 'ERROR' | 'DONE';
 };
 
 export type Chart = {
