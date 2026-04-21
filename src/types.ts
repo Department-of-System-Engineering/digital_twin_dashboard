@@ -72,3 +72,8 @@ export type OrderListItemType = {
     fulfillmentDate: string;
     priority: boolean;
 };
+
+export type Order = {
+    details: OrderListItemType;
+    products: Product[];
+};
