@@ -327,11 +327,11 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 priority: false,
             },
             products: [
-                { id: 'A', imageUrl: images.A, quantity: 2 },
-                { id: 'B', imageUrl: images.B, quantity: 0 },
-                { id: 'C', imageUrl: images.C, quantity: 3 },
-                { id: 'D', imageUrl: images.D, quantity: 1 },
-                { id: 'Special', imageUrl: images.special, quantity: 2 },
+                { id: 'A', imageUrl: images.A, quantity: 2, completedQuantity: 1 },
+                { id: 'B', imageUrl: images.B, quantity: 0, completedQuantity: 0 },
+                { id: 'C', imageUrl: images.C, quantity: 3, completedQuantity: 2 },
+                { id: 'D', imageUrl: images.D, quantity: 1, completedQuantity: 0 },
+                { id: 'Special', imageUrl: images.special, quantity: 2, completedQuantity: 0 },
             ],
         };
         const response = new Promise<Order>((resolve) => {
@@ -342,6 +342,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
     };
 
     const completeOrder = (orderID: string): Promise<boolean> => {
+        /**Need to send 'completed time' timestamp */
         console.log(`Order complete: ${orderID}`);
         const response = new Promise<boolean>((resolve) => {
             resolve(true);
