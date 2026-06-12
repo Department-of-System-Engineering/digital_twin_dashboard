@@ -22,10 +22,12 @@ type ApiProviderProps = {
 const ApiProvider = ({ children }: ApiProviderProps) => {
     const getUserTypes = async () => {
         const USER_TYPES: OptionItem[] = [
-            { id: 1, name: 'Shift Supervisor' },
+            { id: 1, name: 'Customer' },
             { id: 2, name: 'Operator' },
-            { id: 3, name: 'Maintenance Technician' },
-            { id: 4, name: 'Quality Inspector' },
+            { id: 3, name: 'Technician' },
+            { id: 4, name: 'Shift Supervisor' },
+            { id: 5, name: 'Engineer' },
+            { id: 6, name: 'Manager' },
         ];
 
         const response = new Promise<OptionItem[]>((resolve) => {

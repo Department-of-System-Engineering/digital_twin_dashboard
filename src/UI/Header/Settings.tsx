@@ -7,13 +7,10 @@ import Dropdown from '../Dropdown';
 const Settings = () => {
     const {
         userTypes,
-        processTypes,
         processModes,
         selectedUserType,
-        selectedProcessType,
         selectedProcessMode,
         setSelectedProcessMode,
-        setSelectedProcessType,
         setSelectedUserType,
     } = useContext(Global);
 
@@ -24,13 +21,6 @@ const Settings = () => {
                     options={processModes}
                     value={selectedProcessMode}
                     onChange={setSelectedProcessMode}
-                />
-            )}
-            {processTypes && selectedProcessType && (
-                <ToggleSwitch
-                    options={processTypes}
-                    value={selectedProcessType}
-                    onChange={setSelectedProcessType}
                 />
             )}
             {userTypes && selectedUserType && (

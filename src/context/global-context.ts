@@ -8,9 +8,6 @@ type GlobalContext = {
     processModes: OptionItem[] | undefined;
     selectedProcessMode: OptionItem | undefined;
     setSelectedProcessMode: (option: OptionItem) => void;
-    processTypes: OptionItem[] | undefined;
-    selectedProcessType: OptionItem | undefined;
-    setSelectedProcessType: (option: OptionItem) => void;
     globalTemperature: number | undefined;
     globalHumidity: number | undefined;
     login: (username: string, password: string) => Promise<boolean | undefined>;
@@ -25,9 +22,6 @@ const Global = createContext<GlobalContext>({
     processModes: undefined,
     selectedProcessMode: undefined,
     setSelectedProcessMode: () => undefined,
-    processTypes: undefined,
-    selectedProcessType: undefined,
-    setSelectedProcessType: () => undefined,
     globalTemperature: undefined,
     globalHumidity: undefined,
     login: async () => undefined,

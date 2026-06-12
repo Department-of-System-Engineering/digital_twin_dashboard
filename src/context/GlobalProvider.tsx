@@ -14,14 +14,9 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         { id: 1, name: 'Real' },
         { id: 2, name: 'Simulation' },
     ];
-    const processTypes: OptionItem[] = [
-        { id: 1, name: 'Monitor' },
-        { id: 2, name: 'Control' },
-    ];
 
     const [userTypes, setUserTypes] = useState<OptionItem[]>();
     const [selectedProcessMode, setSelectedProcessMode] = useState<OptionItem>(processModes[0]);
-    const [selectedProcessType, setSelectedProcessType] = useState<OptionItem>(processTypes[0]);
     const [selectedUserType, setSelectedUserType] = useState<OptionItem>();
     const [globalTemperature, setGlobalTemperature] = useState<number>();
     const [globalHumidty, setGlobalHumidty] = useState<number>();
@@ -69,9 +64,6 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         processModes: processModes,
         selectedProcessMode: selectedProcessMode,
         setSelectedProcessMode: setSelectedProcessMode,
-        processTypes: processTypes,
-        selectedProcessType: selectedProcessType,
-        setSelectedProcessType: setSelectedProcessType,
         globalTemperature: globalTemperature,
         globalHumidity: globalHumidty,
         login: login,
