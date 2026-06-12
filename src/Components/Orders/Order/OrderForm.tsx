@@ -1,10 +1,9 @@
-import type { OrderDetailsType, Product } from '../../../types';
-
+import type { OrderEnrichmentType, Product } from '../../../types';
 import { useContext, useEffect, useReducer, useState } from 'react';
 
-import OrderDetails from './OrderDetails';
 import OrderItem from './OrderItem';
 import Api from '../../../context/api-context';
+import OrderEnrichment from './OrderEnrichment';
 
 type Action =
     | { type: 'INITIALIZE' }
@@ -12,7 +11,7 @@ type Action =
     | { type: 'SET_FULFILLMENT_DATE'; payload: string | undefined }
     | { type: 'SET_PRIORITY'; payload: boolean };
 
-const reducer = (state: OrderDetailsType, action: Action): OrderDetailsType => {
+const reducer = (state: OrderEnrichmentType, action: Action): OrderEnrichmentType => {
     switch (action.type) {
         case 'INITIALIZE':
             return initialState;
@@ -27,7 +26,7 @@ const reducer = (state: OrderDetailsType, action: Action): OrderDetailsType => {
     }
 };
 
-const initialState: OrderDetailsType = {
+const initialState: OrderEnrichmentType = {
     customerName: undefined,
     fulfillmentDate: undefined,
     priority: false,
@@ -93,7 +92,7 @@ const OrderForm = () => {
                         ))}
                 </div>
 
-                <OrderDetails
+                <OrderEnrichment
                     state={details}
                     onFulfillmentDateChange={(value) =>
                         dispatch({ type: 'SET_FULFILLMENT_DATE', payload: value })

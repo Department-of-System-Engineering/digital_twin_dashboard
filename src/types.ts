@@ -61,7 +61,7 @@ export type Product = {
     quantity?: number;
 };
 
-export type OrderDetailsType = {
+export type OrderEnrichmentType = {
     customerName: string | undefined;
     fulfillmentDate: string | undefined;
     priority: boolean;
@@ -69,10 +69,10 @@ export type OrderDetailsType = {
 
 export type OrderListItemType = {
     orderID: string;
-    customerName: string;
-    orderDate: string;
-    fulfillmentDate: string;
-    priority: boolean;
+    customerName?: string;
+    orderDate?: string;
+    fulfillmentDate?: string;
+    priority?: boolean;
 };
 
 export type Order = {
