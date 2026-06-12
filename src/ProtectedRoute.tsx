@@ -14,12 +14,13 @@ type ProtectedRouteType = {
 
 const ProtectedRoute = ({ children, required }: ProtectedRouteType) => {
     const { isUserLoggedIn } = useContext(Global);
-    const { order, process } = useContext(Role);
+    const { orderPage, processPage } = useContext(Role);
 
     if (!isUserLoggedIn) return <Navigate to="/login" replace />;
 
-    if (required.includes('ORDER') && !order) return <Navigate to="/unauthorized" replace />;
-    if (required.includes('PROCESS') && !process) return <Navigate to="/unauthorized" replace />;
+    if (required.includes('ORDER') && !orderPage) return <Navigate to="/unauthorized" replace />;
+    if (required.includes('PROCESS') && !processPage)
+        return <Navigate to="/unauthorized" replace />;
 
     return (
         <div className="w-screen h-screen flex flex-col">

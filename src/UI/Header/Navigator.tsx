@@ -6,7 +6,7 @@ const Navigator = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { order, process } = useContext(Role);
+    const { orderPage, processPage } = useContext(Role);
 
     const navigationHandler = (location: 'PROCESS' | 'ORDER') => {
         switch (location) {
@@ -21,7 +21,7 @@ const Navigator = () => {
 
     return (
         <div className=" mr-auto flex flex-row justify-center items-center gap-6">
-            {process && (
+            {processPage && (
                 <div
                     className="relative cursor-pointer"
                     onClick={() => navigationHandler('PROCESS')}
@@ -33,7 +33,7 @@ const Navigator = () => {
                 </div>
             )}
 
-            {order && (
+            {orderPage && (
                 <div className="relative cursor-pointer" onClick={() => navigationHandler('ORDER')}>
                     <span className="text-md font-semibold">Order</span>
                     <span

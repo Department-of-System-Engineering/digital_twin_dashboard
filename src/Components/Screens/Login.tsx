@@ -5,7 +5,7 @@ import Role from '../../context/role-provider';
 
 const Login = () => {
     const { login } = useContext(Global);
-    const { process, order } = useContext(Role);
+    const { processPage, orderPage } = useContext(Role);
     const navigate = useNavigate();
     const [username, setUsername] = useState<string>();
     const [password, setPassword] = useState<string>();
@@ -15,9 +15,9 @@ const Login = () => {
         if (username && password) {
             const success = await login(username, password);
             if (success) {
-                if ((process && order) || process) {
+                if ((processPage && orderPage) || processPage) {
                     navigate('/process');
-                } else if (order) {
+                } else if (orderPage) {
                     navigate('/order');
                 }
             }

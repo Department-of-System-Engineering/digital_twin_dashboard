@@ -14,17 +14,17 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
     useEffect(() => {
         const setPrivilegesHandler = () => {
             setPrivileges({
+                orderPage: true,
+                processPage: true,
                 actions: true,
                 graphs: true,
-                order: true,
                 orderDetails: true,
-                orderDetailsButton: true,
-                orderDetailsModal: true,
+                orderDetailsButton: false,
+                orderDetailsModal: false,
                 orderForm: true,
                 orderList: true,
-                process: true,
-                processDetails: false,
-                toggleSwitch: true,
+                processDetails: true,
+                toggleSwitch: false,
             });
         };
 
@@ -32,14 +32,14 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
     }, []);
 
     const roleContext = {
+        orderPage: privileges?.orderPage ?? false,
+        processPage: privileges?.processPage ?? false,
         toggleSwitch: privileges?.toggleSwitch ?? false,
         orderForm: privileges?.orderForm ?? false,
         orderList: privileges?.orderList ?? false,
         orderDetailsModal: privileges?.orderDetailsModal ?? false,
         orderDetails: privileges?.orderDetails ?? false,
         orderDetailsButton: privileges?.orderDetailsButton ?? false,
-        order: privileges?.order ?? false,
-        process: privileges?.process ?? false,
         processDetails: privileges?.processDetails ?? false,
         graphs: privileges?.graphs ?? false,
         actions: privileges?.actions ?? false,
