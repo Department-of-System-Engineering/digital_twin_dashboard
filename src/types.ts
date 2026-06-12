@@ -59,6 +59,7 @@ export type Product = {
     imageUrl?: string;
     maxQuantity?: number;
     quantity?: number;
+    completedQuantity?: number;
 };
 
 export type OrderEnrichmentType = {
