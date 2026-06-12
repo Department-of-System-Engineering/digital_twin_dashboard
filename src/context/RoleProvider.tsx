@@ -131,6 +131,7 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                 }
             }
         };
+
         privilegesHandler();
     }, [selectedUserType]);
 

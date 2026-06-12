@@ -18,9 +18,8 @@ const ProtectedRoute = ({ children, required }: ProtectedRouteType) => {
 
     if (!isUserLoggedIn) return <Navigate to="/login" replace />;
 
-    if (required.includes('ORDER') && !orderPage) return <Navigate to="/unauthorized" replace />;
-    if (required.includes('PROCESS') && !processPage)
-        return <Navigate to="/unauthorized" replace />;
+    if (required.includes('PROCESS') && !processPage) return <Navigate to="/" replace />;
+    if (required.includes('ORDER') && !orderPage) return <Navigate to="/" replace />;
 
     return (
         <div className="w-screen h-screen flex flex-col">

@@ -4,6 +4,7 @@ import ProtectedRoute from './ProtectedRoute';
 import GlobalProvider from './context/GlobalProvider';
 import Unauthorized from './Components/Screens/Unauthorized';
 import RoleProvider from './context/RoleProvider';
+import HomeRedirect from './HomeRedirect';
 import ApiProvider from './context/ApiProvider';
 import Process from './Components/Screens/Process';
 import Login from './Components/Screens/Login';
@@ -13,10 +14,12 @@ function App() {
     return (
         <ApiProvider>
             <GlobalProvider>
-                <RoleProvider>
-                    <BrowserRouter>
+                <BrowserRouter>
+                    <RoleProvider>
                         <Routes>
                             <Route element={<Login />} path="/login" />
+
+                            <Route element={<HomeRedirect />} path="/" />
 
                             <Route
                                 element={
@@ -38,8 +41,8 @@ function App() {
 
                             <Route element={<Unauthorized />} path="/unauthorized" />
                         </Routes>
-                    </BrowserRouter>
-                </RoleProvider>
+                    </RoleProvider>
+                </BrowserRouter>
             </GlobalProvider>
         </ApiProvider>
     );

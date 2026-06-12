@@ -29,7 +29,7 @@ const Settings = () => {
                 <Dropdown
                     options={userTypes}
                     value={selectedUserType}
-                    onChange={setSelectedUserType}
+                    onChange={(user) => setSelectedUserType(user)}
                 />
             )}
         </div>
