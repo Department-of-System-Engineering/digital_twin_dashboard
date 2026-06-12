@@ -1,11 +1,11 @@
-import type { OrderDetailsType } from '../../../types';
+import type { OrderEnrichmentType } from '../../../types';
 
 import DateTimePicker from '../../../UI/DateTimePicker';
 import ToggleSwitch from '../../../UI/ToggleSwitch';
 import TextInput from '../../../UI/inputs/TextInput';
 
-type OrderDetailsProps = {
-    state: OrderDetailsType;
+type OrderEnrichmentProps = {
+    state: OrderEnrichmentType;
     onNameChange: (name: string) => void;
     onFulfillmentDateChange: (date: string) => void;
     onPriorityChange: (priority: boolean) => void;
@@ -16,12 +16,12 @@ const PRIORITY_OPTIONS = [
     { id: 2, name: 'Important' },
 ];
 
-const OrderDetails = ({
+const OrderEnrichment = ({
     state,
     onFulfillmentDateChange,
     onNameChange,
     onPriorityChange,
-}: OrderDetailsProps) => {
+}: OrderEnrichmentProps) => {
     return (
         <div className="flex gap-5 mt-6 bg-violet-50 p-3 rounded-lg drop-shadow-sm justify-between">
             <div className="flex flex-col gap-1 w-full">
@@ -49,4 +49,4 @@ const OrderDetails = ({
         </div>
     );
 };
-export default OrderDetails;
+export default OrderEnrichment;
