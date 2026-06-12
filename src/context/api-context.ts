@@ -6,7 +6,7 @@ import type {
     Sensor,
     ChartFilter,
     Product,
-    OrderDetailsType,
+    OrderEnrichmentType,
     OrderListItemType,
     Order,
 } from '../types';
@@ -22,10 +22,10 @@ type ApiContext = {
     getAvailableProducts: () => Promise<Product[] | undefined>;
     orderProducts: (
         products: Product[],
-        details?: OrderDetailsType,
+        details?: OrderEnrichmentType,
     ) => Promise<boolean | undefined>;
     getOrders: () => Promise<OrderListItemType[] | undefined>;
-    getOrder: (orderID: string) => Promise<Order | undefined>;
+    getOrder: (orderID?: string) => Promise<Order | undefined>;
     completeOrder: (orderID: string) => Promise<boolean | undefined>;
     deleteOrder: (orderID: string) => Promise<boolean | undefined>;
 };
@@ -38,9 +38,9 @@ const Api = createContext<ApiContext>({
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
-    orderProducts: async (_products: Product[], _details?: OrderDetailsType) => undefined,
+    orderProducts: async (_products: Product[], _details?: OrderEnrichmentType) => undefined,
     getOrders: async () => undefined,
-    getOrder: async (_orderID: string) => undefined,
+    getOrder: async (_orderID?: string) => undefined,
     completeOrder: async (_orderID: string) => undefined,
     deleteOrder: async (_orderID: string) => undefined,
 });

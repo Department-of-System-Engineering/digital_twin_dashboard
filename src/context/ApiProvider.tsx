@@ -8,7 +8,7 @@ import type {
     Sensor,
     ChartFilter,
     Product,
-    OrderDetailsType,
+    OrderEnrichmentType,
     OrderListItemType,
     Order,
 } from '../types';
@@ -256,7 +256,10 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const orderProducts = (_products: Product[], _details?: OrderDetailsType): Promise<boolean> => {
+    const orderProducts = (
+        _products: Product[],
+        _details?: OrderEnrichmentType,
+    ): Promise<boolean> => {
         console.log(_products);
         console.log(_details);
         const response = new Promise<boolean>((resolve) => {
@@ -311,10 +314,11 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getOrder = (orderID: string): Promise<Order> => {
+    const getOrder = (orderID?: string): Promise<Order> => {
+        /**If there is no orderID, then the operator needs to current order details from the server. */
         const DUMMY_ORDER: Order = {
             details: {
-                orderID: orderID,
+                orderID: orderID ?? '1',
                 customerName: 'Teszt Name',
                 fulfillmentDate: '2026.01.01',
                 orderDate: '2026.01.01',
