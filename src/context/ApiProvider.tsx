@@ -1,5 +1,19 @@
-import type { Graph, GraphEdge, GraphNode, OptionItem, Asset } from '../types';
+import type {
+    Graph,
+    GraphEdge,
+    GraphNode,
+    OptionItem,
+    Asset,
+    Chart,
+    Sensor,
+    ChartFilter,
+    Product,
+    OrderDetailsType,
+    OrderListItemType,
+    Order,
+} from '../types';
 import Api from './api-context';
+import { images } from '../assets/dummy_images';
 
 type ApiProviderProps = {
     children: React.ReactElement[] | React.ReactElement;
@@ -94,18 +108,46 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
 
     const getProcess = async (_processID: string) => {
         const DUMMY_PROCESS: Asset[] = [
-            { id: 1, name: 'Conveyor Speed', unit: '%', value: 70, type: 'percent' },
             {
-                id: 2,
-                name: 'Temperature',
-                unit: '°C',
-                value: 125.5,
-                type: 'float',
-                min: -120,
+                assetID: 1,
+                assetName: 'Conveyor Speed',
+                sensors: [
+                    { id: 1, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+                    {
+                        id: 2,
+                        name: 'Temperature',
+                        unit: '°C',
+                        value: 125.5,
+                        type: 'float',
+                        min: -120,
+                    },
+                ],
             },
-            { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
-            { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
-            { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+            {
+                assetID: 2,
+                assetName: 'Inspection machine',
+                sensors: [
+                    { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
+                    { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
+                    { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+                ],
+            },
+            {
+                assetID: 3,
+                assetName: 'Robot arm',
+                sensors: [
+                    { id: 6, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+                    {
+                        id: 7,
+                        name: 'Temperature',
+                        unit: '°C',
+                        value: 125.5,
+                        type: 'float',
+                        min: -120,
+                    },
+                    { id: 8, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+                ],
+            },
         ];
         const response = new Promise<Asset[]>((resolve) => {
             resolve(DUMMY_PROCESS);
@@ -122,11 +164,207 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<Chart[]> => {
+        const DUMMY_CHART_DATA: Chart[] = [
+            {
+                xAxis: '15:00',
+                1: 200,
+            },
+            {
+                xAxis: '15:05',
+                1: 210,
+            },
+            {
+                xAxis: '15:10',
+                1: 220,
+            },
+            {
+                xAxis: '15:15',
+                1: 200,
+            },
+            {
+                xAxis: '15:20',
+                1: 190,
+            },
+            {
+                xAxis: '15:25',
+                1: 200,
+            },
+            {
+                xAxis: '15:30',
+                1: 210,
+            },
+        ];
+
+        const response = new Promise<Chart[]>((resolve) => {
+            resolve(DUMMY_CHART_DATA);
+        });
+
+        return response;
+    };
+
+    const getSensorsDetails = (_sensorIDs: number[]): Promise<Sensor[]> => {
+        const DUMMY_SENSOR_DATA: Sensor[] = [
+            {
+                id: 3,
+                name: 'Pressure',
+                unit: 'bar',
+                type: 'int',
+            },
+        ];
+
+        const response = new Promise<Sensor[]>((resolve) => {
+            resolve(DUMMY_SENSOR_DATA);
+        });
+
+        return response;
+    };
+
+    const getAvailableProducts = (): Promise<Product[]> => {
+        const DUMMY_PRODUCT_DATA: Product[] = [
+            {
+                id: 'A',
+                imageUrl: images.A,
+                maxQuantity: 20,
+            },
+            {
+                id: 'B',
+                imageUrl: images.B,
+                maxQuantity: 30,
+            },
+            {
+                id: 'C',
+                imageUrl: images.C,
+                maxQuantity: 10,
+            },
+            {
+                id: 'D',
+                imageUrl: images.D,
+                maxQuantity: 50,
+            },
+            {
+                id: 'Special',
+                imageUrl: images.special,
+                maxQuantity: 5,
+            },
+        ];
+
+        const response = new Promise<Product[]>((resolve) => {
+            resolve(DUMMY_PRODUCT_DATA);
+        });
+
+        return response;
+    };
+
+    const orderProducts = (_products: Product[], _details?: OrderDetailsType): Promise<boolean> => {
+        console.log(_products);
+        console.log(_details);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
+    const getOrders = (): Promise<OrderListItemType[]> => {
+        const DUMMY_DATA: OrderListItemType[] = [
+            {
+                orderID: '1',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '2',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '3',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '4',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '5',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+        ];
+        const response = new Promise<OrderListItemType[]>((resolve) => {
+            resolve(DUMMY_DATA);
+        });
+
+        return response;
+    };
+
+    const getOrder = (orderID: string): Promise<Order> => {
+        const DUMMY_ORDER: Order = {
+            details: {
+                orderID: orderID,
+                customerName: 'Teszt Name',
+                fulfillmentDate: '2026.01.01',
+                orderDate: '2026.01.01',
+                priority: false,
+            },
+            products: [
+                { id: 'A', imageUrl: images.A, quantity: 2 },
+                { id: 'B', imageUrl: images.B, quantity: 0 },
+                { id: 'C', imageUrl: images.C, quantity: 3 },
+                { id: 'D', imageUrl: images.D, quantity: 1 },
+                { id: 'Special', imageUrl: images.special, quantity: 2 },
+            ],
+        };
+        const response = new Promise<Order>((resolve) => {
+            resolve(DUMMY_ORDER);
+        });
+
+        return response;
+    };
+
+    const completeOrder = (orderID: string): Promise<boolean> => {
+        console.log(`Order complete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+    const deleteOrder = (orderID: string): Promise<boolean> => {
+        console.log(`Order delete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
         getProcess: getProcess,
         login: login,
+        getCharts: getCharts,
+        getSensorsDetails: getSensorsDetails,
+        getAvailableProducts: getAvailableProducts,
+        orderProducts: orderProducts,
+        getOrders: getOrders,
+        getOrder: getOrder,
+        completeOrder: completeOrder,
+        deleteOrder: deleteOrder,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;
