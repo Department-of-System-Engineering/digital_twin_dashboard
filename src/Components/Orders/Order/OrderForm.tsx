@@ -1,9 +1,10 @@
 import type { OrderDetailsType, Product } from '../../../types';
+
 import { useContext, useEffect, useReducer, useState } from 'react';
 
+import OrderDetails from './OrderDetails';
 import OrderItem from './OrderItem';
 import Api from '../../../context/api-context';
-import OrderDetails from './OrderDetails';
 
 type Action =
     | { type: 'INITIALIZE' }

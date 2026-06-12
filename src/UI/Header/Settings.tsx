@@ -1,10 +1,12 @@
 import { useContext } from 'react';
 
-import Global from '../../context/global-context';
 import ToggleSwitch from '../ToggleSwitch';
 import Dropdown from '../Dropdown';
+import Global from '../../context/global-context';
+import Role from '../../context/role-provider';
 
 const Settings = () => {
+    const { toggleSwitch } = useContext(Role);
     const {
         userTypes,
         processModes,
@@ -16,7 +18,7 @@ const Settings = () => {
 
     return (
         <div className="flex justify-center gap-2">
-            {processModes && selectedProcessMode && (
+            {processModes && selectedProcessMode && toggleSwitch && (
                 <ToggleSwitch
                     options={processModes}
                     value={selectedProcessMode}

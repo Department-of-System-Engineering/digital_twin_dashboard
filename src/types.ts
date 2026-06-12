@@ -79,3 +79,19 @@ export type Order = {
     details: OrderListItemType;
     products: Product[];
 };
+
+export type Privileges = {
+    toggleSwitch: boolean;
+    orderForm: boolean;
+    orderList: boolean;
+    orderDetailsModal: boolean;
+    orderDetails: boolean;
+    orderDetailsButton: boolean;
+    order: boolean;
+    process: boolean;
+    processDetails: boolean;
+    graphs: boolean;
+    actions: boolean;
+};
+
+export type Page = 'ORDER' | 'PROCESS';

@@ -1,9 +1,11 @@
 import { useContext, useState, type FormEvent } from 'react';
 import Global from '../../context/global-context';
 import { useNavigate } from 'react-router';
+import Role from '../../context/role-provider';
 
 const Login = () => {
     const { login } = useContext(Global);
+    const { process, order } = useContext(Role);
     const navigate = useNavigate();
     const [username, setUsername] = useState<string>();
     const [password, setPassword] = useState<string>();
@@ -12,7 +14,13 @@ const Login = () => {
         event.preventDefault();
         if (username && password) {
             const success = await login(username, password);
-            if (success) navigate('/');
+            if (success) {
+                if ((process && order) || process) {
+                    navigate('/process');
+                } else if (order) {
+                    navigate('/order');
+                }
+            }
         }
     };
 

@@ -6,8 +6,8 @@ import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
 import ChartFilter from '../UI/ProcessModal/ChartFilter';
 import NumberInput from '../UI/inputs/NumberInput';
-import Api from '../context/api-context';
 import Chart from '../UI/Chart';
+import Api from '../context/api-context';
 
 type ProcessModalProps = {
     processID: string;
