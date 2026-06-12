@@ -1,9 +1,9 @@
-import type { OrderDetailsType, Product } from '../../../types';
+import type { OrderEnrichmentType, Product } from '../../../types';
 import { useContext, useEffect, useReducer, useState } from 'react';
 
 import OrderItem from './OrderItem';
 import Api from '../../../context/api-context';
-import OrderDetails from './OrderDetails';
+import OrderEnrichment from './OrderEnrichment';
 
 type Action =
     | { type: 'INITIALIZE' }
@@ -11,7 +11,7 @@ type Action =
     | { type: 'SET_FULFILLMENT_DATE'; payload: string | undefined }
     | { type: 'SET_PRIORITY'; payload: boolean };
 
-const reducer = (state: OrderDetailsType, action: Action): OrderDetailsType => {
+const reducer = (state: OrderEnrichmentType, action: Action): OrderEnrichmentType => {
     switch (action.type) {
         case 'INITIALIZE':
             return initialState;
@@ -26,7 +26,7 @@ const reducer = (state: OrderDetailsType, action: Action): OrderDetailsType => {
     }
 };
 
-const initialState: OrderDetailsType = {
+const initialState: OrderEnrichmentType = {
     customerName: undefined,
     fulfillmentDate: undefined,
     priority: false,
@@ -75,7 +75,7 @@ const OrderForm = () => {
     };
 
     return (
-        <div className="h-full">
+        <div className="h-full w-full">
             <div className="bg-amber-50 drop-shadow-xl rounded-2xl p-4 w-full h-full flex-col justify-between">
                 <div className="grid grid-cols-2 gap-4">
                     {products &&
@@ -92,7 +92,7 @@ const OrderForm = () => {
                         ))}
                 </div>
 
-                <OrderDetails
+                <OrderEnrichment
                     state={details}
                     onFulfillmentDateChange={(value) =>
                         dispatch({ type: 'SET_FULFILLMENT_DATE', payload: value })

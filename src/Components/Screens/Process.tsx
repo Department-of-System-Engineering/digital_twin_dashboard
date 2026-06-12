@@ -1,6 +1,6 @@
 import Graph from '../Graph';
 
-const Home = () => {
+const Process = () => {
     return <Graph />;
 };
-export default Home;
+export default Process;

@@ -1,43 +1,35 @@
 import { useContext } from 'react';
 
-import Global from '../../context/global-context';
 import ToggleSwitch from '../ToggleSwitch';
 import Dropdown from '../Dropdown';
+import Global from '../../context/global-context';
+import Role from '../../context/role-provider';
 
 const Settings = () => {
+    const { toggleSwitch } = useContext(Role);
     const {
         userTypes,
-        processTypes,
         processModes,
         selectedUserType,
-        selectedProcessType,
         selectedProcessMode,
         setSelectedProcessMode,
-        setSelectedProcessType,
         setSelectedUserType,
     } = useContext(Global);
 
     return (
         <div className="flex justify-center gap-2">
-            {processModes && selectedProcessMode && (
+            {processModes && selectedProcessMode && toggleSwitch && (
                 <ToggleSwitch
                     options={processModes}
                     value={selectedProcessMode}
                     onChange={setSelectedProcessMode}
                 />
             )}
-            {processTypes && selectedProcessType && (
-                <ToggleSwitch
-                    options={processTypes}
-                    value={selectedProcessType}
-                    onChange={setSelectedProcessType}
-                />
-            )}
             {userTypes && selectedUserType && (
                 <Dropdown
                     options={userTypes}
                     value={selectedUserType}
-                    onChange={setSelectedUserType}
+                    onChange={(user) => setSelectedUserType(user)}
                 />
             )}
         </div>

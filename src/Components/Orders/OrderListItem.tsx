@@ -1,9 +1,9 @@
 type OrderListItemProps = {
     orderID: string;
-    customerName: string;
-    orderDate: string;
-    fulfillmentDate: string;
-    priority: boolean;
+    customerName?: string;
+    orderDate?: string;
+    fulfillmentDate?: string;
+    priority?: boolean;
     onModalOpen: () => void;
 };
 
@@ -26,17 +26,23 @@ const OrderListItem = ({
             </div>
             <div className="min-w-0">
                 <label className="font-bold block truncate cursor-pointer">Customer name:</label>
-                <div className="bg-white p-2 rounded-md shadow-sm truncate">{customerName}</div>
+                <div className="bg-white p-2 rounded-md shadow-sm truncate">
+                    {customerName ?? 'N/A'}
+                </div>
             </div>
             <div className="min-w-0">
                 <label className=" font-bold block truncate cursor-pointer">Order date:</label>
-                <div className="bg-white p-2 rounded-md shadow-sm truncate">{orderDate}</div>
+                <div className="bg-white p-2 rounded-md shadow-sm truncate">
+                    {orderDate ?? 'N/A'}
+                </div>
             </div>
             <div className="min-w-0">
                 <label className=" font-bold block truncate cursor-pointer">
                     Fulfillment date:
                 </label>
-                <div className="bg-white p-2 rounded-md shadow-sm truncate ">{fulfillmentDate}</div>
+                <div className="bg-white p-2 rounded-md shadow-sm truncate ">
+                    {fulfillmentDate ?? 'N/A'}
+                </div>
             </div>
         </div>
     );
