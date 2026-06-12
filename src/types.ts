@@ -83,15 +83,15 @@ export type Order = {
 export type Privileges = {
     orderPage: boolean;
     processPage: boolean;
-    toggleSwitch: boolean;
+    processDetails: boolean;
+    actions: boolean;
+    graphs: boolean;
     orderForm: boolean;
     orderList: boolean;
     orderDetailsModal: boolean;
-    orderDetails: boolean;
     orderDetailsButton: boolean;
-    processDetails: boolean;
-    graphs: boolean;
-    actions: boolean;
+    orderDetails: boolean;
+    toggleSwitch: boolean;
 };
 
 export type Page = 'ORDER' | 'PROCESS';
