@@ -75,7 +75,7 @@ const OrderForm = () => {
     };
 
     return (
-        <div className="h-full">
+        <div className="h-full w-full">
             <div className="bg-amber-50 drop-shadow-xl rounded-2xl p-4 w-full h-full flex-col justify-between">
                 <div className="grid grid-cols-2 gap-4">
                     {products &&
