@@ -8,6 +8,7 @@ import ChartFilter from '../UI/ProcessModal/ChartFilter';
 import NumberInput from '../UI/inputs/NumberInput';
 import Chart from '../UI/Chart';
 import Api from '../context/api-context';
+import Role from '../context/role-provider';
 
 type ProcessModalProps = {
     processID: string;
@@ -20,6 +21,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
     const [filter, setFilter] = useState<ChartFilterType>();
     const [selectedSensorIDs, setSelectedSensorIDs] = useState<number[]>();
     const { getProcess } = useContext(Api);
+    const { actions } = useContext(Role);
 
     useEffect(() => {
         getProcess(processID).then((data) => data && setData(data));
@@ -97,6 +99,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                                 type={sensor.type as NumberType}
                                                                 value={sensor.value}
                                                                 min={sensor.min}
+                                                                disabled={!actions}
                                                                 onValueChange={(value) =>
                                                                     onDataValueChange(
                                                                         item.assetID,
