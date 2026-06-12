@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import Api from '../../context/api-context';
 import type { Order } from '../../types';
+import Role from '../../context/role-provider';
 
 const OrderDetails = () => {
     const [order, setOrder] = useState<Order>();
-    const { getOrder } = useContext(Api);
+    const { getOrder, completeOrder, deleteOrder } = useContext(Api);
+    const { orderDetailsButton } = useContext(Role);
 
     useEffect(() => {
         getOrder().then((order) => order && setOrder(order));
@@ -14,7 +16,7 @@ const OrderDetails = () => {
     return (
         <>
             {order && (
-                <div className="w-[97%] max-w-[1900px] mx-auto p-6 drop-shadow-lg bg-white rounded-lg mt-4 mb-4">
+                <div className="w-full p-6 drop-shadow-lg bg-white rounded-lg">
                     <div className=" text-gray-700 font-bold text-xl mb-6">
                         Order ID: {order.details.orderID}
                     </div>
@@ -35,6 +37,26 @@ const OrderDetails = () => {
                             </div>
                         ))}
                     </div>
+                    {orderDetailsButton && (
+                        <div className="mt-7 w-full flex justify-center items-center gap-7">
+                            <button
+                                className="px-6 py-2 bg-red-400 text-gray-700 rounded-lg hover:bg-red-500 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
+                                onClick={() => {
+                                    deleteOrder(order.details.orderID);
+                                }}
+                            >
+                                Delete Order
+                            </button>
+                            <button
+                                className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
+                                onClick={() => {
+                                    completeOrder(order.details.orderID);
+                                }}
+                            >
+                                Complete Order
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </>
