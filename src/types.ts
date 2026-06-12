@@ -29,6 +29,7 @@ export type Sensor = {
     type: NumberType;
     min?: number;
     disabled?: boolean;
+    color?: string;
 };
 
 export type Asset = {
@@ -41,7 +42,7 @@ export type ProcessNodeData = {
     label: string;
 };
 
-export type Chart = {
+export type ChartData = {
     xAxis: string;
     [sensorId: number]: number;
 };

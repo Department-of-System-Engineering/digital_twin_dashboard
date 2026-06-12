@@ -13,3 +13,9 @@ export const getDateTimeLocal = (date: Date) => {
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d.toISOString().slice(0, 16);
 };
+
+export const generateHexColor = () => {
+    return `#${Math.floor(Math.random() * 0xffffff)
+        .toString(16)
+        .padStart(6, '0')}`;
+};

@@ -48,7 +48,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
             setSelectedSensorIDs((prev) =>
                 prev ? [...prev.filter((item) => item !== sensorID)] : undefined,
             );
-            setSelectedSensorIDs(undefined);
+            // setSelectedSensorIDs(undefined);
         } else {
             setSelectedSensorIDs((prev) => (prev ? [...prev, sensorID] : [sensorID]));
         }
