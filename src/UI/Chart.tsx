@@ -21,12 +21,11 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
         getSensorsDetails(sensorIDs).then((data) =>
             setSensors((prev) => {
                 if (!data) return prev;
-                const prevIDs = prev?.map((item) => item.id);
-                let newSensor = data.filter((item) => !prevIDs?.includes(item.id));
-                newSensor = newSensor.map((details) => ({ ...details, color: generateHexColor() }));
-                let coloredSensors = prev ? [...newSensor, ...prev] : newSensor;
-                const dataIDs = data.map((item) => item.id);
-                coloredSensors = coloredSensors.filter((item) => dataIDs.includes(item.id));
+                const coloredSensors = data.map((item) => {
+                    const sensor = prev ? prev.find((sensor) => sensor.id === item.id) : undefined;
+                    if (sensor) return sensor;
+                    return { ...item, color: generateHexColor() };
+                });
                 return coloredSensors;
             }),
         );
