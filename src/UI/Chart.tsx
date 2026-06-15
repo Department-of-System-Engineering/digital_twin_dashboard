@@ -1,8 +1,9 @@
-import type { ChartFilter, Chart as ChartType, Sensor } from '../types';
+import type { ChartData, ChartFilter, Sensor } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
 
+import { generateHexColor } from '../util/functions';
 import Api from '../context/api-context';
 
 type ChartProps = {
@@ -11,13 +12,25 @@ type ChartProps = {
 };
 
 const Chart = ({ sensorIDs, filter }: ChartProps) => {
-    const [data, setData] = useState<{ sensorID: number; values: ChartType[] }>();
+    const [data, setData] = useState<ChartData[]>();
     const [sensors, setSensors] = useState<Sensor[]>();
-    const [domain, setDomain] = useState<[number, number]>();
+    // const [domain, setDomain] = useState<[number, number]>();
     const { getCharts, getSensorsDetails } = useContext(Api);
 
     useEffect(() => {
-        getSensorsDetails(sensorIDs).then((data) => setSensors(data));
+        getSensorsDetails(sensorIDs).then((data) =>
+            setSensors((prev) => {
+                if (!data) return prev;
+                const coloredSensors = data.map((item) => {
+                    const sensor = prev ? prev.find((sensor) => sensor.id === item.id) : undefined;
+                    if (sensor) return sensor;
+                    return { ...item, color: generateHexColor() };
+                });
+                return coloredSensors;
+            }),
+        );
+
+        getCharts(sensorIDs, filter).then((data) => setData(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sensorIDs]);
 
@@ -51,8 +64,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
 
     return (
         <>
-            <div>Chart will be here</div>
-            {/* {sensors && (
+            {sensors && (
                 <LineChart
                     style={{
                         width: '100%',
@@ -69,20 +81,22 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis width="auto" domain={domain} />
+                    <XAxis dataKey="xAxis" />
+                    <YAxis width="auto" domain={['dataMin', 'dataMax']} />
                     <Tooltip />
                     <Legend />
-                    <Line
-                        type="monotone"
-                        dataKey="value"
-                        name={sensor?.name}
-                        stroke="#5d0ec0"
-                        isAnimationActive={true}
-                        strokeWidth={2}
-                    />
+                    {sensors.map((item) => (
+                        <Line
+                            type="monotone"
+                            dataKey={item.id}
+                            name={item.name}
+                            stroke={item.color}
+                            isAnimationActive={true}
+                            strokeWidth={2}
+                        />
+                    ))}
                 </LineChart>
-            )} */}
+            )}
         </>
     );
 };

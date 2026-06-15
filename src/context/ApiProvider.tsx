@@ -4,7 +4,7 @@ import type {
     GraphNode,
     OptionItem,
     Asset,
-    Chart,
+    ChartData,
     Sensor,
     ChartFilter,
     Product,
@@ -18,6 +18,31 @@ import { images } from '../assets/dummy_images';
 type ApiProviderProps = {
     children: React.ReactElement[] | React.ReactElement;
 };
+
+const DUMMY_SENSORS: Sensor[] = [
+    { id: 1, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+    {
+        id: 2,
+        name: 'Temperature',
+        unit: '°C',
+        value: 125.5,
+        type: 'float',
+        min: -120,
+    },
+    { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
+    { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
+    { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+    { id: 6, name: 'Speed', unit: '%', value: 70, type: 'percent' },
+    {
+        id: 7,
+        name: 'Temperature',
+        unit: '°C',
+        value: 125.5,
+        type: 'float',
+        min: -120,
+    },
+    { id: 8, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+];
 
 const ApiProvider = ({ children }: ApiProviderProps) => {
     const getUserTypes = async () => {
@@ -113,42 +138,17 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
             {
                 assetID: 1,
                 assetName: 'Conveyor Speed',
-                sensors: [
-                    { id: 1, name: 'Speed', unit: '%', value: 70, type: 'percent' },
-                    {
-                        id: 2,
-                        name: 'Temperature',
-                        unit: '°C',
-                        value: 125.5,
-                        type: 'float',
-                        min: -120,
-                    },
-                ],
+                sensors: [DUMMY_SENSORS[0], DUMMY_SENSORS[1]],
             },
             {
                 assetID: 2,
                 assetName: 'Inspection machine',
-                sensors: [
-                    { id: 3, name: 'Pressure', unit: 'bar', value: 5, type: 'int' },
-                    { id: 4, name: 'Flow Rate', unit: 'L/min', value: 12.3, type: 'float' },
-                    { id: 5, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
-                ],
+                sensors: [DUMMY_SENSORS[2], DUMMY_SENSORS[3], DUMMY_SENSORS[4]],
             },
             {
                 assetID: 3,
                 assetName: 'Robot arm',
-                sensors: [
-                    { id: 6, name: 'Speed', unit: '%', value: 70, type: 'percent' },
-                    {
-                        id: 7,
-                        name: 'Temperature',
-                        unit: '°C',
-                        value: 125.5,
-                        type: 'float',
-                        min: -120,
-                    },
-                    { id: 8, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
-                ],
+                sensors: [DUMMY_SENSORS[5], DUMMY_SENSORS[6], DUMMY_SENSORS[7]],
             },
         ];
         const response = new Promise<Asset[]>((resolve) => {
@@ -166,54 +166,54 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<Chart[]> => {
-        const DUMMY_CHART_DATA: Chart[] = [
-            {
-                xAxis: '15:00',
-                1: 200,
-            },
-            {
-                xAxis: '15:05',
-                1: 210,
-            },
-            {
-                xAxis: '15:10',
-                1: 220,
-            },
-            {
-                xAxis: '15:15',
-                1: 200,
-            },
-            {
-                xAxis: '15:20',
-                1: 190,
-            },
-            {
-                xAxis: '15:25',
-                1: 200,
-            },
-            {
-                xAxis: '15:30',
-                1: 210,
-            },
-        ];
+    const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<ChartData[]> => {
+        // const DUMMY_CHART_DATA: ChartData[] = [
+        //     {
+        //         xAxis: '15:00',
+        //         1: 200,
+        //     },
+        //     {
+        //         xAxis: '15:05',
+        //         1: 210,
+        //     },
+        //     {
+        //         xAxis: '15:10',
+        //         1: 220,
+        //     },
+        //     {
+        //         xAxis: '15:15',
+        //         1: 200,
+        //     },
+        //     {
+        //         xAxis: '15:20',
+        //         1: 190,
+        //     },
+        //     {
+        //         xAxis: '15:25',
+        //         1: 200,
+        //     },
+        //     {
+        //         xAxis: '15:30',
+        //         1: 210,
+        //     },
+        // ];
 
-        const response = new Promise<Chart[]>((resolve) => {
-            resolve(DUMMY_CHART_DATA);
+        const times = ['15:00', '15:05', '15:10', '15:15', '15:20', '15:25', '15:30'];
+
+        const chartData = times.map((time) => ({
+            xAxis: time,
+            ...Object.fromEntries(_sensorIDs.map((id) => [id, Math.floor(Math.random() * 1000)])),
+        }));
+
+        const response = new Promise<ChartData[]>((resolve) => {
+            resolve(chartData);
         });
 
         return response;
     };
 
     const getSensorsDetails = (_sensorIDs: number[]): Promise<Sensor[]> => {
-        const DUMMY_SENSOR_DATA: Sensor[] = [
-            {
-                id: 3,
-                name: 'Pressure',
-                unit: 'bar',
-                type: 'int',
-            },
-        ];
+        const DUMMY_SENSOR_DATA = DUMMY_SENSORS.filter((item) => _sensorIDs.includes(item.id));
 
         const response = new Promise<Sensor[]>((resolve) => {
             resolve(DUMMY_SENSOR_DATA);
