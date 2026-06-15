@@ -40,6 +40,8 @@ export type Asset = {
 
 export type ProcessNodeData = {
     label: string;
+    type: string[];
+    state: 'ACTIVE' | 'ERROR' | 'DONE';
 };
 
 export type ChartData = {
@@ -52,3 +54,46 @@ export type ChartFilter = {
     fromDate: string;
     toDate: string;
 };
+
+export type Product = {
+    id: string;
+    imageUrl?: string;
+    maxQuantity?: number;
+    quantity?: number;
+    completedQuantity?: number;
+};
+
+export type OrderEnrichmentType = {
+    customerName: string | undefined;
+    fulfillmentDate: string | undefined;
+    priority: boolean;
+};
+
+export type OrderListItemType = {
+    orderID: string;
+    customerName?: string;
+    orderDate?: string;
+    fulfillmentDate?: string;
+    priority?: boolean;
+};
+
+export type Order = {
+    details: OrderListItemType;
+    products: Product[];
+};
+
+export type Privileges = {
+    orderPage: boolean;
+    processPage: boolean;
+    processDetails: boolean;
+    actions: boolean;
+    graphs: boolean;
+    orderForm: boolean;
+    orderList: boolean;
+    orderDetailsModal: boolean;
+    orderDetailsButton: boolean;
+    orderDetails: boolean;
+    toggleSwitch: boolean;
+};
+
+export type Page = 'ORDER' | 'PROCESS';

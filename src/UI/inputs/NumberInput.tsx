@@ -7,6 +7,8 @@ type NumberInputProps = {
     type: NumberType;
     value?: number;
     step?: number;
+    max?: number;
+    className?: string;
 };
 
 const NumberInput = ({
@@ -15,7 +17,9 @@ const NumberInput = ({
     type = 'int',
     min = 0,
     step,
+    max,
     onValueChange,
+    className,
 }: NumberInputProps) => {
     return (
         <input
@@ -25,8 +29,8 @@ const NumberInput = ({
             value={value !== undefined ? value : ''}
             onChange={(event) => onValueChange(parseFloat(event.target.value))}
             step={step ? step : type === 'float' ? 0.1 : 1}
-            max={type === 'percent' ? 100 : undefined}
-            className="bg-neutral-100 shadow-sm rounded-md h-10 p-2 focus:outline-none focus:ring-2 focus:ring-amber-300"
+            max={max ? max : type === 'percent' ? 100 : undefined}
+            className={`bg-neutral-100 shadow-sm rounded-md h-10 p-2 focus:outline-none focus:ring-2 focus:ring-amber-300 ${className}`}
         />
     );
 };

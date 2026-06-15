@@ -1,15 +1,32 @@
+import type { Page } from './types';
+
 import { useContext } from 'react';
-import Global from './context/global-context';
 import { Navigate } from 'react-router';
+
+import Global from './context/global-context';
+import Header from './Components/Header';
+import Role from './context/role-provider';
 
 type ProtectedRouteType = {
     children: React.ReactElement;
+    required: Page;
 };
 
-const ProtectedRoute = ({ children }: ProtectedRouteType) => {
+const ProtectedRoute = ({ children, required }: ProtectedRouteType) => {
     const { isUserLoggedIn } = useContext(Global);
+    const { orderPage, processPage } = useContext(Role);
+
     if (!isUserLoggedIn) return <Navigate to="/login" replace />;
-    return children;
+
+    if (required.includes('PROCESS') && !processPage) return <Navigate to="/" replace />;
+    if (required.includes('ORDER') && !orderPage) return <Navigate to="/" replace />;
+
+    return (
+        <div className="w-screen h-screen flex flex-col">
+            <Header />
+            {children}
+        </div>
+    );
 };
 
 export default ProtectedRoute;

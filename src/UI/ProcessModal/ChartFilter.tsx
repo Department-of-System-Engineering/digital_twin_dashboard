@@ -5,7 +5,7 @@ import { FaFilter } from 'react-icons/fa';
 
 import { getDateTimeLocal } from '../../util/functions';
 import DateTimePicker from '../DateTimePicker';
-import NumberInput from '../../Components/inputs/NumberInput';
+import NumberInput from '../inputs/NumberInput';
 
 type ChartFilterProps = {
     onFilterChange: (filter: ChartFilterObjectType) => void;

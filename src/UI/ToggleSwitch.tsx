@@ -9,14 +9,11 @@ type ToggleSwitchProps = {
 
 const ToggleSwitch = ({ options, value, onChange, disabled = false }: ToggleSwitchProps) => {
     const isFirst = value.id === options[0].id;
+
     return (
-        <div className="relative flex h-10 w-60 bg-white rounded-full p-1">
+        <div className="relative min-w-[200px] flex h-10 w-60 rounded-full p-1 bg-white shadow-sm">
             <div
-                className={`
-          absolute top-1 left-1 h-8 w-1/2 bg-amber-300 rounded-full shadow-md
-          transition-transform duration-200
-          ${isFirst ? 'translate-x-0' : 'translate-x-[calc(100%-0.5rem)]'}
-        `}
+                className={`absolute top-1 left-1 h-8 w-1/2 bg-amber-300 rounded-full shadow-md transition-transform duration-200 ${isFirst ? 'translate-x-0' : 'translate-x-[calc(100%-0.5rem)]'}`}
             />
 
             {options.map((opt) => (

@@ -7,8 +7,13 @@ import type {
     ChartData,
     Sensor,
     ChartFilter,
+    Product,
+    OrderEnrichmentType,
+    OrderListItemType,
+    Order,
 } from '../types';
 import Api from './api-context';
+import { images } from '../assets/dummy_images';
 
 type ApiProviderProps = {
     children: React.ReactElement[] | React.ReactElement;
@@ -42,10 +47,12 @@ const DUMMY_SENSORS: Sensor[] = [
 const ApiProvider = ({ children }: ApiProviderProps) => {
     const getUserTypes = async () => {
         const USER_TYPES: OptionItem[] = [
-            { id: 1, name: 'Shift Supervisor' },
+            { id: 1, name: 'Customer' },
             { id: 2, name: 'Operator' },
-            { id: 3, name: 'Maintenance Technician' },
-            { id: 4, name: 'Quality Inspector' },
+            { id: 3, name: 'Technician' },
+            { id: 4, name: 'Shift Supervisor' },
+            { id: 5, name: 'Engineer' },
+            { id: 6, name: 'Manager' },
         ];
 
         const response = new Promise<OptionItem[]>((resolve) => {
@@ -215,6 +222,143 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getAvailableProducts = (): Promise<Product[]> => {
+        const DUMMY_PRODUCT_DATA: Product[] = [
+            {
+                id: 'A',
+                imageUrl: images.A,
+                maxQuantity: 20,
+            },
+            {
+                id: 'B',
+                imageUrl: images.B,
+                maxQuantity: 30,
+            },
+            {
+                id: 'C',
+                imageUrl: images.C,
+                maxQuantity: 10,
+            },
+            {
+                id: 'D',
+                imageUrl: images.D,
+                maxQuantity: 50,
+            },
+            {
+                id: 'Special',
+                imageUrl: images.special,
+                maxQuantity: 5,
+            },
+        ];
+
+        const response = new Promise<Product[]>((resolve) => {
+            resolve(DUMMY_PRODUCT_DATA);
+        });
+
+        return response;
+    };
+
+    const orderProducts = (
+        _products: Product[],
+        _details?: OrderEnrichmentType,
+    ): Promise<boolean> => {
+        console.log(_products);
+        console.log(_details);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
+    const getOrders = (): Promise<OrderListItemType[]> => {
+        const DUMMY_DATA: OrderListItemType[] = [
+            {
+                orderID: '1',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '2',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+            {
+                orderID: '3',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '4',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '5',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+        ];
+        const response = new Promise<OrderListItemType[]>((resolve) => {
+            resolve(DUMMY_DATA);
+        });
+
+        return response;
+    };
+
+    const getOrder = (orderID?: string): Promise<Order> => {
+        /**If there is no orderID, then the operator needs to current order details from the server. */
+        const DUMMY_ORDER: Order = {
+            details: {
+                orderID: orderID ?? '1',
+                customerName: 'Teszt Name',
+                fulfillmentDate: '2026.01.01',
+                orderDate: '2026.01.01',
+                priority: false,
+            },
+            products: [
+                { id: 'A', imageUrl: images.A, quantity: 2, completedQuantity: 1 },
+                { id: 'B', imageUrl: images.B, quantity: 0, completedQuantity: 0 },
+                { id: 'C', imageUrl: images.C, quantity: 3, completedQuantity: 2 },
+                { id: 'D', imageUrl: images.D, quantity: 1, completedQuantity: 0 },
+                { id: 'Special', imageUrl: images.special, quantity: 2, completedQuantity: 0 },
+            ],
+        };
+        const response = new Promise<Order>((resolve) => {
+            resolve(DUMMY_ORDER);
+        });
+
+        return response;
+    };
+
+    const completeOrder = (orderID: string): Promise<boolean> => {
+        /**Need to send 'completed time' timestamp */
+        console.log(`Order complete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+    const deleteOrder = (orderID: string): Promise<boolean> => {
+        console.log(`Order delete: ${orderID}`);
+        const response = new Promise<boolean>((resolve) => {
+            resolve(true);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -222,6 +366,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         login: login,
         getCharts: getCharts,
         getSensorsDetails: getSensorsDetails,
+        getAvailableProducts: getAvailableProducts,
+        orderProducts: orderProducts,
+        getOrders: getOrders,
+        getOrder: getOrder,
+        completeOrder: completeOrder,
+        deleteOrder: deleteOrder,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

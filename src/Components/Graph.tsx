@@ -1,16 +1,25 @@
 import type { GraphNode, ProcessNodeData } from '../types';
 import { useContext, useEffect, useState } from 'react';
-import { ReactFlow, type Edge, type Node } from '@xyflow/react';
+import { MarkerType, ReactFlow, type Edge, type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
 import ProcessModal from './ProcessModal';
+import CustomNode from '../UI/ProcessGraph/CustomNode';
 import Api from '../context/api-context';
+import Role from '../context/role-provider';
+
+const DUMMY_DATA = ['3:D', '4:A', '2:C'];
+
+const nodeTypes = {
+    processStep: CustomNode,
+};
 
 const Graph = () => {
     const [nodes, setNodes] = useState<Node<ProcessNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedProcessID, setSelectedProcessID] = useState<string | null>(null);
     const { getGraph } = useContext(Api);
+    const { processDetails } = useContext(Role);
 
     const calculateNodes = (edges: Edge[], initialNodes: GraphNode[]) => {
         const sources = new Set(edges.map((item) => item.source));
@@ -46,7 +55,10 @@ const Graph = () => {
                     },
                     data: {
                         label: initialNodes.find((item) => item.id === node)?.name || 'N/A',
+                        type: DUMMY_DATA,
+                        state: 'ACTIVE',
                     },
+                    type: 'processStep',
                 });
             });
         });
@@ -83,7 +95,16 @@ const Graph = () => {
             <div className="flex-1 w-full">
                 <ReactFlow
                     nodes={nodes}
-                    edges={edges.map((e) => ({ ...e, selectable: false }))}
+                    nodeTypes={nodeTypes}
+                    edges={edges.map((e) => ({
+                        ...e,
+                        selectable: false,
+                        markerEnd: {
+                            type: MarkerType.ArrowClosed,
+                        },
+                        // animated: true,
+                        // label: 'product',
+                    }))}
                     nodesDraggable={false}
                     nodesConnectable={false}
                     elementsSelectable={true}
@@ -95,7 +116,7 @@ const Graph = () => {
                 />
             </div>
 
-            {selectedProcessID && (
+            {selectedProcessID && processDetails && (
                 <ProcessModal
                     processID={selectedProcessID}
                     name={getProcessNameById(selectedProcessID)}
