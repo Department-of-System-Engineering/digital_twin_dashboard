@@ -30,6 +30,7 @@ export type Sensor = {
     min?: number;
     disabled?: boolean;
     color?: string;
+    axisID?: string;
 };
 
 export type Asset = {
@@ -46,7 +47,7 @@ export type ProcessNodeData = {
 
 export type ChartData = {
     xAxis: string;
-    [sensorId: number]: number;
+    [sensorId: string]: number | string;
 };
 
 export type ChartFilter = {
@@ -95,5 +96,12 @@ export type Privileges = {
     orderDetails: boolean;
     toggleSwitch: boolean;
 };
+
+export type AxisGroups = {
+    left: string[];
+    right: string[];
+};
+
+export type Domain = [number, number];
 
 export type Page = 'ORDER' | 'PROCESS';
