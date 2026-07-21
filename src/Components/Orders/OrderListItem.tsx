@@ -5,6 +5,7 @@ type OrderListItemProps = {
     fulfillmentDate?: string;
     priority?: boolean;
     onModalOpen: () => void;
+    checkExpiration?: boolean;
 };
 
 const OrderListItem = ({
@@ -14,10 +15,15 @@ const OrderListItem = ({
     fulfillmentDate,
     priority,
     onModalOpen,
+    checkExpiration = false,
 }: OrderListItemProps) => {
+    const isExpired = checkExpiration
+        ? fulfillmentDate !== undefined && new Date(fulfillmentDate) < new Date()
+        : false;
+
     return (
         <div
-            className={`w-full drop-shadow-md rounded-xl p-4 mb-6 grid grid-cols-4 gap-8 hover:cursor-pointer ${priority ? 'bg-amber-300' : 'bg-amber-50'}`}
+            className={`w-full drop-shadow-md rounded-xl p-4 mb-6 grid grid-cols-4 gap-8 hover:cursor-pointer ${isExpired ? 'bg-red-300' : priority ? 'bg-amber-300' : 'bg-amber-50'}`}
             onClick={onModalOpen}
         >
             <div className="min-w-0">
