@@ -2,7 +2,7 @@ import type {
     Graph,
     OptionItem,
     Asset,
-    Chart,
+    ChartData,
     Sensor,
     ChartFilter,
     Product,
@@ -17,7 +17,7 @@ type ApiContext = {
     getGraph: () => Promise<Graph | undefined>;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
     login: (username: string, password: string) => Promise<boolean | undefined>;
-    getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<Chart[] | undefined>;
+    getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<ChartData[] | undefined>;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
     getAvailableProducts: () => Promise<Product[] | undefined>;
     orderProducts: (

@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import Api from '../../context/api-context';
 import OrderModalDetailComponent from './OrderModalDetailComponent';
 import Role from '../../context/role-provider';
+import OrderProduct from './OrderProduct';
 
 type OrderModalProps = {
     orderID?: string;
@@ -36,7 +37,7 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
                             onClick={onClose}
                         >
                             <div
-                                className="relative min-w-[550px] w-[1100px] max-h-[80vh] overflow-y-auto bg-neutral-200 rounded-lg shadow-lg p-5 scrollbar-track-rounded"
+                                className="relative min-w-[550px] w-[1200px] max-h-[80vh] overflow-y-auto bg-neutral-200 rounded-lg shadow-lg p-5 scrollbar-track-rounded"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <button className="absolute top-5 right-5" onClick={onClose}>
@@ -81,21 +82,12 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
                                             </div>
                                             <div className="grid grid-cols-3 mt-6 gap-4">
                                                 {order.products.map((product) => (
-                                                    <div className="drop-shadow-sm bg-violet-50 rounded-lg p-2">
-                                                        <img
-                                                            src={product.imageUrl}
-                                                            alt="Product image"
-                                                            className="rounded-md shadow-lg w-[50%] mx-auto mb-3 max-w-[150px]"
-                                                        />
-                                                        <div className="w-[40%]">
-                                                            <label className="font-bold block truncate cursor-pointer">
-                                                                Quantity
-                                                            </label>
-                                                            <div className="bg-white p-2 rounded-md shadow-sm truncate">
-                                                                {product.quantity}
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <>
+                                                        {product.quantity &&
+                                                        product.quantity > 0 ? (
+                                                            <OrderProduct product={product} />
+                                                        ) : null}
+                                                    </>
                                                 ))}
                                             </div>
                                             {orderDetailsButton && (
