@@ -94,7 +94,9 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                             className="grid grid-cols-[30%_30%_20%_20%] gap-2 ml-[7%] items-center"
                                                             key={`${item.assetID}-${sensor.id}`}
                                                         >
-                                                            <p>{sensor.name}</p>
+                                                            <p className="text-gray-700 font-semibold">
+                                                                {sensor.name}
+                                                            </p>
                                                             <NumberInput
                                                                 type={sensor.type as NumberType}
                                                                 value={sensor.value}
@@ -108,7 +110,7 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
                                                                     )
                                                                 }
                                                             />
-                                                            <p className="text-gray-700 font-semibold w-fit text-lg">
+                                                            <p className="text-gray-700 w-fit">
                                                                 {sensor.unit}
                                                             </p>
                                                             {selectedSensorIDs?.includes(

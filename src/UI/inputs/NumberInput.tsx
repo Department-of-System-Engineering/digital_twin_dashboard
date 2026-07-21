@@ -25,7 +25,7 @@ const NumberInput = ({
         <input
             type="number"
             disabled={disabled}
-            min={min}
+            min={!disabled ? min : undefined}
             value={value !== undefined ? value : ''}
             onChange={(event) => onValueChange(parseFloat(event.target.value))}
             step={step ? step : type === 'float' ? 0.1 : 1}

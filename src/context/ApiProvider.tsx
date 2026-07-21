@@ -11,6 +11,7 @@ import type {
     OrderEnrichmentType,
     OrderListItemType,
     Order,
+    BaseMetric,
 } from '../types';
 import Api from './api-context';
 import { images } from '../assets/dummy_images';
@@ -42,6 +43,51 @@ const DUMMY_SENSORS: Sensor[] = [
         min: -120,
     },
     { id: 8, name: 'Batch Count', unit: 'pcs', value: 42, type: 'int' },
+];
+
+const DUMMY_KPIs: BaseMetric[] = [
+    {
+        id: 1,
+        name: 'Overall Equipment Effectiveness',
+        unit: '%',
+        value: 87.5,
+        type: 'percent',
+    },
+    {
+        id: 2,
+        name: 'Production Rate',
+        unit: 'pcs/h',
+        value: 245,
+        type: 'int',
+    },
+    {
+        id: 3,
+        name: 'Average Cycle Time',
+        unit: 's',
+        value: 42.8,
+        type: 'float',
+    },
+    {
+        id: 4,
+        name: 'Energy Consumption',
+        unit: 'kWh',
+        value: 356.4,
+        type: 'float',
+    },
+    {
+        id: 5,
+        name: 'Downtime',
+        unit: 'min',
+        value: 18,
+        type: 'int',
+    },
+    {
+        id: 6,
+        name: 'Defect Rate',
+        unit: '%',
+        value: 1.8,
+        type: 'percent',
+    },
 ];
 
 const ApiProvider = ({ children }: ApiProviderProps) => {
@@ -404,6 +450,13 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getKPIs = async (): Promise<BaseMetric[]> => {
+        const response = new Promise<BaseMetric[]>((resolve) => {
+            resolve(DUMMY_KPIs);
+        });
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -418,6 +471,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         completeOrder: completeOrder,
         deleteOrder: deleteOrder,
         getCompletedOrders: getCompletedOrders,
+        getKPIs: getKPIs,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

@@ -9,6 +9,7 @@ import type {
     OrderEnrichmentType,
     OrderListItemType,
     Order,
+    BaseMetric,
 } from '../types';
 import { createContext } from 'react';
 
@@ -29,6 +30,7 @@ type ApiContext = {
     completeOrder: (orderID: string) => Promise<boolean | undefined>;
     deleteOrder: (orderID: string) => Promise<boolean | undefined>;
     getCompletedOrders: () => Promise<OrderListItemType[] | undefined>;
+    getKPIs: () => Promise<BaseMetric[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -45,6 +47,7 @@ const Api = createContext<ApiContext>({
     completeOrder: async (_orderID: string) => undefined,
     deleteOrder: async (_orderID: string) => undefined,
     getCompletedOrders: async () => undefined,
+    getKPIs: async () => undefined,
 });
 
 export default Api;
