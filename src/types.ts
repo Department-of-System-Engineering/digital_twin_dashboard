@@ -21,12 +21,16 @@ export type Graph = {
     edges: GraphEdge[];
 };
 
-export type Sensor = {
+export type BaseMetric = {
     id: number;
     name: string;
     unit: string;
-    value?: number;
+    value: number;
     type: NumberType;
+};
+
+export type Sensor = Omit<BaseMetric, 'value'> & {
+    value?: number;
     min?: number;
     disabled?: boolean;
     color?: string;
