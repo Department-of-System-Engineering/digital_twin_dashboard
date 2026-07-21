@@ -213,42 +213,16 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
     };
 
     const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<ChartData[]> => {
-        // const DUMMY_CHART_DATA: ChartData[] = [
-        //     {
-        //         xAxis: '15:00',
-        //         1: 200,
-        //     },
-        //     {
-        //         xAxis: '15:05',
-        //         1: 210,
-        //     },
-        //     {
-        //         xAxis: '15:10',
-        //         1: 220,
-        //     },
-        //     {
-        //         xAxis: '15:15',
-        //         1: 200,
-        //     },
-        //     {
-        //         xAxis: '15:20',
-        //         1: 190,
-        //     },
-        //     {
-        //         xAxis: '15:25',
-        //         1: 200,
-        //     },
-        //     {
-        //         xAxis: '15:30',
-        //         1: 210,
-        //     },
-        // ];
-
         const times = ['15:00', '15:05', '15:10', '15:15', '15:20', '15:25', '15:30'];
 
         const chartData = times.map((time) => ({
             xAxis: time,
-            ...Object.fromEntries(_sensorIDs.map((id) => [id, Math.floor(Math.random() * 1000)])),
+            ...Object.fromEntries(
+                _sensorIDs.map((id) => [
+                    id,
+                    Math.floor(Math.random() * (Math.random() * (1000 - 0.001) + 0.001)),
+                ]),
+            ),
         }));
 
         const response = new Promise<ChartData[]>((resolve) => {
