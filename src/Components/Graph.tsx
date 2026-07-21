@@ -92,7 +92,7 @@ const Graph = () => {
 
     return (
         <>
-            <div className="flex-1 w-full">
+            <div className="h-full w-full">
                 <ReactFlow
                     nodes={nodes}
                     nodeTypes={nodeTypes}
@@ -110,7 +110,9 @@ const Graph = () => {
                     elementsSelectable={true}
                     panOnDrag={true}
                     onNodeClick={(_event: React.MouseEvent, node: Node) => {
-                        setSelectedProcessID(node.id);
+                        if (processDetails) {
+                            setSelectedProcessID(node.id);
+                        }
                     }}
                     fitView
                 />
