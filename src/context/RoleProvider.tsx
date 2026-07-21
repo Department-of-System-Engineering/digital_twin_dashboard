@@ -2,7 +2,7 @@ import type { Privileges } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 
-import Role from './role-provider';
+import Role from './role-context';
 import Global from './global-context';
 
 type RoleProviderProps = {
@@ -27,8 +27,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: false,
                             orderForm: true,
                             orderList: false,
+                            completedOrderList: false,
                             orderDetailsModal: false,
-                            orderDetailsButton: false,
+                            orderCompleteButton: false,
+                            orderDeleteButton: false,
                             orderDetails: false,
                             toggleSwitch: false,
                         });
@@ -43,8 +45,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: false,
                             orderForm: false,
                             orderList: false,
+                            completedOrderList: false,
                             orderDetailsModal: false,
-                            orderDetailsButton: false,
+                            orderCompleteButton: false,
+                            orderDeleteButton: false,
                             orderDetails: true,
                             toggleSwitch: false,
                         });
@@ -59,8 +63,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: true,
                             orderForm: false,
                             orderList: false,
+                            completedOrderList: false,
                             orderDetailsModal: false,
-                            orderDetailsButton: false,
+                            orderCompleteButton: false,
+                            orderDeleteButton: false,
                             orderDetails: false,
                             toggleSwitch: false,
                         });
@@ -75,8 +81,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: false,
                             orderForm: false,
                             orderList: true,
+                            completedOrderList: false,
                             orderDetailsModal: true,
-                            orderDetailsButton: false,
+                            orderCompleteButton: true,
+                            orderDeleteButton: false,
                             orderDetails: false,
                             toggleSwitch: false,
                         });
@@ -91,8 +99,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: true,
                             orderForm: false,
                             orderList: false,
+                            completedOrderList: false,
                             orderDetailsModal: false,
-                            orderDetailsButton: false,
+                            orderCompleteButton: false,
+                            orderDeleteButton: false,
                             orderDetails: false,
                             toggleSwitch: true,
                         });
@@ -107,8 +117,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: false,
                             orderForm: false,
                             orderList: true,
+                            completedOrderList: true,
                             orderDetailsModal: true,
-                            orderDetailsButton: false,
+                            orderCompleteButton: true,
+                            orderDeleteButton: true,
                             orderDetails: false,
                             toggleSwitch: false,
                         });
@@ -122,8 +134,10 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
                             graphs: false,
                             orderForm: false,
                             orderList: false,
+                            completedOrderList: false,
                             orderDetailsModal: false,
-                            orderDetailsButton: false,
+                            orderCompleteButton: false,
+                            orderDeleteButton: false,
                             orderDetails: false,
                             toggleSwitch: false,
                         });
@@ -141,9 +155,11 @@ const RoleProvider = ({ children }: RoleProviderProps) => {
         toggleSwitch: privileges?.toggleSwitch ?? false,
         orderForm: privileges?.orderForm ?? false,
         orderList: privileges?.orderList ?? false,
+        completedOrderList: privileges?.completedOrderList ?? false,
         orderDetailsModal: privileges?.orderDetailsModal ?? false,
         orderDetails: privileges?.orderDetails ?? false,
-        orderDetailsButton: privileges?.orderDetailsButton ?? false,
+        orderCompleteButton: privileges?.orderCompleteButton ?? false,
+        orderDeleteButton: privileges?.orderDeleteButton ?? false,
         processDetails: privileges?.processDetails ?? false,
         graphs: privileges?.graphs ?? false,
         actions: privileges?.actions ?? false,

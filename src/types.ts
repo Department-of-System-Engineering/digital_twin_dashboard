@@ -90,8 +90,10 @@ export type Privileges = {
     graphs: boolean;
     orderForm: boolean;
     orderList: boolean;
+    completedOrderList: boolean;
     orderDetailsModal: boolean;
-    orderDetailsButton: boolean;
+    orderCompleteButton: boolean;
+    orderDeleteButton: boolean;
     orderDetails: boolean;
     toggleSwitch: boolean;
 };
