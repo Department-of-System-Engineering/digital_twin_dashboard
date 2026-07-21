@@ -4,7 +4,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 import { useContext, useEffect, useState } from 'react';
 import Api from '../../context/api-context';
 import OrderModalDetailComponent from './OrderModalDetailComponent';
-import Role from '../../context/role-provider';
+import Role from '../../context/role-context';
 import OrderProduct from './OrderProduct';
 
 type OrderModalProps = {
@@ -13,7 +13,7 @@ type OrderModalProps = {
 };
 
 const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
-    const { orderDetailsButton } = useContext(Role);
+    const { orderCompleteButton, orderDeleteButton } = useContext(Role);
 
     const [order, setOrder] = useState<Order>();
     const { getOrder, completeOrder, deleteOrder } = useContext(Api);
@@ -25,6 +25,9 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const isExpired =
+        order?.details.fulfillmentDate !== undefined &&
+        new Date(order.details.fulfillmentDate) < new Date();
     return (
         <>
             {createPortal(
@@ -85,29 +88,38 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
                                                     <>
                                                         {product.quantity &&
                                                         product.quantity > 0 ? (
-                                                            <OrderProduct product={product} />
+                                                            <OrderProduct
+                                                                product={product}
+                                                                expired={isExpired}
+                                                            />
                                                         ) : null}
                                                     </>
                                                 ))}
                                             </div>
-                                            {orderDetailsButton && (
+                                            {(orderCompleteButton || orderDeleteButton) && (
                                                 <div className="mt-7 w-full flex justify-center items-center gap-7">
-                                                    <button
-                                                        className="px-6 py-2 bg-red-400 text-gray-700 rounded-lg hover:bg-red-500 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
-                                                        onClick={() => {
-                                                            deleteOrder(order.details.orderID);
-                                                        }}
-                                                    >
-                                                        Delete Order
-                                                    </button>
-                                                    <button
-                                                        className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
-                                                        onClick={() => {
-                                                            completeOrder(order.details.orderID);
-                                                        }}
-                                                    >
-                                                        Complete Order
-                                                    </button>
+                                                    {orderDeleteButton && (
+                                                        <button
+                                                            className="px-6 py-2 bg-red-400 text-gray-700 rounded-lg hover:bg-red-500 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
+                                                            onClick={() => {
+                                                                deleteOrder(order.details.orderID);
+                                                            }}
+                                                        >
+                                                            Delete Order
+                                                        </button>
+                                                    )}
+                                                    {orderCompleteButton && (
+                                                        <button
+                                                            className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
+                                                            onClick={() => {
+                                                                completeOrder(
+                                                                    order.details.orderID,
+                                                                );
+                                                            }}
+                                                        >
+                                                            Complete Order
+                                                        </button>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>

@@ -28,6 +28,7 @@ type ApiContext = {
     getOrder: (orderID?: string) => Promise<Order | undefined>;
     completeOrder: (orderID: string) => Promise<boolean | undefined>;
     deleteOrder: (orderID: string) => Promise<boolean | undefined>;
+    getCompletedOrders: () => Promise<OrderListItemType[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -43,6 +44,7 @@ const Api = createContext<ApiContext>({
     getOrder: async (_orderID?: string) => undefined,
     completeOrder: async (_orderID: string) => undefined,
     deleteOrder: async (_orderID: string) => undefined,
+    getCompletedOrders: async () => undefined,
 });
 
 export default Api;

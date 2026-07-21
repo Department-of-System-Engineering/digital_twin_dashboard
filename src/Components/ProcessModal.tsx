@@ -8,7 +8,7 @@ import ChartFilter from '../UI/ProcessModal/ChartFilter';
 import NumberInput from '../UI/inputs/NumberInput';
 import Chart from '../UI/Chart';
 import Api from '../context/api-context';
-import Role from '../context/role-provider';
+import Role from '../context/role-context';
 
 type ProcessModalProps = {
     processID: string;

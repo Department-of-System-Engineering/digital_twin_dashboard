@@ -277,15 +277,15 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 orderID: '1',
                 customerName: 'Dummy name',
                 orderDate: '2026.02.01.',
-                fulfillmentDate: '2026.03.01.',
+                fulfillmentDate: '2026.08.01.',
                 priority: true,
             },
             {
                 orderID: '2',
                 customerName: 'Dummy name',
                 orderDate: '2026.02.01.',
-                fulfillmentDate: '2026.03.01.',
-                priority: true,
+                fulfillmentDate: '2026.08.01.',
+                priority: false,
             },
             {
                 orderID: '3',
@@ -322,12 +322,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
             details: {
                 orderID: orderID ?? '1',
                 customerName: 'Teszt Name',
-                fulfillmentDate: '2026.01.01',
+                fulfillmentDate: '2026.07.01',
                 orderDate: '2026.01.01',
                 priority: false,
             },
             products: [
-                { id: 'A', imageUrl: images.A, quantity: 2, completedQuantity: 1 },
+                { id: 'A', imageUrl: images.A, quantity: 2, completedQuantity: 2 },
                 { id: 'B', imageUrl: images.B, quantity: 0, completedQuantity: 0 },
                 { id: 'C', imageUrl: images.C, quantity: 3, completedQuantity: 2 },
                 { id: 'D', imageUrl: images.D, quantity: 1, completedQuantity: 0 },
@@ -359,6 +359,51 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    const getCompletedOrders = (): Promise<OrderListItemType[]> => {
+        const DUMMY_DATA: OrderListItemType[] = [
+            {
+                orderID: '1',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.08.01.',
+                priority: true,
+            },
+            {
+                orderID: '2',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.08.01.',
+                priority: false,
+            },
+            {
+                orderID: '3',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '4',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: false,
+            },
+            {
+                orderID: '5',
+                customerName: 'Dummy name',
+                orderDate: '2026.02.01.',
+                fulfillmentDate: '2026.03.01.',
+                priority: true,
+            },
+        ];
+        const response = new Promise<OrderListItemType[]>((resolve) => {
+            resolve(DUMMY_DATA);
+        });
+
+        return response;
+    };
+
     const apiContext = {
         getUserTypes: getUserTypes,
         getGraph: getGraph,
@@ -372,6 +417,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         getOrder: getOrder,
         completeOrder: completeOrder,
         deleteOrder: deleteOrder,
+        getCompletedOrders: getCompletedOrders,
     };
 
     return <Api.Provider value={apiContext}>{children}</Api.Provider>;

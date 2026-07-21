@@ -6,7 +6,7 @@ import '@xyflow/react/dist/style.css';
 import ProcessModal from './ProcessModal';
 import CustomNode from '../UI/ProcessGraph/CustomNode';
 import Api from '../context/api-context';
-import Role from '../context/role-provider';
+import Role from '../context/role-context';
 
 const DUMMY_DATA = ['3:D', '4:A', '2:C'];
 
