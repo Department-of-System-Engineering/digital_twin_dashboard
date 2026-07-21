@@ -36,6 +36,10 @@ const OrderForm = () => {
     const { getAvailableProducts, orderProducts } = useContext(Api);
     const [products, setProducts] = useState<Product[]>();
     const [details, dispatch] = useReducer(reducer, initialState);
+    const canSubmit =
+        products?.some((product) => (product.quantity ?? 0) > 0) &&
+        details.customerName &&
+        details.fulfillmentDate;
 
     useEffect(() => {
         getAvailableProducts().then((data) => setProducts(data));
@@ -103,8 +107,9 @@ const OrderForm = () => {
 
                 <div className="flex justify-center my-8">
                     <button
-                        className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
+                        className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg disabled:opacity-80 disabled:cursor-not-allowed disabled:hover:scale-100"
                         onClick={productOrderHandler}
+                        disabled={!canSubmit}
                     >
                         Place Order
                     </button>
