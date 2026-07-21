@@ -12,7 +12,7 @@ const CustomNode = ({
     const [hovered, setHovered] = useState(false);
 
     return (
-        <>
+        <div key={data.label}>
             <div
                 className="group relative outline-1 p-3 px-6 rounded-xl hover:cursor-pointer hover:z-100"
                 onMouseEnter={() => setHovered(true)}
@@ -39,12 +39,12 @@ const CustomNode = ({
                         className="bg-amber-300 text-white text-xs px-3 py-2 rounded-xl shadow-md"
                     >
                         {data.type.map((item) => (
-                            <div>{item}</div>
+                            <div key={item}>{item}</div>
                         ))}
                     </div>
                 </ViewportPortal>
             )}
-        </>
+        </div>
     );
 };
 

@@ -6,7 +6,7 @@ import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
 import ChartFilter from '../UI/ProcessModal/ChartFilter';
 import NumberInput from '../UI/inputs/NumberInput';
-import Chart from '../UI/Chart';
+import Chart from '../UI/ProcessModal/Chart';
 import Api from '../context/api-context';
 import Role from '../context/role-provider';
 
@@ -47,10 +47,13 @@ const ProcessModal = ({ processID, name, onClose }: ProcessModalProps) => {
 
     const handleChartToggle = (sensorID: number) => {
         if (selectedSensorIDs && selectedSensorIDs.includes(sensorID)) {
-            setSelectedSensorIDs((prev) =>
-                prev ? [...prev.filter((item) => item !== sensorID)] : undefined,
-            );
-            // setSelectedSensorIDs(undefined);
+            if (selectedSensorIDs.length === 1) {
+                setSelectedSensorIDs(undefined);
+            } else {
+                setSelectedSensorIDs((prev) =>
+                    prev ? [...prev.filter((item) => item !== sensorID)] : undefined,
+                );
+            }
         } else {
             setSelectedSensorIDs((prev) => (prev ? [...prev, sensorID] : [sensorID]));
         }
