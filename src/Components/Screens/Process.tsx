@@ -1,6 +1,12 @@
 import Graph from '../Graph';
+import KPIs from '../KPI/KPIs';
 
 const Process = () => {
-    return <Graph />;
+    return (
+        <div className="w-full h-full grid grid-cols-[75%_25%] justify-items-center">
+            <Graph />
+            <KPIs />
+        </div>
+    );
 };
 export default Process;
