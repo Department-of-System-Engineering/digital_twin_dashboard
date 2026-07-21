@@ -3,8 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { MarkerType, ReactFlow, type Edge, type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import CustomNode from './UI/ProcessGraph/CustomNode';
 import ProcessModal from './ProcessModal';
-import CustomNode from '../UI/ProcessGraph/CustomNode';
 import Api from '../context/api-context';
 import Role from '../context/role-context';
 

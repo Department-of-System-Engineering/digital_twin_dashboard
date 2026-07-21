@@ -1,12 +1,12 @@
-import type { AxisGroups, ChartData, ChartFilter, Domain, Sensor } from '../../types';
+import type { AxisGroups, ChartData, ChartFilter, Domain, Sensor } from '../../../types';
 
 import { useContext, useEffect, useState } from 'react';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Line } from 'recharts';
 
-import { CHART_AXIS_TOLERANCE } from '../../util/constants';
-import { generateHexColor } from '../../util/functions';
+import { CHART_AXIS_TOLERANCE } from '../../../util/constants';
+import { generateHexColor } from '../../../util/functions';
 import SensorLegend from '../Chart/SensorLegend';
-import Api from '../../context/api-context';
+import Api from '../../../context/api-context';
 
 type ChartProps = {
     sensorIDs: number[];

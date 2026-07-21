@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import Role from '../../context/role-context';
+
+import Role from '../../../context/role-context';
 
 const Navigator = () => {
     const location = useLocation();

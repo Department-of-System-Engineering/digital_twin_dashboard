@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { IoLogOut, IoThermometerOutline, IoWaterSharp } from 'react-icons/io5';
 
-import Global from '../../context/global-context';
+import Global from '../../../context/global-context';
 
 const OverView = () => {
     const { globalTemperature, globalHumidity, logout } = useContext(Global);

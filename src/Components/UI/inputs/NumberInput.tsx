@@ -1,4 +1,4 @@
-import type { NumberType } from '../../types';
+import type { NumberType } from '../../../types';
 
 type NumberInputProps = {
     disabled?: boolean;

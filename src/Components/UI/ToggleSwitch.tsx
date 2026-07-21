@@ -1,4 +1,4 @@
-import type { OptionItem } from '../types';
+import type { OptionItem } from '../../types';
 
 type ToggleSwitchProps = {
     options: OptionItem[];

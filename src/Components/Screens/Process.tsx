@@ -1,5 +1,5 @@
 import Graph from '../Graph';
-import KPIs from '../KPI/KPIs';
+import KPIs from '../KPIs';
 
 const Process = () => {
     return (

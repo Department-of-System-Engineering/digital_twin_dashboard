@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import ProtectedRoute from './ProtectedRoute';
-import GlobalProvider from './context/GlobalProvider';
+import ProtectedRoute from './Components/Screens/ProtectedRoute';
+import HomeRedirect from './Components/Screens/HomeRedirect';
 import Unauthorized from './Components/Screens/Unauthorized';
+import GlobalProvider from './context/GlobalProvider';
 import RoleProvider from './context/RoleProvider';
-import HomeRedirect from './HomeRedirect';
 import ApiProvider from './context/ApiProvider';
 import Process from './Components/Screens/Process';
 import Login from './Components/Screens/Login';

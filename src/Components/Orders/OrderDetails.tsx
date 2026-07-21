@@ -23,7 +23,7 @@ const OrderDetails = () => {
                         {order.products.map((product) => (
                             <>
                                 {product.quantity && product.quantity > 0 ? (
-                                    <OrderProduct product={product} />
+                                    <OrderProduct key={product.id} product={product} />
                                 ) : null}
                             </>
                         ))}

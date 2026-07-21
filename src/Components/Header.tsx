@@ -1,6 +1,6 @@
-import Navigator from '../UI/Header/Navigator';
-import Settings from '../UI/Header/Settings';
-import OverView from '../UI/Header/OverView';
+import Navigator from './UI/Header/Navigator';
+import Settings from './UI/Header/Settings';
+import OverView from './UI/Header/OverView';
 
 const Header = () => {
     return (

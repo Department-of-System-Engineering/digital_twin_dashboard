@@ -1,15 +1,18 @@
-import Api from '../../context/api-context';
-import type { NumberType, Sensor } from '../../types';
+import type { NumberType, Sensor } from '../types';
+
 import { useContext, useEffect, useState } from 'react';
-import NumberInput from '../../UI/inputs/NumberInput';
+import NumberInput from './UI/inputs/NumberInput';
+import Api from '../context/api-context';
 
 const KPIs = () => {
     const [kpis, setKpis] = useState<Sensor[]>();
     const { getKPIs } = useContext(Api);
+
     useEffect(() => {
         getKPIs().then((data) => data && setKpis(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return (
         <div className=" p-4">
             <div className="w-fit h-fit p-5 bg-neutral-50 border border-gray-200 rounded-xl drop-shadow-md">

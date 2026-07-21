@@ -1,10 +1,10 @@
-import type { ChartFilter as ChartFilterObjectType } from '../../types';
+import type { ChartFilter as ChartFilterObjectType } from '../../../types';
 
 import { useEffect, useState } from 'react';
 import { FaFilter } from 'react-icons/fa';
 
-import { getDateTimeLocal } from '../../util/functions';
-import DateTimePicker from '../DateTimePicker';
+import { getDateTimeLocal } from '../../../util/functions';
+import DateTimePicker from '../inputs/DateTimePicker';
 import NumberInput from '../inputs/NumberInput';
 
 type ChartFilterProps = {
