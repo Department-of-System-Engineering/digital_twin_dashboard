@@ -5,7 +5,7 @@ import { Navigate } from 'react-router';
 
 import Global from './context/global-context';
 import Header from './Components/Header';
-import Role from './context/role-provider';
+import Role from './context/role-context';
 
 type ProtectedRouteType = {
     children: React.ReactElement;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router';
 
-import Role from './context/role-provider';
+import Role from './context/role-context';
 
 const HomeRedirect = () => {
     const { processPage, orderPage } = useContext(Role);
