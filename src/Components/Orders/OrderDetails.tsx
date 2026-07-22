@@ -20,13 +20,11 @@ const OrderDetails = () => {
                         Order ID: {order.details.orderID}
                     </div>
                     <div className="grid grid-cols-3 gap-6 justify-items-center ">
-                        {order.products.map((product) => (
-                            <>
-                                {product.quantity && product.quantity > 0 ? (
-                                    <OrderProduct key={product.id} product={product} />
-                                ) : null}
-                            </>
-                        ))}
+                        {order.products.map((product) => {
+                            if (product.quantity && product.quantity > 0) {
+                                return <OrderProduct key={product.id} product={product} />;
+                            }
+                        })}
                     </div>
                 </div>
             )}

@@ -68,13 +68,13 @@ export type Product = {
     completedQuantity?: number;
 };
 
-export type OrderEnrichmentType = {
+export type OrderEnrichment = {
     customerName: string | undefined;
     fulfillmentDate: string | undefined;
     priority: boolean;
 };
 
-export type OrderListItemType = {
+export type OrderListItem = {
     orderID: string;
     customerName?: string;
     orderDate?: string;
@@ -83,7 +83,7 @@ export type OrderListItemType = {
 };
 
 export type Order = {
-    details: OrderListItemType;
+    details: OrderListItem;
     products: Product[];
 };
 

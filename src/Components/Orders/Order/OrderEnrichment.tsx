@@ -1,4 +1,4 @@
-import type { OrderEnrichmentType } from '../../../types';
+import type { OrderEnrichment as OrderEnrichmentType } from '../../../types';
 
 import DateTimePicker from '../../UI/inputs/DateTimePicker';
 import ToggleSwitch from '../../UI/ToggleSwitch';
