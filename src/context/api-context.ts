@@ -14,20 +14,20 @@ import type {
 import { createContext } from 'react';
 
 type ApiContext = {
+    login: (username: string, password: string) => Promise<boolean | undefined>;
     getUserTypes: () => Promise<OptionItem[] | undefined>;
+    getKPIs: (usedID: number) => Promise<BaseMetric[] | undefined>;
     getGraph: () => Promise<Graph | undefined>;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
-    login: (username: string, password: string) => Promise<boolean | undefined>;
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<ChartData[] | undefined>;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
-    getAvailableProducts: () => Promise<Product[] | undefined>;
-    orderProducts: (products: Product[], details?: OrderEnrichment) => Promise<boolean | undefined>;
     getOrders: () => Promise<OrderListItem[] | undefined>;
-    getOrder: (orderID?: string) => Promise<Order | undefined>;
-    completeOrder: (orderID: string) => Promise<boolean | undefined>;
-    deleteOrder: (orderID: string) => Promise<boolean | undefined>;
+    orderProducts: (products: Product[], details?: OrderEnrichment) => Promise<boolean | undefined>;
     getCompletedOrders: () => Promise<OrderListItem[] | undefined>;
-    getKPIs: (usedID: number) => Promise<BaseMetric[] | undefined>;
+    getOrder: (orderID?: string) => Promise<Order | undefined>;
+    deleteOrder: (orderID: string) => Promise<boolean | undefined>;
+    completeOrder: (orderID: string) => Promise<boolean | undefined>;
+    getAvailableProducts: () => Promise<Product[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
