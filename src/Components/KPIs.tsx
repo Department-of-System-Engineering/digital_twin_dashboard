@@ -2,14 +2,16 @@ import type { NumberType, Sensor } from '../types';
 
 import { useContext, useEffect, useState } from 'react';
 import NumberInput from './UI/inputs/NumberInput';
+import Global from '../context/global-context';
 import Api from '../context/api-context';
 
 const KPIs = () => {
     const [kpis, setKpis] = useState<Sensor[]>();
+    const { selectedUserType } = useContext(Global);
     const { getKPIs } = useContext(Api);
 
     useEffect(() => {
-        getKPIs().then((data) => data && setKpis(data));
+        if (selectedUserType) getKPIs(selectedUserType?.id).then((data) => data && setKpis(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
