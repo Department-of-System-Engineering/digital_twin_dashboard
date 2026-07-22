@@ -6,8 +6,8 @@ import type {
     Sensor,
     ChartFilter,
     Product,
-    OrderEnrichmentType,
-    OrderListItemType,
+    OrderEnrichment,
+    OrderListItem,
     Order,
     BaseMetric,
 } from '../types';
@@ -21,16 +21,13 @@ type ApiContext = {
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<ChartData[] | undefined>;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
     getAvailableProducts: () => Promise<Product[] | undefined>;
-    orderProducts: (
-        products: Product[],
-        details?: OrderEnrichmentType,
-    ) => Promise<boolean | undefined>;
-    getOrders: () => Promise<OrderListItemType[] | undefined>;
+    orderProducts: (products: Product[], details?: OrderEnrichment) => Promise<boolean | undefined>;
+    getOrders: () => Promise<OrderListItem[] | undefined>;
     getOrder: (orderID?: string) => Promise<Order | undefined>;
     completeOrder: (orderID: string) => Promise<boolean | undefined>;
     deleteOrder: (orderID: string) => Promise<boolean | undefined>;
-    getCompletedOrders: () => Promise<OrderListItemType[] | undefined>;
-    getKPIs: () => Promise<BaseMetric[] | undefined>;
+    getCompletedOrders: () => Promise<OrderListItem[] | undefined>;
+    getKPIs: (usedID: number) => Promise<BaseMetric[] | undefined>;
 };
 
 const Api = createContext<ApiContext>({
@@ -41,13 +38,13 @@ const Api = createContext<ApiContext>({
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
-    orderProducts: async (_products: Product[], _details?: OrderEnrichmentType) => undefined,
+    orderProducts: async (_products: Product[], _details?: OrderEnrichment) => undefined,
     getOrders: async () => undefined,
     getOrder: async (_orderID?: string) => undefined,
     completeOrder: async (_orderID: string) => undefined,
     deleteOrder: async (_orderID: string) => undefined,
     getCompletedOrders: async () => undefined,
-    getKPIs: async () => undefined,
+    getKPIs: async (_userID: number) => undefined,
 });
 
 export default Api;
