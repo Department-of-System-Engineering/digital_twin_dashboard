@@ -73,7 +73,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-    /graph:
+    /process/graph:
         get:
             tags:
                 - Process
@@ -121,7 +121,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-    /charts:
+    /sensors/chart:
         post:
             tags:
                 - Process
@@ -295,7 +295,7 @@ paths:
             parameters:
                 - name: orderId
                   in: path
-                  required: true
+                  required: false
                   schema:
                       type: string
             responses:
@@ -505,39 +505,26 @@ components:
             properties:
                 id:
                     type: integer
-
                 name:
                     type: string
-
                 unit:
                     type: string
-
                 type:
                     type: string
                     enum:
                         - int
                         - float
                         - percent
-
                 value:
                     type: number
                     nullable: true
-
                 min:
                     type: number
                     nullable: true
-
                 disabled:
                     type: boolean
                     nullable: true
 
-                color:
-                    type: string
-                    nullable: true
-
-                axisID:
-                    type: string
-                    nullable: true
         Chart:
             type: object
             description: Time series chart entry
@@ -583,14 +570,6 @@ components:
                     nullable: true
 
                 maxQuantity:
-                    type: integer
-                    nullable: true
-
-                quantity:
-                    type: integer
-                    nullable: true
-
-                completedQuantity:
                     type: integer
                     nullable: true
 
