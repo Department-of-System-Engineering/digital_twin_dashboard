@@ -1,4 +1,4 @@
-import type { OptionItem } from '../types';
+import type { OptionItem } from '../../types';
 
 import { useState, useRef, useEffect } from 'react';
 import { IoChevronDownCircleSharp } from 'react-icons/io5';

@@ -1,4 +1,4 @@
-import type { OrderListItemType } from '../../types';
+import type { OrderListItem as OrderListItemType } from '../../types';
 
 import { useContext, useEffect, useState } from 'react';
 

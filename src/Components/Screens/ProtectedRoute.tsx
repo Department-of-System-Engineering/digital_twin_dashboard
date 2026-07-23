@@ -1,11 +1,11 @@
-import type { Page } from './types';
+import type { Page } from '../../types';
 
 import { useContext } from 'react';
 import { Navigate } from 'react-router';
 
-import Global from './context/global-context';
-import Header from './Components/Header';
-import Role from './context/role-context';
+import Global from '../../context/global-context';
+import Role from '../../context/role-context';
+import Header from '../Header';
 
 type ProtectedRouteType = {
     children: React.ReactElement;

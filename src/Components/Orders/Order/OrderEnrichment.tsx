@@ -1,8 +1,8 @@
-import type { OrderEnrichmentType } from '../../../types';
+import type { OrderEnrichment as OrderEnrichmentType } from '../../../types';
 
-import DateTimePicker from '../../../UI/DateTimePicker';
-import ToggleSwitch from '../../../UI/ToggleSwitch';
-import TextInput from '../../../UI/inputs/TextInput';
+import DateTimePicker from '../../UI/inputs/DateTimePicker';
+import ToggleSwitch from '../../UI/ToggleSwitch';
+import TextInput from '../../UI/inputs/TextInput';
 
 type OrderEnrichmentProps = {
     state: OrderEnrichmentType;

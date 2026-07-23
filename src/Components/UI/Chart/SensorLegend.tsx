@@ -1,4 +1,4 @@
-import type { Sensor } from '../../types';
+import type { Sensor } from '../../../types';
 
 type SensorLegendProps = {
     sensors?: Sensor[];

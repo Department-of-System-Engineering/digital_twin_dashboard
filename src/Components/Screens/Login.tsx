@@ -1,8 +1,9 @@
 import { useContext, useState, type FormEvent } from 'react';
-import Global from '../../context/global-context';
 import { useNavigate } from 'react-router';
+
+import Global from '../../context/global-context';
 import Role from '../../context/role-context';
-import Dropdown from '../../UI/Dropdown';
+import Dropdown from '../UI/Dropdown';
 
 const Login = () => {
     const { login } = useContext(Global);

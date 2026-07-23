@@ -8,8 +8,8 @@ import type {
     Sensor,
     ChartFilter,
     Product,
-    OrderEnrichmentType,
-    OrderListItemType,
+    OrderEnrichment,
+    OrderListItem,
     Order,
     BaseMetric,
 } from '../types';
@@ -91,7 +91,11 @@ const DUMMY_KPIs: BaseMetric[] = [
 ];
 
 const ApiProvider = ({ children }: ApiProviderProps) => {
-    const getUserTypes = async () => {
+    /**
+     * Retrieves user types that will appear as selectable items.
+     * @returns A list of OptionItems, with the available users.
+     */
+    const getUserTypes = async (): Promise<OptionItem[]> => {
         const USER_TYPES: OptionItem[] = [
             { id: 1, name: 'Customer' },
             { id: 2, name: 'Operator' },
@@ -108,7 +112,11 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getGraph = async () => {
+    /**
+     * Retrieves the process graph for the process screen, with the ids and labels.
+     * @returns The graph with nodes and edges.
+     */
+    const getGraph = async (): Promise<Graph> => {
         const DUMMY_NODES: GraphNode[] = [
             { id: 'p1', name: 'Process 1' },
             { id: 'p2', name: 'Process 2' },
@@ -179,7 +187,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getProcess = async (_processID: string) => {
+    /**
+     * Retrieves the details (assets) for a process step.
+     * @param _processID The id of the process for details.
+     * @returns A list of assets for the specified process.
+     */
+    const getProcess = async (_processID: string): Promise<Asset[]> => {
         const DUMMY_PROCESS: Asset[] = [
             {
                 assetID: 1,
@@ -204,7 +217,13 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const login = (_username: string, _password: string) => {
+    /**
+     * Login endpoint for user.
+     * @param _username
+     * @param _password
+     * @returns A boolean value regarding the success of the login.
+     */
+    const login = (_username: string, _password: string): Promise<boolean> => {
         const response = new Promise<boolean>((resolve) => {
             resolve(true);
         });
@@ -212,6 +231,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    /**
+     * The function is used for retrieving the data for a specific chart.
+     * @param _sensorIDs The list of sensorIDs that will be of the chart.
+     * @param _filter The time and frequency filter details if there is any.
+     * @returns A list of chart data, where one item in the array contains the values for the sensors for a given timestamp.
+     */
     const getCharts = (_sensorIDs: number[], _filter: ChartFilter): Promise<ChartData[]> => {
         const times = ['15:00', '15:05', '15:10', '15:15', '15:20', '15:25', '15:30'];
 
@@ -232,6 +257,11 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    /**
+     * Retrieves information about the specified sensors.
+     * @param _sensorIDs The IDs of the sensors for details.
+     * @returns A list of sensor details.
+     */
     const getSensorsDetails = (_sensorIDs: number[]): Promise<Sensor[]> => {
         const DUMMY_SENSOR_DATA = DUMMY_SENSORS.filter((item) => _sensorIDs.includes(item.id));
 
@@ -242,6 +272,10 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    /**
+     * Retrieves all available products with details.
+     * @returns A list of products.
+     */
     const getAvailableProducts = (): Promise<Product[]> => {
         const DUMMY_PRODUCT_DATA: Product[] = [
             {
@@ -278,10 +312,13 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const orderProducts = (
-        _products: Product[],
-        _details?: OrderEnrichmentType,
-    ): Promise<boolean> => {
+    /**
+     * Requests an order for the specified products.
+     * @param _products A list of products for order.
+     * @param _details Details about the order if present.
+     * @returns A boolean about the success.
+     */
+    const orderProducts = (_products: Product[], _details?: OrderEnrichment): Promise<boolean> => {
         console.log(_products);
         console.log(_details);
         const response = new Promise<boolean>((resolve) => {
@@ -291,8 +328,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getOrders = (): Promise<OrderListItemType[]> => {
-        const DUMMY_DATA: OrderListItemType[] = [
+    /**
+     * Returns the current orders.
+     * @returns A list of orders.
+     */
+    const getOrders = (): Promise<OrderListItem[]> => {
+        const DUMMY_DATA: OrderListItem[] = [
             {
                 orderID: '1',
                 customerName: 'Dummy name',
@@ -329,15 +370,20 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 priority: true,
             },
         ];
-        const response = new Promise<OrderListItemType[]>((resolve) => {
+        const response = new Promise<OrderListItem[]>((resolve) => {
             resolve(DUMMY_DATA);
         });
 
         return response;
     };
 
+    /**
+     * Requests details about a specific order.
+     * @param orderID The ID of the order for details.
+     * @returns The details of the order.
+     */
     const getOrder = (orderID?: string): Promise<Order> => {
-        /**If there is no orderID, then the operator needs to current order details from the server. */
+        /**If there is no orderID, then the operator needs the current order details from the server. */
         const DUMMY_ORDER: Order = {
             details: {
                 orderID: orderID ?? '1',
@@ -354,6 +400,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 { id: 'Special', imageUrl: images.special, quantity: 2, completedQuantity: 0 },
             ],
         };
+
         const response = new Promise<Order>((resolve) => {
             resolve(DUMMY_ORDER);
         });
@@ -361,6 +408,11 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
+    /**
+     * Requests a status update to completed for a specific order.
+     * @param orderID The order to update.
+     * @returns Boolean about the success.
+     */
     const completeOrder = (orderID: string): Promise<boolean> => {
         /**Need to send 'completed time' timestamp */
         console.log(`Order complete: ${orderID}`);
@@ -370,6 +422,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
 
         return response;
     };
+
+    /**
+     * Requests the deletion of the specified order.
+     * @param orderID The order to delete.
+     * @returns Boolean about the success.
+     */
     const deleteOrder = (orderID: string): Promise<boolean> => {
         console.log(`Order delete: ${orderID}`);
         const response = new Promise<boolean>((resolve) => {
@@ -379,8 +437,12 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return response;
     };
 
-    const getCompletedOrders = (): Promise<OrderListItemType[]> => {
-        const DUMMY_DATA: OrderListItemType[] = [
+    /**
+     * A request for retrieving the orders that were completed.
+     * @returns A list of orders.
+     */
+    const getCompletedOrders = (): Promise<OrderListItem[]> => {
+        const DUMMY_DATA: OrderListItem[] = [
             {
                 orderID: '1',
                 customerName: 'Dummy name',
@@ -417,17 +479,22 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                 priority: true,
             },
         ];
-        const response = new Promise<OrderListItemType[]>((resolve) => {
+        const response = new Promise<OrderListItem[]>((resolve) => {
             resolve(DUMMY_DATA);
         });
 
         return response;
     };
 
-    const getKPIs = async (): Promise<BaseMetric[]> => {
+    /**
+     * Requests KPIs for the current user.
+     * @returns A list of KPIs
+     */
+    const getKPIs = async (_userID: number): Promise<BaseMetric[]> => {
         const response = new Promise<BaseMetric[]>((resolve) => {
             resolve(DUMMY_KPIs);
         });
+
         return response;
     };
 

@@ -1,4 +1,4 @@
-import NumberInput from '../../../UI/inputs/NumberInput';
+import NumberInput from '../../UI/inputs/NumberInput';
 
 type OrderItemType = {
     imageUrl?: string;

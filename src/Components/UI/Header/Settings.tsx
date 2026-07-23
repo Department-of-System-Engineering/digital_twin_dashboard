@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
+import Global from '../../../context/global-context';
+import Role from '../../../context/role-context';
 import ToggleSwitch from '../ToggleSwitch';
 import Dropdown from '../Dropdown';
-import Global from '../../context/global-context';
-import Role from '../../context/role-context';
 
 const Settings = () => {
     const { toggleSwitch } = useContext(Role);

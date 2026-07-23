@@ -1,4 +1,4 @@
-import type { ProcessNodeData } from '../../types';
+import type { ProcessNodeData } from '../../../types';
 import { type NodeProps, type Node, Handle, Position, ViewportPortal } from '@xyflow/react';
 
 import { useState } from 'react';

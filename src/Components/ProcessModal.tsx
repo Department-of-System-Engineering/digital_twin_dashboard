@@ -4,11 +4,11 @@ import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoCloseOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 
-import ChartFilter from '../UI/ProcessModal/ChartFilter';
-import NumberInput from '../UI/inputs/NumberInput';
-import Chart from '../UI/ProcessModal/Chart';
-import Api from '../context/api-context';
+import ChartFilter from './UI/ProcessModal/ChartFilter';
+import NumberInput from './UI/inputs/NumberInput';
+import Chart from './UI/ProcessModal/Chart';
 import Role from '../context/role-context';
+import Api from '../context/api-context';
 
 type ProcessModalProps = {
     processID: string;
