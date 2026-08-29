@@ -1,4 +1,4 @@
-import type { OrderEnrichmentType, Product } from '../../../types';
+import type { OrderEnrichment as OrderEnrichmentType, Product } from '../../../types';
 import { useContext, useEffect, useReducer, useState } from 'react';
 
 import OrderItem from './OrderItem';

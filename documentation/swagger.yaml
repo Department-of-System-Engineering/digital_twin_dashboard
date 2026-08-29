@@ -569,6 +569,10 @@ components:
                     type: string
                     nullable: true
 
+                quantity:
+                    type: integer
+                    nullable: true
+
                 maxQuantity:
                     type: integer
                     nullable: true
