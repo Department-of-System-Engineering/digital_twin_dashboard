@@ -20,6 +20,11 @@ type ApiContext = {
     getGraph: () => Promise<Graph | undefined>;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<ChartData[] | undefined>;
+    subscribeCharts: (
+        sensorIDs: number[],
+        filter: ChartFilter,
+        onData: (data: ChartData[]) => void,
+    ) => () => void;
     getSensorsDetails: (sensorIDs: number[]) => Promise<Sensor[] | undefined>;
     getOrders: () => Promise<OrderListItem[] | undefined>;
     orderProducts: (products: Product[], details?: OrderEnrichment) => Promise<boolean | undefined>;
@@ -36,6 +41,9 @@ const Api = createContext<ApiContext>({
     getProcess: async (_processID: string) => undefined,
     login: async (_username: string, _password: string) => undefined,
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,
+    subscribeCharts:
+        (_sensorIDs: number[], _filter: ChartFilter, _onData: (data: ChartData[]) => void) =>
+        () => {},
     getSensorsDetails: async (_sensorIDs: number[]) => undefined,
     getAvailableProducts: async () => undefined,
     orderProducts: async (_products: Product[], _details?: OrderEnrichment) => undefined,

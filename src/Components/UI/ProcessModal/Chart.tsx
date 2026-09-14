@@ -8,6 +8,8 @@ import { generateHexColor } from '../../../util/functions';
 import SensorLegend from '../Chart/SensorLegend';
 import Api from '../../../context/api-context';
 
+const MAX_CHART_POINTS = 5_000;
+
 type ChartProps = {
     sensorIDs: number[];
     filter: ChartFilter;
@@ -21,7 +23,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
     const leftLegend = sensors?.filter((sensor) => sensor.axisID === 'left');
     const rightLegend = sensors?.filter((sensor) => sensor.axisID === 'right');
 
-    const { getCharts, getSensorsDetails } = useContext(Api);
+    const { getCharts, getSensorsDetails, subscribeCharts } = useContext(Api);
 
     useEffect(() => {
         getSensorsDetails(sensorIDs).then((data) =>
@@ -40,15 +42,48 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
     }, [sensorIDs]);
 
     useEffect(() => {
-        getCharts(sensorIDs, filter).then((data) => {
-            if (data) calculateGrouping(data);
-            setData(data);
-        });
+        let active = true;
+        let unsubscribe = () => {};
+
+        getCharts(sensorIDs, filter)
+            .then((initialData) => {
+                if (!active) return;
+                setData((initialData ?? []).slice(-MAX_CHART_POINTS));
+                unsubscribe = subscribeCharts(sensorIDs, filter, (incoming) => {
+                    setData((previous) => {
+                        const byTime = new Map(
+                            (previous ?? []).map((point) => [point.xAxis, point]),
+                        );
+                        incoming.forEach((point) => {
+                            byTime.set(point.xAxis, {
+                                ...byTime.get(point.xAxis),
+                                ...point,
+                            });
+                        });
+                        return Array.from(byTime.values())
+                            .sort((left, right) => left.xAxis.localeCompare(right.xAxis))
+                            .slice(-MAX_CHART_POINTS);
+                    });
+                });
+            })
+            .catch((error: unknown) => console.error('Could not load chart data', error));
+
+        return () => {
+            active = false;
+            unsubscribe();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter, sensorIDs]);
 
+    useEffect(() => {
+        if (data?.length) calculateGrouping(data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
+
     const groupByAverage = (averages: Record<string, number>): AxisGroups => {
         const entries = Object.entries(averages);
+
+        if (entries.length === 1) return { left: [entries[0][0]], right: [] };
 
         const min = entries.reduce((a, b) => (a[1] < b[1] ? a : b));
         const max = entries.reduce((a, b) => (a[1] > b[1] ? a : b));
@@ -87,6 +122,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
     };
 
     const calculateGrouping = (data: ChartData[]) => {
+        if (!data.length) return;
         const averages = Object.keys(data[0])
             .filter((key) => key !== 'xAxis')
             .reduce<Record<string, number>>((acc, id) => {
@@ -111,6 +147,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
     };
 
     const getAxisDomain = (data: ChartData[], sensorIDs: string[]): Domain => {
+        if (!sensorIDs.length) return [0, 1];
         const values = data.flatMap((point) => sensorIDs.map((id) => Number(point[id])));
 
         const min = Math.min(...values);
@@ -161,7 +198,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
                                 dataKey={item.id}
                                 name={item.name}
                                 stroke={item.color}
-                                isAnimationActive={true}
+                                isAnimationActive={false}
                                 strokeWidth={2}
                             />
                         ))}

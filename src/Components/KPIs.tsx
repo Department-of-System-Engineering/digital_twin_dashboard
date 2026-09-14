@@ -13,7 +13,7 @@ const KPIs = () => {
     useEffect(() => {
         if (selectedUserType) getKPIs(selectedUserType?.id).then((data) => data && setKpis(data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [selectedUserType]);
 
     return (
         <div className=" p-4">

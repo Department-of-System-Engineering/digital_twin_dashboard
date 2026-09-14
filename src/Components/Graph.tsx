@@ -22,28 +22,46 @@ const Graph = () => {
     const { processDetails } = useContext(Role);
 
     const calculateNodes = (edges: Edge[], initialNodes: GraphNode[]) => {
-        const sources = new Set(edges.map((item) => item.source));
-        const targets = new Set(edges.map((item) => item.target));
-        const start = Array.from(sources).filter((source) => !targets.has(source))[0];
-
-        let sourceToCheck = [start];
-        let hasTargets = true;
-        const nodes: Node<ProcessNodeData>[] = [];
-        const levels = [];
-
-        levels.push([start]);
-
-        while (hasTargets) {
-            const children = edges.filter((edge) => sourceToCheck.includes(edge.source));
-
-            if (children.length !== 0) {
-                const childrenTarget = children.map((child) => child.target);
-                levels.push(Array.from(new Set(childrenTarget)));
-                sourceToCheck = childrenTarget;
-            } else {
-                hasTargets = false;
-            }
+        const allNodeIDs = new Set(initialNodes.map((item) => item.id));
+        edges.forEach((edge) => {
+            allNodeIDs.add(edge.source);
+            allNodeIDs.add(edge.target);
+        });
+        if (!allNodeIDs.size) {
+            setNodes([]);
+            return;
         }
+
+        const incoming = new Map(Array.from(allNodeIDs, (id) => [id, 0]));
+        const targetsBySource = new Map<string, string[]>();
+        edges.forEach((edge) => {
+            incoming.set(edge.target, (incoming.get(edge.target) ?? 0) + 1);
+            targetsBySource.set(edge.source, [
+                ...(targetsBySource.get(edge.source) ?? []),
+                edge.target,
+            ]);
+        });
+
+        let sourceToCheck = Array.from(allNodeIDs).filter((id) => incoming.get(id) === 0);
+        if (!sourceToCheck.length) sourceToCheck = [Array.from(allNodeIDs)[0]];
+
+        const nodes: Node<ProcessNodeData>[] = [];
+        const levels: string[][] = [];
+        const visited = new Set<string>();
+
+        while (sourceToCheck.length) {
+            const level = sourceToCheck.filter((id) => !visited.has(id));
+            if (!level.length) break;
+            levels.push(level);
+            level.forEach((id) => visited.add(id));
+            sourceToCheck = Array.from(
+                new Set(level.flatMap((id) => targetsBySource.get(id) ?? [])),
+            ).filter((id) => !visited.has(id));
+        }
+
+        Array.from(allNodeIDs)
+            .filter((id) => !visited.has(id))
+            .forEach((id) => levels.push([id]));
 
         levels.forEach((level, levelIndex) => {
             level.forEach((node, nodeIndex) => {
