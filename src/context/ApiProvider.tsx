@@ -20,7 +20,10 @@ type ApiProviderProps = {
 };
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
-const LIVE_TOLERANCE_MS = 5_000;
+const configuredLiveTolerance = Number(import.meta.env.VITE_LIVE_TOLERANCE_MS ?? 90_000);
+const LIVE_TOLERANCE_MS = Number.isFinite(configuredLiveTolerance)
+    ? configuredLiveTolerance
+    : 90_000;
 
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
 
@@ -122,6 +125,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
                     resumeToDate = payload.at(-1)?.xAxis ?? resumeToDate;
                 }
             };
+            socket.onerror = (event) => console.error('Chart WebSocket error', event);
             socket.onclose = (event) => {
                 if (!active || event.code === 1000) return;
                 retryTimer = setTimeout(connect, retryDelay);

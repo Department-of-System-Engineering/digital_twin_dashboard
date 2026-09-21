@@ -11,7 +11,7 @@ export function convertTimestampTzToDate(timestamp: string): string {
 export const getDateTimeLocal = (date: Date) => {
     const d = new Date(date);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-    return d.toISOString().slice(0, 16);
+    return d.toISOString().slice(0, 19);
 };
 
 export const generateHexColor = () => {

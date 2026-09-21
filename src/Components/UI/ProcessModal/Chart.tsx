@@ -15,6 +15,23 @@ type ChartProps = {
     filter: ChartFilter;
 };
 
+const mergeChartData = (...groups: ChartData[][]): ChartData[] => {
+    const byTime = new Map<string, ChartData>();
+
+    groups.forEach((group) => {
+        group.forEach((point) => {
+            byTime.set(point.xAxis, {
+                ...byTime.get(point.xAxis),
+                ...point,
+            });
+        });
+    });
+
+    return Array.from(byTime.values())
+        .sort((left, right) => left.xAxis.localeCompare(right.xAxis))
+        .slice(-MAX_CHART_POINTS);
+};
+
 const Chart = ({ sensorIDs, filter }: ChartProps) => {
     const [data, setData] = useState<ChartData[]>();
     const [sensors, setSensors] = useState<Sensor[]>();
@@ -43,28 +60,17 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
 
     useEffect(() => {
         let active = true;
-        let unsubscribe = () => {};
+        const unsubscribe = subscribeCharts(sensorIDs, filter, (incoming) => {
+            if (!active) return;
+            setData((previous) => mergeChartData(previous ?? [], incoming));
+        });
 
         getCharts(sensorIDs, filter)
             .then((initialData) => {
                 if (!active) return;
-                setData((initialData ?? []).slice(-MAX_CHART_POINTS));
-                unsubscribe = subscribeCharts(sensorIDs, filter, (incoming) => {
-                    setData((previous) => {
-                        const byTime = new Map(
-                            (previous ?? []).map((point) => [point.xAxis, point]),
-                        );
-                        incoming.forEach((point) => {
-                            byTime.set(point.xAxis, {
-                                ...byTime.get(point.xAxis),
-                                ...point,
-                            });
-                        });
-                        return Array.from(byTime.values())
-                            .sort((left, right) => left.xAxis.localeCompare(right.xAxis))
-                            .slice(-MAX_CHART_POINTS);
-                    });
-                });
+                // Live points can arrive while history is loading. Merge history
+                // first so an already received live value wins on overlap.
+                setData((previous) => mergeChartData(initialData ?? [], previous ?? []));
             })
             .catch((error: unknown) => console.error('Could not load chart data', error));
 
@@ -83,6 +89,7 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
     const groupByAverage = (averages: Record<string, number>): AxisGroups => {
         const entries = Object.entries(averages);
 
+        if (!entries.length) return { left: [], right: [] };
         if (entries.length === 1) return { left: [entries[0][0]], right: [] };
 
         const min = entries.reduce((a, b) => (a[1] < b[1] ? a : b));
@@ -123,11 +130,17 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
 
     const calculateGrouping = (data: ChartData[]) => {
         if (!data.length) return;
-        const averages = Object.keys(data[0])
-            .filter((key) => key !== 'xAxis')
+        const sensorKeys = Array.from(
+            new Set(data.flatMap((point) => Object.keys(point))),
+        ).filter((key) => key !== 'xAxis');
+        const averages = sensorKeys
             .reduce<Record<string, number>>((acc, id) => {
-                const sum = data.reduce((s, point) => s + Number(point[id]), 0);
-                acc[id] = sum / data.length;
+                const values = data
+                    .map((point) => Number(point[id]))
+                    .filter(Number.isFinite);
+                if (values.length) {
+                    acc[id] = values.reduce((sum, value) => sum + value, 0) / values.length;
+                }
                 return acc;
             }, {});
 
@@ -148,12 +161,19 @@ const Chart = ({ sensorIDs, filter }: ChartProps) => {
 
     const getAxisDomain = (data: ChartData[], sensorIDs: string[]): Domain => {
         if (!sensorIDs.length) return [0, 1];
-        const values = data.flatMap((point) => sensorIDs.map((id) => Number(point[id])));
+        const values = data
+            .flatMap((point) => sensorIDs.map((id) => Number(point[id])))
+            .filter(Number.isFinite);
+
+        if (!values.length) return [0, 1];
 
         const min = Math.min(...values);
         const max = Math.max(...values);
+        const range = max - min;
 
-        return [Math.floor(min * 0.95), Math.ceil(max * 1.05)];
+        const padding = range > 0 ? range * 0.05 : Math.max(Math.abs(min) * 0.01, 0.01);
+
+        return [min - padding, max + padding];
     };
 
     return (

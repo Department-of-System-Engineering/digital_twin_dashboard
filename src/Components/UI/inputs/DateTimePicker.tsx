@@ -29,6 +29,7 @@ const DateTimePicker = ({
                 type="datetime-local"
                 disabled={disabled}
                 value={value}
+                step={1}
                 min={min}
                 max={max}
                 onChange={(event) => onValueChange(event.target.value)}
