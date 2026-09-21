@@ -11,8 +11,13 @@ type ChartFilterProps = {
     onFilterChange: (filter: ChartFilterObjectType) => void;
 };
 
+const DEFAULT_SAMPLING_FREQUENCY_SECONDS = 5;
+const DEFAULT_CHART_POINTS = 2_000;
+
 const ChartFilter = ({ onFilterChange }: ChartFilterProps) => {
-    const [samplingFrequency, setSamplingFrequency] = useState<number | undefined>(60);
+    const [samplingFrequency, setSamplingFrequency] = useState<number | undefined>(
+        DEFAULT_SAMPLING_FREQUENCY_SECONDS,
+    );
     const [disableFilter, setDisableFilter] = useState(false);
 
     const [toDate, setToDate] = useState(() => {
@@ -21,8 +26,11 @@ const ChartFilter = ({ onFilterChange }: ChartFilterProps) => {
     });
 
     const [fromDate, setFromDate] = useState(() => {
-        const halfHourBefore = new Date(Date.now() - 30 * 60 * 1000);
-        return getDateTimeLocal(halfHourBefore);
+        const defaultRangeStart = new Date(
+            Date.now() -
+                DEFAULT_CHART_POINTS * DEFAULT_SAMPLING_FREQUENCY_SECONDS * 1000,
+        );
+        return getDateTimeLocal(defaultRangeStart);
     });
 
     const onFilterChangeHandler = () => {
