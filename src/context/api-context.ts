@@ -10,6 +10,7 @@ import type {
     OrderListItem,
     Order,
     BaseMetric,
+    ProcessStepProducts,
 } from '../types';
 import { createContext } from 'react';
 
@@ -18,6 +19,10 @@ type ApiContext = {
     getUserTypes: () => Promise<OptionItem[] | undefined>;
     getKPIs: (usedID: number) => Promise<BaseMetric[] | undefined>;
     getGraph: () => Promise<Graph | undefined>;
+    getProcessProducts: () => Promise<ProcessStepProducts[] | undefined>;
+    subscribeProcessProducts: (
+        onData: (data: ProcessStepProducts[]) => void,
+    ) => () => void;
     getProcess: (processID: string) => Promise<Asset[] | undefined>;
     getCharts: (sensorIDs: number[], filter: ChartFilter) => Promise<ChartData[] | undefined>;
     subscribeCharts: (
@@ -38,6 +43,8 @@ type ApiContext = {
 const Api = createContext<ApiContext>({
     getUserTypes: async () => undefined,
     getGraph: async () => undefined,
+    getProcessProducts: async () => undefined,
+    subscribeProcessProducts: (_onData: (data: ProcessStepProducts[]) => void) => () => {},
     getProcess: async (_processID: string) => undefined,
     login: async (_username: string, _password: string) => undefined,
     getCharts: async (_sensorIDs: number[], _filter: ChartFilter) => undefined,

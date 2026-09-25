@@ -20,7 +20,9 @@ const CustomNode = ({
             >
                 <div className="hover:cursor-pointer flex flex-row items-center justify-between gap-3">
                     <label className="hover:cursor-pointer">{data.label}</label>
-                    <div className="bg-violet-300 px-2 rounded-md">3</div>
+                    <div className="bg-violet-300 px-2 rounded-md">
+                        {data.products.length}
+                    </div>
                 </div>
 
                 <Handle type="source" position={Position.Bottom} isConnectable={false} />
@@ -38,9 +40,15 @@ const CustomNode = ({
                         }}
                         className="bg-amber-300 text-white text-xs px-3 py-2 rounded-xl shadow-md"
                     >
-                        {data.type.map((item) => (
-                            <div key={item}>{item}</div>
-                        ))}
+                        {data.products.length ? (
+                            data.products.map((product) => (
+                                <div key={product.productInstanceId}>
+                                    {product.productInstanceId} : {product.productType}
+                                </div>
+                            ))
+                        ) : (
+                            <div>No product</div>
+                        )}
                     </div>
                 </ViewportPortal>
             )}

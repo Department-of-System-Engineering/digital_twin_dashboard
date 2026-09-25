@@ -1,4 +1,9 @@
-import type { GraphNode, ProcessNodeData } from '../types';
+import type {
+    Graph as ProcessGraph,
+    GraphNode,
+    ProcessNodeData,
+    ProcessStepProducts,
+} from '../types';
 import { useContext, useEffect, useState } from 'react';
 import { MarkerType, ReactFlow, type Edge, type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -8,8 +13,6 @@ import ProcessModal from './ProcessModal';
 import Api from '../context/api-context';
 import Role from '../context/role-context';
 
-const DUMMY_DATA = ['3:D', '4:A', '2:C'];
-
 const nodeTypes = {
     processStep: CustomNode,
 };
@@ -17,11 +20,16 @@ const nodeTypes = {
 const Graph = () => {
     const [nodes, setNodes] = useState<Node<ProcessNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
+    const [graph, setGraph] = useState<ProcessGraph>();
+    const [productLocations, setProductLocations] = useState<ProcessStepProducts[]>([]);
     const [selectedProcessID, setSelectedProcessID] = useState<string | null>(null);
-    const { getGraph } = useContext(Api);
+    const { getGraph, getProcessProducts, subscribeProcessProducts } = useContext(Api);
     const { processDetails } = useContext(Role);
 
     const calculateNodes = (edges: Edge[], initialNodes: GraphNode[]) => {
+        const productsByStep = new Map(
+            productLocations.map((location) => [location.processStepId, location.products]),
+        );
         const allNodeIDs = new Set(initialNodes.map((item) => item.id));
         edges.forEach((edge) => {
             allNodeIDs.add(edge.source);
@@ -73,7 +81,7 @@ const Graph = () => {
                     },
                     data: {
                         label: initialNodes.find((item) => item.id === node)?.name || 'N/A',
-                        type: DUMMY_DATA,
+                        products: productsByStep.get(node) ?? [],
                         state: 'ACTIVE',
                     },
                     type: 'processStep',
@@ -100,13 +108,20 @@ const Graph = () => {
 
     useEffect(() => {
         getGraph().then((data) => {
-            if (data) {
-                setEdges(data.edges);
-                calculateNodes(data.edges, data.nodes);
-            }
+            if (data) setGraph(data);
         });
+        getProcessProducts().then((data) => data && setProductLocations(data));
+        const unsubscribe = subscribeProcessProducts(setProductLocations);
+        return unsubscribe;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (!graph) return;
+        setEdges(graph.edges);
+        calculateNodes(graph.edges, graph.nodes);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [graph, productLocations]);
 
     return (
         <>

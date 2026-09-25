@@ -9,6 +9,7 @@ import type {
     OrderEnrichment,
     OrderListItem,
     Product,
+    ProcessStepProducts,
     Sensor,
 } from '../types';
 
@@ -70,6 +71,44 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
     const getUserTypes = () => request<OptionItem[]>('/user-types');
 
     const getGraph = () => request<Graph>('/process/graph');
+
+    const getProcessProducts = () =>
+        request<ProcessStepProducts[]>('/process/products');
+
+    const subscribeProcessProducts = (
+        onData: (data: ProcessStepProducts[]) => void,
+    ) => {
+        let active = true;
+        let socket: WebSocket | undefined;
+        let retryTimer: ReturnType<typeof setTimeout> | undefined;
+        let retryDelay = 500;
+
+        const connect = () => {
+            if (!active) return;
+            socket = new WebSocket(websocketUrl('/ws/process/products'));
+            socket.onopen = () => {
+                retryDelay = 500;
+            };
+            socket.onmessage = (event) => {
+                const payload = JSON.parse(event.data) as ProcessStepProducts[];
+                if (Array.isArray(payload)) onData(payload);
+            };
+            socket.onerror = (event) =>
+                console.error('Product tracking WebSocket error', event);
+            socket.onclose = (event) => {
+                if (!active || event.code === 1000) return;
+                retryTimer = setTimeout(connect, retryDelay);
+                retryDelay = Math.min(retryDelay * 2, 10_000);
+            };
+        };
+
+        connect();
+        return () => {
+            active = false;
+            if (retryTimer) clearTimeout(retryTimer);
+            socket?.close(1000, 'Process graph closed');
+        };
+    };
 
     const getProcess = (processID: string) =>
         request<Asset[]>(`/process/${encodeURIComponent(processID)}`);
@@ -182,6 +221,8 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
     const apiContext = {
         getUserTypes,
         getGraph,
+        getProcessProducts,
+        subscribeProcessProducts,
         getProcess,
         login,
         getCharts,

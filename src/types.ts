@@ -21,6 +21,16 @@ export type Graph = {
     edges: GraphEdge[];
 };
 
+export type TrackedProduct = {
+    productInstanceId: number;
+    productType: string;
+};
+
+export type ProcessStepProducts = {
+    processStepId: string;
+    products: TrackedProduct[];
+};
+
 export type BaseMetric = {
     id: number;
     name: string;
@@ -45,7 +55,7 @@ export type Asset = {
 
 export type ProcessNodeData = {
     label: string;
-    type: string[];
+    products: TrackedProduct[];
     state: 'ACTIVE' | 'ERROR' | 'DONE';
 };
 
