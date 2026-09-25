@@ -204,6 +204,43 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         return { ...order, products: addProductImages(order.products) };
     };
 
+    const subscribeCurrentOrder = (onData: (data: Order | undefined) => void) => {
+        let active = true;
+        let socket: WebSocket | undefined;
+        let retryTimer: ReturnType<typeof setTimeout> | undefined;
+        let retryDelay = 500;
+
+        const connect = () => {
+            if (!active) return;
+            socket = new WebSocket(websocketUrl('/ws/orders/current'));
+            socket.onopen = () => {
+                retryDelay = 500;
+            };
+            socket.onmessage = (event) => {
+                const payload = JSON.parse(event.data) as Order | null;
+                onData(
+                    payload
+                        ? { ...payload, products: addProductImages(payload.products) }
+                        : undefined,
+                );
+            };
+            socket.onerror = (event) =>
+                console.error('Current order WebSocket error', event);
+            socket.onclose = (event) => {
+                if (!active || event.code === 1000) return;
+                retryTimer = setTimeout(connect, retryDelay);
+                retryDelay = Math.min(retryDelay * 2, 10_000);
+            };
+        };
+
+        connect();
+        return () => {
+            active = false;
+            if (retryTimer) clearTimeout(retryTimer);
+            socket?.close(1000, 'Current order view closed');
+        };
+    };
+
     const completeOrder = (orderID: string) =>
         request<boolean>(`/orders/${encodeURIComponent(orderID)}/complete`, {
             method: 'POST',
@@ -232,6 +269,7 @@ const ApiProvider = ({ children }: ApiProviderProps) => {
         orderProducts,
         getOrders,
         getOrder,
+        subscribeCurrentOrder,
         completeOrder,
         deleteOrder,
         getCompletedOrders,

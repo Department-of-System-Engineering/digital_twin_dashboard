@@ -5,10 +5,14 @@ import OrderProduct from './OrderProduct';
 
 const OrderDetails = () => {
     const [order, setOrder] = useState<Order>();
-    const { getOrder } = useContext(Api);
+    const { getOrder, subscribeCurrentOrder } = useContext(Api);
 
     useEffect(() => {
-        getOrder().then((order) => order && setOrder(order));
+        getOrder()
+            .then(setOrder)
+            .catch(() => setOrder(undefined));
+        const unsubscribe = subscribeCurrentOrder(setOrder);
+        return unsubscribe;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

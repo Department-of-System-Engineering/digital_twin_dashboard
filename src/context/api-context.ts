@@ -35,6 +35,7 @@ type ApiContext = {
     orderProducts: (products: Product[], details?: OrderEnrichment) => Promise<boolean | undefined>;
     getCompletedOrders: () => Promise<OrderListItem[] | undefined>;
     getOrder: (orderID?: string) => Promise<Order | undefined>;
+    subscribeCurrentOrder: (onData: (data: Order | undefined) => void) => () => void;
     deleteOrder: (orderID: string) => Promise<boolean | undefined>;
     completeOrder: (orderID: string) => Promise<boolean | undefined>;
     getAvailableProducts: () => Promise<Product[] | undefined>;
@@ -56,6 +57,7 @@ const Api = createContext<ApiContext>({
     orderProducts: async (_products: Product[], _details?: OrderEnrichment) => undefined,
     getOrders: async () => undefined,
     getOrder: async (_orderID?: string) => undefined,
+    subscribeCurrentOrder: (_onData: (data: Order | undefined) => void) => () => {},
     completeOrder: async (_orderID: string) => undefined,
     deleteOrder: async (_orderID: string) => undefined,
     getCompletedOrders: async () => undefined,

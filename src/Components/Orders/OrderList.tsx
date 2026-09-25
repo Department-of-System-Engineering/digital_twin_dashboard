@@ -9,7 +9,7 @@ import Role from '../../context/role-context';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 const OrderList = () => {
-    const { getOrders, getCompletedOrders } = useContext(Api);
+    const { getOrders, getCompletedOrders, subscribeCurrentOrder } = useContext(Api);
     const { orderDetailsModal, completedOrderList } = useContext(Role);
 
     const [orders, setOrders] = useState<OrderListItemType[]>();
@@ -24,6 +24,10 @@ const OrderList = () => {
 
     useEffect(() => {
         void loadOrders();
+        const unsubscribe = subscribeCurrentOrder(() => {
+            void loadOrders();
+        });
+        return unsubscribe;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
