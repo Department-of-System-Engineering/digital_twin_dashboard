@@ -10,12 +10,15 @@ import OrderProduct from './OrderProduct';
 type OrderModalProps = {
     orderID?: string;
     onClose: () => void;
+    onOrderChanged: () => Promise<void>;
 };
 
-const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
+const OrderModal = ({ orderID, onClose, onOrderChanged }: OrderModalProps) => {
     const { orderCompleteButton, orderDeleteButton } = useContext(Role);
 
     const [order, setOrder] = useState<Order>();
+    const [actionPending, setActionPending] = useState(false);
+    const [actionError, setActionError] = useState<string>();
     const { getOrder, completeOrder, deleteOrder } = useContext(Api);
 
     useEffect(() => {
@@ -28,6 +31,23 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
     const isExpired =
         order?.details.fulfillmentDate !== undefined &&
         new Date(order.details.fulfillmentDate) < new Date();
+
+    const runOrderAction = async (action: () => Promise<boolean | undefined>) => {
+        setActionPending(true);
+        setActionError(undefined);
+        try {
+            const success = await action();
+            if (success) {
+                await onOrderChanged();
+                onClose();
+            }
+        } catch (error) {
+            setActionError(error instanceof Error ? error.message : 'Order update failed');
+        } finally {
+            setActionPending(false);
+        }
+    };
+
     return (
         <>
             {createPortal(
@@ -101,9 +121,14 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
                                                     {orderDeleteButton && (
                                                         <button
                                                             className="px-6 py-2 bg-red-400 text-gray-700 rounded-lg hover:bg-red-500 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
-                                                            onClick={() => {
-                                                                deleteOrder(order.details.orderID);
-                                                            }}
+                                                            disabled={actionPending}
+                                                            onClick={() =>
+                                                                runOrderAction(() =>
+                                                                    deleteOrder(
+                                                                        order.details.orderID,
+                                                                    ),
+                                                                )
+                                                            }
                                                         >
                                                             Delete Order
                                                         </button>
@@ -111,16 +136,26 @@ const OrderModal = ({ orderID, onClose }: OrderModalProps) => {
                                                     {orderCompleteButton && (
                                                         <button
                                                             className="px-6 py-2 bg-amber-300 text-gray-700 rounded-lg hover:bg-amber-400 hover:cursor-pointer transform transition duration-200 hover:scale-105 font-semibold tracking-wide shadow-lg"
-                                                            onClick={() => {
-                                                                completeOrder(
-                                                                    order.details.orderID,
-                                                                );
-                                                            }}
+                                                            disabled={actionPending}
+                                                            onClick={() =>
+                                                                runOrderAction(() =>
+                                                                    completeOrder(
+                                                                        order.details.orderID,
+                                                                    ),
+                                                                )
+                                                            }
                                                         >
-                                                            Complete Order
+                                                            {actionPending
+                                                                ? 'Updating...'
+                                                                : 'Complete Order'}
                                                         </button>
                                                     )}
                                                 </div>
+                                            )}
+                                            {actionError && (
+                                                <p className="mt-4 text-center text-red-600">
+                                                    {actionError}
+                                                </p>
                                             )}
                                         </div>
                                     </>

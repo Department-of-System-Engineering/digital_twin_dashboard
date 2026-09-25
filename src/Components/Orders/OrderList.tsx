@@ -17,8 +17,13 @@ const OrderList = () => {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [selectedOrderID, setSelectedOrderID] = useState<string>();
 
+    const loadOrders = async () => {
+        const data = await getOrders();
+        if (data) setOrders(data);
+    };
+
     useEffect(() => {
-        getOrders().then((data) => data && setOrders(data));
+        void loadOrders();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -38,6 +43,14 @@ const OrderList = () => {
     const modalCloseHandler = () => {
         setModalIsOpen(false);
         setSelectedOrderID(undefined);
+    };
+
+    const orderChangedHandler = async () => {
+        await loadOrders();
+        if (completedOrders) {
+            const data = await getCompletedOrders();
+            if (data) setCompletedOrders(data);
+        }
     };
 
     return (
@@ -85,7 +98,13 @@ const OrderList = () => {
                         ))}
                 </div>
             )}
-            {modalIsOpen && <OrderModal onClose={modalCloseHandler} orderID={selectedOrderID} />}
+            {modalIsOpen && (
+                <OrderModal
+                    onClose={modalCloseHandler}
+                    onOrderChanged={orderChangedHandler}
+                    orderID={selectedOrderID}
+                />
+            )}
         </div>
     );
 };
