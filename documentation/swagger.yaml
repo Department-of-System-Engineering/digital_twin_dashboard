@@ -2,7 +2,24 @@ openapi: 3.0.3
 
 info:
     title: Dashboard API
-    version: 1.1.0
+    version: 1.2.0
+    description: |
+        HTTP API consumed by the digital twin dashboard.
+
+        The dashboard uses `/api` as its default HTTP and WebSocket base path. During
+        local development Vite proxies this path to the backend and removes the `/api`
+        prefix before forwarding the request.
+
+        WebSocket channels are documented in the `x-websocket-channels` extension.
+        OpenAPI 3.0 and Swagger UI do not natively render WebSocket operations.
+
+servers:
+    - url: /api
+      description: Dashboard default API base path
+
+# The frontend does not send an API key or bearer token. Login state and role
+# checks are currently maintained in React state only.
+security: []
 
 tags:
     - name: User
@@ -17,9 +34,36 @@ tags:
     - name: Products
       description: Product catalog
 
+x-websocket-channels:
+    /ws/process/products:
+        description: Streams the complete current product-location snapshot.
+        clientMessages: false
+        serverMessage:
+            type: array
+            items:
+                $ref: '#/components/schemas/ProcessStepProducts'
+
+    /ws/sensors/chart:
+        description: Streams live chart points after the client sends a subscription request.
+        clientMessage:
+            $ref: '#/components/schemas/ChartSubscriptionRequest'
+        serverMessage:
+            type: array
+            items:
+                $ref: '#/components/schemas/ChartData'
+
+    /ws/orders/current:
+        description: Streams the current order. A JSON null value means there is no current order.
+        clientMessages: false
+        serverMessage:
+            nullable: true
+            allOf:
+                - $ref: '#/components/schemas/Order'
+
 paths:
     /auth/login:
         post:
+            operationId: login
             tags:
                 - User
             summary: User login
@@ -53,6 +97,7 @@ paths:
 
     /user-types:
         get:
+            operationId: getUserTypes
             tags:
                 - User
             summary: Get user types
@@ -75,6 +120,7 @@ paths:
 
     /process/graph:
         get:
+            operationId: getGraph
             tags:
                 - Process
             summary: Get process graph
@@ -93,8 +139,35 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
+    /process/products:
+        get:
+            operationId: getProcessProducts
+            tags:
+                - Process
+            summary: Get products at process steps
+            description: |
+                Returns the complete current product-location snapshot used to annotate
+                the process graph. Live replacements of this snapshot are sent through
+                `/ws/process/products`.
+            responses:
+                '200':
+                    description: Products grouped by process step
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ProcessStepProducts'
+                '400':
+                    description: Returns error information for the frontend
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
     /process/{processId}:
         get:
+            operationId: getProcess
             tags:
                 - Process
             summary: Get process details
@@ -123,6 +196,7 @@ paths:
 
     /sensors/chart:
         post:
+            operationId: getCharts
             tags:
                 - Process
             summary: Get chart data
@@ -132,16 +206,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: object
-                            required:
-                                - sensorIds
-                            properties:
-                                sensorIds:
-                                    type: array
-                                    items:
-                                        type: integer
-                                filter:
-                                    $ref: '#/components/schemas/ChartFilter'
+                            $ref: '#/components/schemas/ChartRequest'
             responses:
                 '200':
                     description: Chart data
@@ -150,7 +215,7 @@ paths:
                             schema:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/Chart'
+                                    $ref: '#/components/schemas/ChartData'
                 '400':
                     description: Returns error message for frontend
                     content:
@@ -160,6 +225,7 @@ paths:
 
     /sensors:
         get:
+            operationId: getSensorsDetails
             tags:
                 - Process
             summary: Get sensor details
@@ -168,11 +234,12 @@ paths:
                 - name: sensorIDs
                   in: query
                   required: true
-                  description: Comma-separated list of sensor IDs
+                  description: Sensor IDs serialized as repeated query parameters
                   style: form
-                  explode: false
+                  explode: true
                   schema:
                       type: array
+                      minItems: 1
                       items:
                           type: integer
             responses:
@@ -193,6 +260,7 @@ paths:
 
     /products:
         get:
+            operationId: getAvailableProducts
             tags:
                 - Products
             summary: Get available products
@@ -215,6 +283,7 @@ paths:
 
     /orders:
         get:
+            operationId: getOrders
             tags:
                 - Orders
             summary: Get current orders
@@ -237,6 +306,7 @@ paths:
 
     /orders/add:
         post:
+            operationId: orderProducts
             tags:
                 - Orders
             summary: Create order
@@ -272,6 +342,7 @@ paths:
 
     /orders/completed:
         get:
+            operationId: getCompletedOrders
             tags:
                 - Orders
             summary: Get completed orders
@@ -285,9 +356,45 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/OrderListItem'
+                '400':
+                    description: Returns error information for the frontend
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /orders/current:
+        get:
+            operationId: getCurrentOrder
+            tags:
+                - Orders
+            summary: Get current order
+            description: |
+                Returns the order currently being processed. Updates are also sent
+                through `/ws/orders/current`.
+            responses:
+                '200':
+                    description: Current order details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Order'
+                '400':
+                    description: Returns error information for the frontend
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                '404':
+                    description: There is no current order
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
 
     /orders/{orderId}:
         get:
+            operationId: getOrder
             tags:
                 - Orders
             summary: Get order details
@@ -295,7 +402,7 @@ paths:
             parameters:
                 - name: orderId
                   in: path
-                  required: false
+                  required: true
                   schema:
                       type: string
             responses:
@@ -314,6 +421,7 @@ paths:
 
     /orders/{orderId}/delete:
         delete:
+            operationId: deleteOrder
             tags:
                 - Orders
             summary: Delete order
@@ -340,6 +448,7 @@ paths:
 
     /orders/{orderId}/complete:
         post:
+            operationId: completeOrder
             tags:
                 - Orders
             summary: Complete order
@@ -366,6 +475,7 @@ paths:
 
     /kpis/{userId}:
         get:
+            operationId: getKPIs
             tags:
                 - User
             summary: Get KPIs
@@ -517,15 +627,18 @@ components:
                         - percent
                 value:
                     type: number
-                    nullable: true
                 min:
                     type: number
-                    nullable: true
                 disabled:
                     type: boolean
-                    nullable: true
+                color:
+                    type: string
+                    description: Optional chart color maintained by the dashboard
+                axisID:
+                    type: string
+                    description: Optional chart axis assignment maintained by the dashboard
 
-        Chart:
+        ChartData:
             type: object
             description: Time series chart entry
             required:
@@ -557,6 +670,56 @@ components:
                     type: string
                     format: date-time
 
+        ChartRequest:
+            type: object
+            required:
+                - sensorIds
+                - filter
+            properties:
+                sensorIds:
+                    type: array
+                    minItems: 1
+                    items:
+                        type: integer
+                filter:
+                    $ref: '#/components/schemas/ChartFilter'
+
+        ChartSubscriptionRequest:
+            allOf:
+                - $ref: '#/components/schemas/ChartRequest'
+                - type: object
+                  required:
+                      - source
+                  properties:
+                      source:
+                          type: string
+                          enum:
+                              - real
+
+        TrackedProduct:
+            type: object
+            required:
+                - productInstanceId
+                - productType
+            properties:
+                productInstanceId:
+                    type: integer
+                productType:
+                    type: string
+
+        ProcessStepProducts:
+            type: object
+            required:
+                - processStepId
+                - products
+            properties:
+                processStepId:
+                    type: string
+                products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TrackedProduct'
+
         Product:
             type: object
             required:
@@ -567,15 +730,15 @@ components:
 
                 imageUrl:
                     type: string
-                    nullable: true
 
                 quantity:
                     type: integer
-                    nullable: true
 
                 maxQuantity:
                     type: integer
-                    nullable: true
+
+                completedQuantity:
+                    type: integer
 
         OrderEnrichment:
             type: object
@@ -584,11 +747,9 @@ components:
             properties:
                 customerName:
                     type: string
-                    nullable: true
 
                 fulfillmentDate:
                     type: string
-                    nullable: true
 
                 priority:
                     type: boolean
@@ -603,19 +764,15 @@ components:
 
                 customerName:
                     type: string
-                    nullable: true
 
                 orderDate:
                     type: string
-                    nullable: true
 
                 fulfillmentDate:
                     type: string
-                    nullable: true
 
                 priority:
                     type: boolean
-                    nullable: true
 
         Order:
             type: object
@@ -636,3 +793,5 @@ components:
             properties:
                 msg:
                     type: string
+                detail:
+                    description: Framework- or backend-specific error details
